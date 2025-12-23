@@ -1,0 +1,188 @@
+/* =========================================
+   About Redesign (Collage + Benefits)
+   ========================================= */
+
+.about-redesign-section {
+    padding: 100px 0;
+    background: var(--bg-white);
+    overflow: hidden;
+}
+
+.about-redesign-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+/* --- Left: Image Collage --- */
+.collage-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Decorative Dashed Border Wrapper */
+.collage-dashed-border {
+    padding: 20px;
+    border: 2px dashed #e5e7eb;
+    border-radius: 60px;
+}
+
+/* The Masked Grid */
+.collage-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    background: white;
+    border-radius: 50px;
+    overflow: hidden;
+    height: 460px;
+    /* Fixed height for squares */
+}
+
+.collage-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.collage-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.collage-item:hover img {
+    transform: scale(1.1);
+}
+
+/* Quadrant Specific Colors/Backgrounds (if images differ) */
+.c-item-1 {
+    background: #fee2e2;
+}
+
+/* Pink-ish */
+.c-item-2 {
+    background: #e0e7ff;
+}
+
+/* Purple-ish */
+.c-item-3 {
+    background: #f3e8ff;
+}
+
+/* Purple-ish */
+.c-item-4 {
+    background: #fce7f3;
+}
+
+/* Pink-ish */
+
+/* --- Right: Content --- */
+.about-redesign-content {
+    padding-left: 2rem;
+}
+
+.about-redesign-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 3rem;
+    color: var(--text-dark);
+}
+
+.about-redesign-title .highlight {
+    color: #d946ef;
+    /* Pink/Purple from image */
+    position: relative;
+    display: inline-block;
+}
+
+.benefits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.benefit-card {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.benefit-icon-wrapper {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    transition: transform 0.3s;
+}
+
+.benefit-card:hover .benefit-icon-wrapper {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.icon-purple {
+    background-color: #a855f7;
+    box-shadow: 0 10px 20px rgba(168, 85, 247, 0.2);
+}
+
+.icon-pink {
+    background-color: #ec4899;
+    box-shadow: 0 10px 20px rgba(236, 72, 153, 0.2);
+}
+
+.icon-blue {
+    background-color: #3b82f6;
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+}
+
+.icon-red {
+    background-color: #f43f5e;
+    box-shadow: 0 10px 20px rgba(244, 63, 94, 0.2);
+}
+
+.benefit-details h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+}
+
+.benefit-details p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .about-redesign-grid {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+        text-align: center;
+    }
+
+    .collage-container {
+        margin-bottom: 2rem;
+    }
+
+    .about-redesign-content {
+        padding-left: 0;
+    }
+
+    .benefit-card {
+        text-align: left;
+        /* Keep list left-aligned even if container is centered */
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}

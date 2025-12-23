@@ -1,0 +1,61 @@
+/* =========================================
+   Theme-Aware Radio Styles
+   ========================================= */
+
+/* Base (Light Mode) */
+.radio-card-wrapper {
+    background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--text-dark);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+}
+
+.radio-subtitle {
+    color: var(--text-light);
+}
+
+.radio-logo i,
+.radio-logo span span,
+.marquee-content i {
+    color: #FBBF24;
+    /* Keep Gold accent */
+}
+
+/* Visualizer Bars (Light Mode Default) */
+.audio-visualizer-container .bar {
+    background: rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Playing state accent (Light Mode) */
+.audio-visualizer-container.playing .bar {
+    background: #FBBF24 !important;
+}
+
+/* Marquee Text (Light Mode) */
+.marquee-content {
+    color: var(--text-dark);
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] .radio-card-wrapper {
+    background: linear-gradient(135deg, var(--bg-card) 0%, #1e1b4b 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .radio-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="dark"] .audio-visualizer-container .bar {
+    background: rgba(255, 255, 255, 0.3) !important;
+}
+
+[data-theme="dark"] .audio-visualizer-container.playing .bar {
+    background: #FBBF24 !important;
+}
+
+[data-theme="dark"] .marquee-content {
+    color: rgba(255, 255, 255, 0.9);
+}

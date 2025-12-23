@@ -1,0 +1,278 @@
+/* =========================================
+   Kitab Dashboard Layout (Remake)
+   ========================================= */
+
+.kitab-dashboard-section {
+    padding: 3rem 0 6rem;
+    background: #F3F4F6;
+    /* Dashboard background */
+}
+
+.kitab-dashboard {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 2.5rem;
+    align-items: start;
+}
+
+/* Sidebar Styles */
+.kitab-sidebar {
+    background: transparent;
+    position: sticky;
+    top: 100px;
+}
+
+.sidebar-group {
+    margin-bottom: 2rem;
+}
+
+.sidebar-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    color: var(--text-dark);
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.sidebar-link i {
+    width: 20px;
+    color: #9CA3AF;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    background: white;
+    color: var(--primary-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-link.active i {
+    color: var(--primary-color);
+}
+
+/* Main Content Area */
+.kitab-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.kitab-content-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.kitab-search-wrapper {
+    position: relative;
+    width: 300px;
+}
+
+.kitab-search-wrapper input {
+    width: 100%;
+    padding: 0.7rem 1rem 0.7rem 2.5rem;
+    border-radius: 99px;
+    border: 1px solid transparent;
+    background: white;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    transition: all 0.2s;
+}
+
+.kitab-search-wrapper i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9CA3AF;
+}
+
+.kitab-search-wrapper input:focus {
+    outline: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Horizontal Book Grid */
+.book-grid-horizontal {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 Columns */
+    gap: 2rem;
+}
+
+/* Horizontal Book Card */
+.book-card-horizontal {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s;
+    border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.book-card-horizontal:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+}
+
+.horizontal-cover {
+    width: 100px;
+    height: 140px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.horizontal-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.horizontal-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.3;
+    margin-bottom: 0.3rem;
+}
+
+.horizontal-author {
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.horizontal-desc {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.horizontal-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn-read-more {
+    background: rgba(var(--primary-rgb), 0.1);
+    /* Light Primary BG */
+    color: var(--primary-color);
+    padding: 0.5rem 1.2rem;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    background: #eff6ff;
+}
+
+.btn-read-more:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.action-icon {
+    color: #9CA3AF;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.action-icon:hover {
+    color: var(--primary-color);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .kitab-dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .kitab-sidebar {
+        position: relative;
+        top: 0;
+        margin-bottom: 2rem;
+        display: none;
+        /* Hide sidebar on mobile for now, ideally toggle */
+    }
+
+    .book-grid-horizontal {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] .kitab-dashboard-section {
+    background: var(--bg-dark);
+}
+
+[data-theme="dark"] .book-card-horizontal,
+[data-theme="dark"] .kitab-search-wrapper input {
+    background: var(--bg-card-dark);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .sidebar-link:hover,
+[data-theme="dark"] .sidebar-link.active {
+    background: var(--bg-card-dark);
+    color: #FBBF24;
+}
+
+[data-theme="dark"] .sidebar-link.active i {
+    color: #FBBF24;
+}
+
+[data-theme="dark"] .horizontal-title {
+    color: white;
+}
+
+[data-theme="dark"] .horizontal-author {
+    color: #FBBF24;
+}
+
+[data-theme="dark"] .btn-read-more {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+[data-theme="dark"] .btn-read-more:hover {
+    background: #FBBF24;
+    color: black;
+}

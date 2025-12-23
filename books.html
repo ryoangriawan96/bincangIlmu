@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bincang Ilmu - Platform Belajar Online Kekinian</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <script>
+        // Immediate theme application to prevent flash
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <span>bincang</span><span class="highlight">ilmu.</span>
+            </a>
+            <nav class="nav-menu">
+                <ul class="nav-list">
+                    <li><a href="#home" class="nav-link active">Beranda</a></li>
+                    <li><a href="courses.html" class="nav-link">Kursus</a></li>
+                    <li><a href="books.html" class="nav-link">Kitab</a></li>
+                    <li><a href="fatwa.html" class="nav-link">Fatwa</a></li>
+                    <li><a href="blog.html" class="nav-link">Blog</a></li>
+                    <li><a href="about.html" class="nav-link">Tentang Kami</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="search-toggle" onclick="openSearch()" aria-label="Search"
+                    style="background: none; border: none; font-size: 1.1rem; color: var(--text-dark); cursor: pointer; margin-right: 0.5rem;">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="#" class="btn btn-outline" id="loginBtn" onclick="openModal('login'); return false;">Masuk</a>
+                <a href="#" class="btn btn-primary" id="registerBtn"
+                    onclick="openModal('register'); return false;">Daftar Sekarang</a>
+
+                <!-- User Profile (Hidden by default) -->
+                <div class="user-profile-wrapper" id="userProfile" style="display: none;">
+                    <button class="profile-toggle" id="profileToggleBtn"
+                        onclick="toggleProfileMenu(event); return false;">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar"
+                            class="profile-avatar">
+                        <span class="profile-name">Abdullah</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <!-- Floating Dropdown -->
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="dropdown-header">
+                            <div class="user-info">
+                                <strong>Abdullah Fulan</strong>
+                                <span>abdullah@example.com</span>
+                            </div>
+                        </div>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" onclick="openProfileModal('settings'); return false;"><i
+                                        class="fas fa-user-cog"></i> Pengaturan Profil</a></li>
+                            <li><a href="#" onclick="openProfileModal('courses'); return false;"><i
+                                        class="fas fa-book-reader"></i> Kursus Saya</a></li>
+                            <li><a href="#" onclick="openProfileModal('certificates'); return false;"><i
+                                        class="fas fa-certificate"></i> Sertifikat</a></li>
+                            <li><a href="#" onclick="openProfileModal('app-settings'); return false;"><i
+                                        class="fas fa-cog"></i> Setting</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#" onclick="handleLogout(); return false;" class="text-danger"><i
+                                        class="fas fa-sign-out-alt"></i> Log Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <button class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <span class="badge"><i class="fas fa-book-open"></i> Menuntut Ilmu, Menuju Jannah</span>
+                <h1 class="hero-title">Belajar Ilmu Syar'i dengan <span class="text-gradient">Manhaj yang Benar</span>
+                </h1>
+                <p class="hero-description">
+                    Akses ribuan materi kajian Islam berkualitas dari Asatidzah lulusan Timur Tengah. Mulai perjalanan
+                    menuntut ilmu agama bersama Bincang Ilmu.
+                </p>
+                <div class="hero-buttons">
+                    <a href="courses.html" class="btn btn-primary btn-lg">Mulai Belajar <i
+                            class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="btn btn-video" onclick="openVideoModal(); return false;"><i
+                            class="fas fa-play-circle"></i> Tonton Kajian</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">15k+</span>
+                        <span class="stat-label">Penuntut Ilmu</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Kajian Rutin</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">4.9</span>
+                        <span class="stat-label">Rating</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Hero Image Slider with Animations -->
+            <div class="hero-image">
+                <!-- Background Animation Layer -->
+                <div class="hero-bg-animation">
+                    <div class="pulsing-circle"></div>
+                    <div class="rotating-ring">
+                        <div class="ring-line"></div>
+                        <div class="ring-line-2"></div>
+                        <div class="ring-line-3"></div>
+
+                        <!-- Orbiter Wrappers -->
+                        <div class="orbiter pos-1"><i class="fas fa-quran"></i></div>
+                        <div class="orbiter pos-2"><i class="fas fa-star-and-crescent"></i></div>
+                        <div class="orbiter pos-3"><i class="fas fa-mosque"></i></div>
+                        <div class="orbiter pos-4"><i class="fas fa-kaaba"></i></div>
+                        <div class="orbiter pos-5"><i class="fas fa-praying-hands"></i></div>
+                        <div class="orbiter pos-6"><i class="fas fa-book-open"></i></div>
+                    </div>
+                </div>
+
+                <!-- Slider -->
+                <div class="image-wrapper hero-slider-container">
+                    <div class="hero-slide active">
+                        <img src="images/hero_kitab_gundul.png" alt="Kitab Turats" class="main-img isolated-book">
+                    </div>
+                    <div class="hero-slide">
+                        <img src="images/hero_stack_books.png" alt="Koleksi Kitab" class="main-img isolated-book">
+                    </div>
+                    <div class="hero-slide">
+                        <img src="images/hero_open_quran.png" alt="Al-Quran" class="main-img isolated-book">
+                    </div>
+                </div>
+
+                <!-- Floating Cards (Restored) -->
+                <div class="floating-card card-1">
+                    <i class="fas fa-book-open"></i>
+                    <div class="card-info">
+                        <h4>Bahasa Arab</h4>
+                        <p>Nahwu & Shorof</p>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="floating-card card-2">
+                    <i class="fas fa-users"></i>
+                    <div class="card-info">
+                        <h4>Kajian Rutin</h4>
+                        <div class="avatars">
+                            <span style="font-size: 0.8rem; color: #666;">+2k Peserta</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-shape">
+            <svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#ffffff" fill-opacity="1"
+                    d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,250.7C960,235,1056,181,1152,165.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+                </path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Partner Section -->
+    <section class="partners-section">
+        <div class="container">
+            <h5 class="partners-title">Mitra Dakwah Kami</h5>
+            <div class="marquee-wrapper">
+                <div class="partner-marquee-content" id="partnerMarquee">
+                    <!-- Original Logos -->
+                    <img src="images/logo_muhammadiyah.png" alt="Muhammadiyah" class="partner-logo">
+                    <img src="images/logo_hidayatullah.jpg" alt="Hidayatullah" class="partner-logo">
+                    <img src="images/logo_nu.png" alt="Nahdlatul Ulama" class="partner-logo">
+                    <img src="images/logo_persis.png" alt="Persis" class="partner-logo">
+                    <img src="images/logo_alirsyad_official.png" alt="Al-Irsyad" class="partner-logo">
+                    <img src="images/logo_mui_official.png" alt="MUI" class="partner-logo">
+
+                    <!-- Duplicates for Infinite Scroll -->
+                    <img src="images/logo_muhammadiyah.png" alt="Muhammadiyah" class="partner-logo">
+                    <img src="images/logo_hidayatullah.jpg" alt="Hidayatullah" class="partner-logo">
+                    <img src="images/logo_nu.png" alt="Nahdlatul Ulama" class="partner-logo">
+                    <img src="images/logo_persis.png" alt="Persis" class="partner-logo">
+                    <img src="images/logo_alirsyad_official.png" alt="Al-Irsyad" class="partner-logo">
+                    <img src="images/logo_mui_official.png" alt="MUI" class="partner-logo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Courses -->
+    <section id="courses" class="section courses">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="badge-outline">Kajian Populer</span>
+                <h2 class="section-title">Dalami Ilmu <span class="text-primary">Syar'i</span></h2>
+                <p class="section-subtitle">Mulai dari dasar hingga tingkat lanjut dengan kurikulum terstruktur.</p>
+            </div>
+
+            <div class="scrolling-grid">
+                <!-- Course Card 1 -->
+                <div class="course-card">
+                    <div class="course-thumb">
+                        <img src="images/course-arab.png" alt="Al-Arabiyyah Baina Yadaik">
+                        <span class="category-tag">Bahasa Arab</span>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-meta">
+                            <span><i class="fas fa-book-open"></i> 24 Pertemuan</span>
+                            <span><i class="fas fa-clock"></i> 20 Jam</span>
+                        </div>
+                        <h3 class="course-title"><a href="course-detail.html?id=arab">Bahasa Arab Dasar: Kitab
+                                Al-Arabiyyah
+                                Baina Yadaik</a></h3>
+                        <div class="course-instructor">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Instructor">
+                            <span>Ustadz Abu Hanifah, Lc.</span>
+                        </div>
+                        <div class="course-footer">
+                            <div class="price">100% Gratis</div>
+                            <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Card 2 -->
+                <div class="course-card">
+                    <div class="course-thumb">
+                        <img src="images/course-fiqih.png" alt="Fiqih Ibadah Bin Baz">
+                        <span class="category-tag">Fiqih</span>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-meta">
+                            <span><i class="fas fa-book-open"></i> 12 Pertemuan</span>
+                            <span><i class="fas fa-clock"></i> 10 Jam</span>
+                        </div>
+                        <h3 class="course-title"><a href="course-detail.html?id=fiqih">Fiqih Ibadah: Panduan Sholat
+                                Lengkap
+                                Sesuai Sunnah</a></h3>
+                        <div class="course-instructor">
+                            <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="Instructor">
+                            <span>Ustadz Ahmad Zainuddin, Lc.</span>
+                        </div>
+                        <div class="course-footer">
+                            <div class="price">100% Gratis</div>
+                            <div class="rating"><i class="fas fa-star"></i> 4.9</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Card 3 -->
+                <div class="course-card">
+                    <div class="course-thumb">
+                        <img src="images/course-usym.png" alt="Syarh Riyadhus Shalihin">
+                        <span class="category-tag">Adab & Akhlak</span>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-meta">
+                            <span><i class="fas fa-book-open"></i> 30 Pertemuan</span>
+                            <span><i class="fas fa-clock"></i> 25 Jam</span>
+                        </div>
+                        <h3 class="course-title"><a href="course-detail.html?id=usym">Syarh Riyadhus Shalihin: Panduan
+                                Adab
+                                Penuntut Ilmu</a>
+                        </h3>
+                        <div class="course-instructor">
+                            <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Instructor">
+                            <span>Ustadz Dr. Firanda Andirja, M.A.</span>
+                        </div>
+                        <div class="course-footer">
+                            <div class="price">100% Gratis</div>
+                            <div class="rating"><i class="fas fa-star"></i> 5.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="courses.html" class="btn btn-outline btn-lg btn-see-all">Lihat Semua Kelas</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="section features bg-light">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-content">
+                    <span class="badge-outline">Keunggulan Kami</span>
+                    <h2 class="section-title">Kenapa Belajar di <span class="text-primary">Bincang Ilmu?</span></h2>
+                    <p>Kami berkomitmen memberikan pengalaman belajar terbaik dengan metode yang terbukti efektif.</p>
+
+                    <ul class="feature-list">
+                        <li>
+                            <div class="icon-box"><i class="fas fa-user-graduate"></i></div>
+                            <div class="text">
+                                <h4>Asatidzah Kompeten</h4>
+                                <p>Belajar langsung dari asatidzah lulusan Universitas Timur Tengah (Madinah, Yaman,
+                                    Mesir).</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="icon-box"><i class="fas fa-video"></i></div>
+                            <div class="text">
+                                <h4>Kurikulum Terstruktur</h4>
+                                <p>Materi disusun secara sistematis mulai dari dasar (pemula) hingga lanjutan.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="icon-box"><i class="fas fa-certificate"></i></div>
+                            <div class="text">
+                                <h4>Bersanad & Ilmiah</h4>
+                                <p>Tiap materi yang disampaikan memiliki landasan dalil Al-Qur'an dan As-Sunnah.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="feature-image">
+                    <img src="images/why-us.jpg" alt="Why Choose Us">
+                    <div class="experience-badge">
+                        <span class="count">5+</span>
+                        <span class="label">Tahun Pengalaman</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Radio Dakwah Section -->
+    <section class="section radio-dakwah-section">
+        <div class="container">
+            <div class="radio-card-wrapper"
+                style="display: flex; align-items: center; justify-content: space-between; padding: 2rem 3rem;">
+                <div class="radio-logo">
+                    <h2 class="section-title" style="margin: 0; display: flex; align-items: center; gap: 15px;">
+                        <i class="fas fa-broadcast-tower" style="font-size: 3.5rem;"></i>
+                        <div>
+                            <div style="display: flex; align-items: baseline; gap: 10px;">
+                                <span>Radio <span>Miraath</span></span>
+                            </div>
+                            <div class="radio-subtitle" style="font-size: 0.9rem; font-weight: 400; margin-top: 5px;">
+                                Saluran Dakwah Ahlussunnah</div>
+                        </div>
+                    </h2>
+                </div>
+
+                <div class="radio-center-panel"
+                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; margin: 0 2rem; overflow: hidden;">
+                    <div class="live-indicator-premium"
+                        style="margin-bottom: 15px; padding: 5px 15px; border-radius: 99px; font-size: 0.75rem; font-weight: 700; background: rgba(220, 38, 38, 0.9); box-shadow: 0 0 15px rgba(220, 38, 38, 0.4); color: white;">
+                        <span class="pulse-dot-white"
+                            style="height: 8px; width: 8px; background-color: white; border-radius: 50%; display: inline-block; animation: pulse-white 1.5s infinite; margin-right: 6px;"></span>
+                        LIVE
+                    </div>
+
+                    <div class="audio-visualizer-container"
+                        style="display: flex; align-items: flex-end; gap: 3px; height: 30px; margin-bottom: 10px;">
+                        <!-- 50 Bars -->
+                        <span class="bar"></span><span class="bar"></span><span class="bar"></span><span
+                            class="bar"></span><span class="bar"></span>
+                        <span class="bar"></span><span class="bar"></span><span class="bar"></span><span
+                            class="bar"></span><span class="bar"></span>
+                        <span class="bar"></span><span class="bar"></span><span class="bar"></span><span
+                            class="bar"></span><span class="bar"></span>
+                        <span class="bar"></span><span class="bar"></span><span class="bar"></span><span
+                            class="bar"></span><span class="bar"></span>
+                        <span class="bar"></span><span class="bar"></span><span class="bar"></span><span
+                            class="bar"></span><span class="bar"></span>
+                        <span class="bar"></span><span class="bar"></span><span class="bar"></span><span
+                            class="bar"></span><span class="bar"></span>
+                        <span class="bar"></span><span class="bar"></span><span class="bar"></span><span
+                            class="bar"></span><span class="bar"></span>
+                        <span class="bar"></span><span class="bar"></span><span class="bar"></span><span
+                            class="bar"></span><span class="bar"></span>
+                        <span class="bar"></span><span class="bar"></span><span class="bar"></span><span
+                            class="bar"></span><span class="bar"></span>
+                        <span class="bar"></span><span class="bar"></span><span class="bar"></span><span
+                            class="bar"></span><span class="bar"></span>
+                    </div>
+
+                    <div class="radio-metadata-marquee"
+                        style="width: 100%; overflow: hidden; white-space: nowrap; position: relative;">
+                        <div class="radio-marquee-content"
+                            style="display: inline-block; font-size: 0.95rem; font-family: 'Amiri', serif; white-space: nowrap;">
+                            <span style="display: inline-block; padding-right: 50px;">
+                                <i class="fas fa-microphone" style="margin-right: 8px;"></i> جاري التشغيل: شرح كتاب رياض
+                                الصالحين - باب فضل العلم | للشيخ عبد الرزاق بن عبد المحسن البدر (بث مباشر)
+                            </span>
+                            <span style="display: inline-block; padding-right: 50px;">
+                                <i class="fas fa-microphone" style="margin-right: 8px;"></i> جاري التشغيل: شرح كتاب رياض
+                                الصالحين - باب فضل العلم | للشيخ عبد الرزاق بن عبد المحسن البدر (بث مباشر)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="radio-controls">
+                    <button id="radioPlayBtn" class="btn-play-pulse" aria-label="Play Radio">
+                        <i class="fas fa-play"></i>
+                    </button>
+                </div>
+
+                <!-- Hidden Audio Element -->
+                <audio id="miraathAudio" preload="none">
+                    <source src="https://radio.hhost.host/8010/stream" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="section blog">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="badge-outline">Artikel & Faedah</span>
+                <h2 class="section-title">Tulisan <span class="text-primary">Terbaru</span></h2>
+                <p class="section-subtitle">Bacaan bermanfaat untuk menambah wawasan keislaman sehari-hari.</p>
+            </div>
+
+            <div class="scrolling-grid">
+                <!-- Blog Card 1 -->
+                <div class="course-card">
+                    <div class="course-thumb">
+                        <img src="https://images.unsplash.com/photo-1576085898323-218337e3e43c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Blog 1">
+                        <span class="category-tag">Aqidah</span>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-meta">
+                            <span><i class="fas fa-calendar-alt"></i> 18 Des 2025</span>
+                        </div>
+                        <h3 class="course-title"><a href="blog-detail.html?id=aqidah">Pentingnya Menuntut Ilmu Syar'i di
+                                Zaman Fitnah</a></h3>
+                        <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 1rem;">
+                            Menuntut ilmu bukan sekadar hobi, melainkan kewajiban setiap muslim untuk membentengi diri.
+                        </p>
+                        <div class="course-footer">
+                            <a href="blog-detail.html?id=aqidah" class="btn-text">Baca Selengkapnya</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Card 2 -->
+                <div class="course-card">
+                    <div class="course-thumb">
+                        <img src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Blog 2">
+                        <span class="category-tag">Fiqih</span>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-meta">
+                            <span><i class="fas fa-calendar-alt"></i> 15 Des 2025</span>
+                        </div>
+                        <h3 class="course-title"><a href="blog-detail.html?id=fiqih">Adab-Adab Penuntut Ilmu Terhadap
+                                Guru</a></h3>
+                        <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 1rem;">
+                            Keberkahan ilmu seringkali hilang karena kurangnya adab seorang murid terhadap gurunya.
+                        </p>
+                        <div class="course-footer">
+                            <a href="blog-detail.html?id=fiqih" class="btn-text">Baca Selengkapnya</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Card 3 -->
+                <div class="course-card">
+                    <div class="course-thumb">
+                        <img src="https://images.unsplash.com/photo-1507434965515-61970f2bd7c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Blog 3">
+                        <span class="category-tag">Tazkiyatun Nufus</span>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-meta">
+                            <span><i class="fas fa-calendar-alt"></i> 10 Des 2025</span>
+                        </div>
+                        <h3 class="course-title"><a href="blog-detail.html?id=tazkiyatun">Obat Hati: Mengobati Kerasnya
+                                Hati dengan Al-Qur'an</a>
+                        </h3>
+                        <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 1rem;">
+                            Hati yang sakit perlu diobati. Salah satu obat yang paling mujarab adalah membaca Al-Qur'an.
+                        </p>
+                        <div class="course-footer">
+                            <a href="blog-detail.html?id=tazkiyatun" class="btn-text">Baca Selengkapnya</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-box">
+                <div class="cta-content">
+                    <h2>Siap Memulai Perjalanan Menuntut Ilmu?</h2>
+                    <p>Gabung bersama ribuan penuntut ilmu lainnya dan istiqomah belajar agama hari ini.</p>
+                    <a href="#" class="btn btn-white" onclick="openModal('register'); return false;">Daftar Gratis
+                        Sekarang</a>
+                </div>
+                <div class="cta-decoration">
+                    <i class="fas fa-mosque"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advertisement Section -->
+    <section class="ads-section">
+        <div class="container">
+            <div class="ad-banner-wrapper">
+                <div class="ad-banner-custom">
+
+                    <div class="ad-badge">
+                        <i class="fas fa-bullhorn" style="margin-right: 5px;"></i> Informasi Penting
+                    </div>
+
+                    <div class="ad-content-wrapper">
+                        <div class="ad-text">
+                            <h3>
+                                <span>Penerimaan Santri Baru</span><br>Program Online Intensif
+                            </h3>
+                            <p>
+                                Pelajari Bahasa Arab, Fiqih, dan Aqidah dari dasar bersama asatidzah berkompeten.<br>
+                                <strong>Pendaftaran Gelombang 1 Dibuka!</strong>
+                            </p>
+                        </div>
+
+                        <a href="courses.html" class="btn-ad-action">
+                            Daftar Sekarang
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo-footer">
+                        <span>bincang</span><span class="highlight">ilmu.</span>
+                    </a>
+                    <p>Platform belajar online terpercaya untuk meningkatkan skill dan karirmu di era digital.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Menu</h4>
+                    <ul>
+                        <li><a href="index.html">Beranda</a></li>
+                        <li><a href="courses.html">Kursus</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="about.html">Tentang Kami</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Kategori</h4>
+                    <ul>
+                        <li><a href="#">Bahasa Arab</a></li>
+                        <li><a href="#">Fiqih</a></li>
+                        <li><a href="#">Aqidah</a></li>
+                        <li><a href="#">Adab & Akhlak</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Hubungi Kami</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> hello@bincangilmu.com</li>
+                        <li><i class="fas fa-phone"></i> +62 812 3456 7890</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Jakarta, Indonesia</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Bincang Ilmu. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" id="loginTabBtn" onclick="switchAuthTab('login')">Masuk</button>
+                <button class="auth-tab-btn" id="registerTabBtn" onclick="switchAuthTab('register')">Daftar</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form active">
+                <form action="#">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" placeholder="nama@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" placeholder="******">
+                        <i class="far fa-eye toggle-password"></i>
+                    </div>
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox"> Ingat Saya
+                        </label>
+                        <a href="#" class="forgot-password">Lupa Password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" style="width: 100%">Masuk</button>
+                </form>
+
+                <div class="divider"><span>Atau masuk dengan</span></div>
+
+                <button class="btn-google">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+                    Google
+                </button>
+
+                <p class="text-center mt-3" style="font-size: 0.9rem; color: var(--text-light); margin-top: 1.5rem">
+                    Belum punya akun? <a href="#" onclick="switchAuthTab('register')"
+                        style="color: var(--primary-color); font-weight: 500">Daftar Sekarang</a>
+                </p>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="auth-form">
+                <form action="#">
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-input" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" placeholder="nama@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" placeholder="******">
+                        <i class="far fa-eye toggle-password"></i>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Konfirmasi Password</label>
+                        <input type="password" class="form-input" placeholder="******">
+                        <i class="far fa-eye toggle-password"></i>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" style="width: 100%">Daftar</button>
+                </form>
+
+                <div class="divider"><span>Atau daftar dengan</span></div>
+
+                <button class="btn-google">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+                    Google
+                </button>
+                <p class="text-center mt-3" style="font-size: 0.9rem; color: var(--text-light); margin-top: 1.5rem">
+                    Sudah punya akun? <a href="#" onclick="switchAuthTab('login')"
+                        style="color: var(--primary-color); font-weight: 500">Masuk</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="modal-overlay" id="videoModal">
+        <div class="modal-box video-modal-box">
+            <button class="video-modal-close" onclick="closeVideoModal()"><i class="fas fa-times"></i></button>
+            <div class="video-modal-content">
+                <iframe id="introVideoFrame" src="" title="Intro Video" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Modals -->
+    <!-- 1. Profile Settings -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeProfileModal('settings')"><i class="fas fa-times"></i></button>
+            <h3>Pengaturan Profil</h3>
+            <form style="margin-top: 1.5rem;">
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-input" value="Abdullah Fulan">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" value="abdullah@example.com" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Bio Singkat</label>
+                    <textarea class="form-input" rows="3">Penuntut ilmu pemula.</textarea>
+                </div>
+                <button type="button" class="btn btn-primary btn-block">Simpan Perubahan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. My Courses -->
+    <div class="modal-overlay" id="coursesModal">
+        <div class="modal-box video-modal-box"> <!-- Use generic large box -->
+            <button class="modal-close" onclick="closeProfileModal('courses')"><i class="fas fa-times"></i></button>
+            <h3>Kursus Saya</h3>
+            <div class="scrolling-grid" style="margin-top: 1rem; padding: 0.5rem 0;">
+                <!-- Mock Data -->
+                <div class="course-card" style="min-width: 280px;">
+                    <div class="course-thumb">
+                        <img src="images/course-arab.png" alt="Arab">
+                        <span class="category-tag">Bahasa Arab</span>
+                    </div>
+                    <div class="course-content">
+                        <h5>Bahasa Arab Dasar</h5>
+                        <div class="progress-bar"
+                            style="margin: 0.5rem 0; height: 6px; background: #eee; border-radius: 3px;">
+                            <div
+                                style="width: 45%; height: 100%; background: var(--primary-color); border-radius: 3px;">
+                            </div>
+                        </div>
+                        <small>45% Selesai</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Certificates -->
+    <div class="modal-overlay" id="certificatesModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeProfileModal('certificates')"><i
+                    class="fas fa-times"></i></button>
+            <h3>Sertifikat Saya</h3>
+            <div style="text-align: center; padding: 2rem; color: #666;">
+                <i class="fas fa-certificate" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem;"></i>
+                <p>Belum ada sertifikat yang diterbitkan.</p>
+                <a href="courses.html" class="btn-text">Selesaikan kursus dulu yuk!</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. App Settings -->
+    <div class="modal-overlay" id="appSettingsModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeProfileModal('app-settings')"><i
+                    class="fas fa-times"></i></button>
+            <h3>Pengaturan Aplikasi</h3>
+            <div style="margin-top: 1.5rem;">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee;">
+                    <span>Notifikasi Email</span>
+                    <input type="checkbox" checked>
+                </div>
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee;">
+                    <span>Mode Gelap Otomatis</span>
+                    <input type="checkbox">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bismillah Modal -->
+    <div id="bismillahModal" class="bismillah-modal">
+        <div class="bismillah-content">
+            <button class="bismillah-close" id="closeBismillahBtn"><i class="fas fa-times"></i></button>
+            <img src="images/bismillah_gold_calligraphy.png?v=2" alt="Bismillah" class="bismillah-image">
+            <div class="bismillah-text">Dengan Nama Allah Yang Maha Pengasih lagi Maha Penyayang</div>
+            <div class="bismillah-instruction"
+                style="margin-top: 2rem; font-size: 0.9rem; color: #666; animation: pulse 2s infinite;">
+                <i class="fas fa-volume-up"></i> Terdengar Suara?
+            </div>
+            <audio id="bismillahAudio" src="audio/bismillah.mp3"></audio>
+        </div>
+    </div>
+
+    <!-- Search Overlay -->
+    <div id="searchOverlay" class="search-overlay">
+        <div class="search-field-container">
+            <button class="search-overlay-close" onclick="closeSearch()"><i class="fas fa-times"></i></button>
+            <input type="text" id="globalSearchInput" class="search-overlay-input"
+                placeholder="Apa yang ingin Anda pelajari?">
+            <p style="margin-top: 1.5rem; color: var(--text-light); font-size: 1rem;">Tekan <span
+                    style="font-weight: 600; color: var(--primary-color);">Enter</span> untuk mencari</p>
+        </div>
+    </div>
+
+    <!-- Main Script -->
+    <script src="script.js"></script>
+</body>
+
+</html>

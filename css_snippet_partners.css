@@ -1,0 +1,83 @@
+/* =========================================
+   Partner / Mitra Dakwah Styles
+   ========================================= */
+
+.partners-section {
+    padding: 4rem 0;
+    background: var(--bg-light);
+    overflow: hidden;
+    /* Ensure no scrollbars */
+}
+
+/* Dark mode override for background if needed */
+[data-theme="dark"] .partners-section {
+    background: var(--bg-dark);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.partners-title {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.marquee-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee-content {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    /* Spacing between logos */
+    width: max-content;
+    /* Allow it to grow */
+    animation: partner-scroll 10s linear infinite;
+    /* 10s continuous slide */
+}
+
+/* Pause on hover optional, user didn't ask but good UX */
+.marquee-content:hover {
+    animation-play-state: paused;
+}
+
+.partner-logo {
+    height: 80px;
+    /* Increased size as requested (was likely smaller) */
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(100%) opacity(0.7);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Dark mode logo adjustment */
+[data-theme="dark"] .partner-logo {
+    filter: grayscale(100%) brightness(1.5) opacity(0.7);
+}
+
+
+.partner-logo:hover {
+    filter: grayscale(0%) opacity(1) brightness(1);
+    transform: scale(1.1);
+}
+
+@keyframes partner-scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+        /* Slide half width (assuming 2 sets of logos) */
+    }
+}

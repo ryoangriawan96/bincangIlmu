@@ -1,0 +1,9 @@
+    <!-- Auth Modal Container (will be populated/managed by script.js if needed or reuse structure) -->
+    <!-- Reusing standard modal structure for consistency -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" id="loginTabBtn" onclick="switchAuthTab('login')">Masuk</button>
+                <button class="auth-tab-btn" id="registerTabBtn" onclick="switchAuthTab('register')">Daftar</button>
+            </div>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - Bincang Ilmu</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <!-- Internal Styles Removed - Migrated to style.css -->
+</head>
+
+<body>
+
+    <!-- Header -->
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <span>bincang</span><span class="highlight">ilmu.</span>
+            </a>
+            <nav class="nav-menu">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="courses.html" class="nav-link">Kursus</a></li>
+                    <li><a href="kitab.html" class="nav-link">Kitab</a></li>
+                    <li><a href="fatwa.html" class="nav-link">Fatwa</a></li>
+                    <li><a href="blog.html" class="nav-link">Blog</a></li>
+                    <li><a href="about.html" class="nav-link active">Tentang Kami</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="search-toggle" onclick="openSearch()" aria-label="Search"
+                    style="background: none; border: none; font-size: 1.1rem; color: var(--text-dark); cursor: pointer; margin-right: 0.5rem;">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="#" class="btn btn-outline" id="loginBtn" onclick="openModal('login'); return false;">Masuk</a>
+                <a href="#" class="btn btn-primary" id="registerBtn"
+                    onclick="openModal('register'); return false;">Daftar Sekarang</a>
+
+                <!-- User Profile (Hidden by default) -->
+                <div class="user-profile-wrapper" id="userProfile" style="display: none;">
+                    <button class="profile-toggle" id="profileToggleBtn"
+                        onclick="toggleProfileMenu(event); return false;">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar"
+                            class="profile-avatar">
+                        <span class="profile-name">Abdullah</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <!-- Floating Dropdown -->
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="dropdown-header">
+                            <div class="user-info">
+                                <strong>Abdullah Fulan</strong>
+                                <span>abdullah@example.com</span>
+                            </div>
+                        </div>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" onclick="openProfileModal('settings'); return false;"><i
+                                        class="fas fa-user-cog"></i> Pengaturan Profil</a></li>
+                            <li><a href="#" onclick="openProfileModal('courses'); return false;"><i
+                                        class="fas fa-book-reader"></i> Kursus Saya</a></li>
+                            <li><a href="#" onclick="openProfileModal('certificates'); return false;"><i
+                                        class="fas fa-certificate"></i> Sertifikat</a></li>
+                            <li><a href="#" onclick="openProfileModal('app-settings'); return false;"><i
+                                        class="fas fa-cog"></i> Setting</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#" onclick="handleLogout(); return false;" class="text-danger"><i
+                                        class="fas fa-sign-out-alt"></i> Log Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <button class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <span class="badge-outline">Profil Kami</span>
+            <h1 class="section-title">Tentang <span class="text-primary">Bincang Ilmu</span></h1>
+            <p class="section-subtitle">Platform edukasi Islam yang berkomitmen menyebarkan ilmu yang bermanfaat.</p>
+        </div>
+    </div>
+
+    <!-- About Content -->
+    <section class="section">
+        <div class="container">
+            <!-- 1. Hero with Quadrant Gallery -->
+            <div class="about-grid-hero">
+                <div class="about-text">
+                    <h2 class="section-title">Cerita Kami</h2>
+                    <p class="mb-3">
+                        <strong>Bincang Ilmu</strong> lahir dari sebuah keresahan sederhana: betapa sulitnya menemukan
+                        materi belajar agama Islam yang <strong>terstruktur, shahih, dan mudah diakses</strong> di
+                        tengah banjir informasi digital saat ini.
+                    </p>
+                    <p>
+                        Bermula dari kelompok kajian kecil, kami bertekad untuk membangun sebuah ekosistem belajar di
+                        mana setiap Muslim, di manapun mereka berada, dapat merasakan nikmatnya menuntut ilmu syar'i.
+                    </p>
+                </div>
+                <div class="quadrant-gallery">
+                    <div class="q-item q-1"></div>
+                    <div class="q-item q-2"><img
+                            src="/Users/ryoangriawan/.gemini/antigravity/brain/7607fa4e-79ba-48ee-ab4d-61be97ffad08/about_hero_library_1766077218001.png"
+                            class="q-img" alt="Library"></div>
+                    <div class="q-item q-3"><img
+                            src="/Users/ryoangriawan/.gemini/antigravity/brain/7607fa4e-79ba-48ee-ab4d-61be97ffad08/about_community_study_1766077236073.png"
+                            class="q-img" alt="Study"></div>
+                    <div class="q-item q-4"></div>
+                </div>
+            </div>
+
+            <!-- 2. Values with Bento Grid -->
+            <div class="motivation-section mt-5">
+                <div class="section-header text-center">
+                    <h2 class="section-title">Motivasi & Tujuan</h2>
+                    <p class="section-subtitle">Mengapa kami melakukan apa yang kami lakukan.</p>
+                </div>
+
+                <div class="bento-grid">
+                    <!-- Large Card (Span 2) -->
+                    <div class="bento-card bento-large">
+                        <div class="icon-box-lg"><i class="fas fa-heart"></i></div>
+                        <h3>Motivasi Kami</h3>
+                        <p class="bento-quote">"Kecintaan kami pada ilmu dan keinginan untuk menjadi bagian dari estafet
+                            dakwah para ulama. Kami ingin menjadi wasilah hidayah bagi sebanyak mungkin orang."</p>
+                    </div>
+
+                    <!-- Tall Card (Row Span 2) -->
+                    <div class="bento-card bento-tall">
+                        <div class="icon-box"><i class="fas fa-bullseye"></i></div>
+                        <h3>Tujuan Utama</h3>
+                        <p>Menciptakan platform one-stop-learning untuk studi Islam yang komprehensif.</p>
+
+                        <!-- New Glass Pill List -->
+                        <ul class="glass-pill-list">
+                            <li class="glass-pill"><i class="fas fa-layer-group"></i> Terstruktur</li>
+                            <li class="glass-pill"><i class="fas fa-gift"></i> 100% Gratis</li>
+                            <li class="glass-pill"><i class="fas fa-mobile-alt"></i> Mudah Diakses</li>
+                            <li class="glass-pill"><i class="fas fa-book-open"></i> Kurikulum Shahih</li>
+                            <li class="glass-pill"><i class="fas fa-certificate"></i> Bersertifikat</li>
+                        </ul>
+                    </div>
+
+                    <!-- Wide Card (Span 2) -->
+                    <div class="bento-card bento-wide">
+                        <div class="icon-box"><i class="fas fa-star-and-crescent"></i></div>
+                        <div>
+                            <h3>Harapan</h3>
+                            <p style="margin-bottom: 0;">Melahirkan generasi Rabbani yang cerdas intelektual & mulia
+                                akhlaknya.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Community with Floating Overlap -->
+            <!-- 3. Community: Side-by-Side with Backdrop -->
+            <div class="community-section mt-5" style="padding-bottom: 5rem;">
+                <div class="community-grid">
+                    <!-- Left: Visual with Backdrop -->
+                    <div class="community-visual">
+                        <div class="backdrop-decoration"></div>
+                        <div class="backdrop-decoration-2"></div>
+                        <img src="/Users/ryoangriawan/.gemini/antigravity/brain/7607fa4e-79ba-48ee-ab4d-61be97ffad08/about_community_study_1766077236073.png"
+                            class="community-img-clean" alt="Komunitas Belajar">
+                    </div>
+
+                    <!-- Right: Content -->
+                    <div class="community-content-clean">
+                        <span class="badge-outline">Komunitas</span>
+                        <h2 class="section-title">Belajar Tidak Sendirian, <br><span class="text-primary">Tumbuh
+                                Bersama.</span></h2>
+                        <p class="mb-4">
+                            Kami bukan hanya sekadar website, kami adalah <strong>keluarga</strong>. Di sini, Anda
+                            akan bergabung dengan ribuan penuntut ilmu lainnya yang saling
+                            mendukung dan mengingatkan dalam kebaikan.
+                        </p>
+                        <ul class="glass-pill-list grid-2-col">
+                            <li class="glass-pill"><i class="fas fa-comments"></i> Forum Diskusi Aktif</li>
+                            <li class="glass-pill"><i class="fas fa-user-graduate"></i> Bimbingan Ustadz</li>
+                            <li class="glass-pill"><i class="fas fa-infinity"></i> Akses Seumur Hidup</li>
+                            <li class="glass-pill"><i class="fas fa-hand-holding-heart"></i> Saling Support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vision Mission (Kept but styled) -->
+            <div class="mission-vision mt-5">
+                <div class="mv-card">
+                    <h3><i class="fas fa-eye"></i> Visi Kami</h3>
+                    <p>Menjadi platform belajar Islam online terdepan yang mencetak generasi muslim yang berilmu,
+                        beramal, dan berakhlak mulia.</p>
+                </div>
+                <div class="mv-card">
+                    <h3><i class="fas fa-rocket"></i> Misi Kami</h3>
+                    <ul>
+                        <li>Menyediakan konten kajian yang ilmiah dan mudah dipahami.</li>
+                        <li>Menghubungkan penuntut ilmu dengan asatidzah yang kompeten.</li>
+                        <li>Memanfaatkan teknologi untuk dakwah yang lebih luas.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo-footer">
+                        <span>bincang</span><span class="highlight">ilmu.</span>
+                    </a>
+                    <p>Platform belajar online terpercaya untuk meningkatkan skill dan karirmu di era digital.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Menu</h4>
+                    <ul>
+                        <li><a href="index.html">Beranda</a></li>
+                        <li><a href="courses.html">Kursus</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="about.html">Tentang Kami</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Kategori</h4>
+                    <ul>
+                        <li><a href="#">Bahasa Arab</a></li>
+                        <li><a href="#">Fiqih</a></li>
+                        <li><a href="#">Aqidah</a></li>
+                        <li><a href="#">Adab & Akhlak</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Hubungi Kami</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> hello@bincangilmu.com</li>
+                        <li><i class="fas fa-phone"></i> +62 812 3456 7890</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Jakarta, Indonesia</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Bincang Ilmu. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal Container (will be populated/managed by script.js if needed or reuse structure) -->
+    <!-- Reusing standard modal structure for consistency -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" id="loginTabBtn" onclick="switchAuthTab('login')">Masuk</button>
+                <button class="auth-tab-btn" id="registerTabBtn" onclick="switchAuthTab('register')">Daftar</button>
+            </div>
+            <div id="loginForm" class="auth-form active">
+                <form action="#">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" placeholder="nama@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" placeholder="******">
+                        <i class="far fa-eye toggle-password"></i>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" style="width: 100%">Masuk</button>
+                </form>
+            </div>
+            <div id="registerForm" class="auth-form">
+                <form action="#">
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-input" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" placeholder="nama@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" placeholder="******">
+                        <i class="far fa-eye toggle-password"></i>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" style="width: 100%">Daftar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Overlay -->
+    <div id="searchOverlay" class="search-overlay">
+        <div class="search-field-container">
+            <button class="search-overlay-close" onclick="closeSearch()"><i class="fas fa-times"></i></button>
+            <input type="text" id="globalSearchInput" class="search-overlay-input"
+                placeholder="Apa yang ingin Anda pelajari?">
+            <p style="margin-top: 1.5rem; color: var(--text-light); font-size: 1rem;">Tekan <span
+                    style="font-weight: 600; color: var(--primary-color);">Enter</span> untuk mencari</p>
+        </div>
+    </div>
+
+    <!-- Main Script -->
+    <script src="script.js"></script>
+</body>
+
+</html>
