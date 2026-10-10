@@ -3333,6 +3333,29 @@ function handleAISearch() {
     }, 1000); // reduced loading time slightly for better UX
 }
 
+function searchCourses(query) {
+    const results = [];
+    for (const [id, course] of Object.entries(coursesData)) {
+        const haystack = `${course.title} ${course.category} ${course.instructor} ${course.desc || ''}`.toLowerCase();
+        if (haystack.includes(query)) {
+            results.push({ id, title: course.title, category: course.category, instructor: course.instructor, desc: course.desc });
+            if (results.length >= 3) break;
+        }
+    }
+    return results;
+}
+
+function searchKitab(query) {
+    const results = [];
+    for (const [id, kitab] of Object.entries(kitabData)) {
+        const haystack = `${kitab.title} ${kitab.author} ${kitab.category} ${kitab.desc || ''}`.toLowerCase();
+        if (haystack.includes(query)) {
+            results.push({ id, title: kitab.title, author: kitab.author, category: kitab.category, desc: kitab.desc });
+            if (results.length >= 3) break;
+        }
+    }
+    return results;
+}
 // AI Chat Assistant Logic
 function toggleAIChat() {
     const chatWindow = document.getElementById('aiChatWindow');
@@ -3356,7 +3379,7 @@ function handleAIChatKeyPress(e) {
 
 function sendQuickPrompt(prompt) {
     document.getElementById('aiChatInput').value = prompt;
-    sendAIChat();
+    sendAIChatEnhanced();
 }
 
 function sendAIChat() {
@@ -3676,3 +3699,69 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+function sendAIChatEnhanced() {
+    const input = document.getElementById('aiChatInput');
+    const message = input.value.trim();
+    if (!message) return;
+    const messagesContainer = document.getElementById('aiChatMessages');
+    // Add user message
+    messagesContainer.innerHTML += `<div class="ai-message user-message"><div class="message-content">${message}</div></div>`;
+    input.value = '';
+    scrollToBottom(messagesContainer);
+    // Add typing indicator
+    const typingId = 'typing-' + Date.now();
+    messagesContainer.innerHTML += `<div class="ai-message system-message" id="${typingId}"><div class="message-content"><i class="fas fa-ellipsis-h fa-fade"></i> Mengetik...</div></div>`;
+    scrollToBottom(messagesContainer);
+    // Simulate AI response
+    setTimeout(() => {
+        const typingEl = document.getElementById(typingId);
+        if (typingEl) typingEl.remove();
+        let response = '';
+        const lowerMsg = message.toLowerCase();
+        // 1. Course related queries
+        if (lowerMsg.includes('course') || lowerMsg.includes('kuliah') || lowerMsg.includes('kelas') || lowerMsg.includes('pelajaran')) {
+            const results = searchCourses(lowerMsg);
+            if (results.length > 0) {
+                response = '<strong>Berikut beberapa kursus yang mungkin relevan:</strong><br>';
+                results.forEach(r => {
+                    response += `<div style="margin-bottom:8px;"><strong>${r.title}</strong> (${r.category}) – ${r.instructor}<br>`;
+                    if (r.desc) response += `<small>${r.desc}</small><br></div>`;
+                });
+                response += `<br><a href="courses.html" class="btn btn-outline" style="margin-top:10px;display:inline-block;padding:5px 10px;font-size:0.8rem;">Lihat semua kursus</a>`;
+            } else {
+                response = 'Maaf, saya tidak menemukan kursus yang cocok dengan pertanyaan Anda. Anda bisa mencoba kata kunci lain atau menjelajahi daftar lengkap kursus.';
+            }
+        }
+        // 2. Kitab related queries
+        else if (lowerMsg.includes('kitab') || lowerMsg.includes('buku') || lowerMsg.includes('reference')) {
+            const results = searchKitab(lowerMsg);
+            if (results.length > 0) {
+                response = '<strong>Berikut beberapa kitab yang mungkin relevan:</strong><br>';
+                results.forEach(r => {
+                    response += `<div style="margin-bottom:8px;"><strong>${r.title}</strong> oleh ${r.author} (${r.category})<br>`;
+                    if (r.desc) response += `<small>${r.desc}</small><br></div>`;
+                });
+                response += `<br><a href="kitab.html" class="btn btn-outline" style="margin-top:10px;display:inline-block;padding:5px 10px;font-size:0.8rem;">Lihat semua kitab</a>`;
+            } else {
+                response = 'Maaf, saya tidak menemukan kitab yang cocok dengan pertanyaan Anda. Anda bisa mencoba kata kunci lain atau menjelajahi daftar lengkap kitab.';
+            }
+        }
+        // 3. Fatwa related queries
+        else if (lowerMsg.includes('fatwa') || lowerMsg.includes('kejadian') || lowerMsg.includes('punya')) {
+            response = 'Untuk informasi fatwa, silakan buka halaman <a href="fatwa.html" style="color:var(--primary-color);">Bank Fatwa</a> untuk mencari jawaban atas berbagai pertanyaan hukum.';
+        }
+        // 4. Existing keyword-based responses
+        else if (lowerMsg.includes('aqidah') || lowerMsg.includes('akidah')) {
+            response = 'Untuk pelajaran Aqidah, kami merekomendasikan kitab <strong>Kitab Tauhid</strong> atau <strong>Al-Ushul Ats-Tsalatsah</strong> yang diajarkan oleh Dr. Firanda Andirja. <br><br><a href="courses.html" class="btn btn-outline" style="margin-top: 10px; display: inline-block; padding: 5px 10px; font-size: 0.8rem;">Lihat Kelas Aqidah</a>';
+        } else if (lowerMsg.includes('daftar') || lowerMsg.includes('cara')) {
+            response = 'Untuk mendaftar, Anda cukup mengklik tombol "Mulai Belajar" di halaman ini, lalu buat akun menggunakan email Anda secara gratis. Seluruh materi bebas diakses!';
+        } else if (lowerMsg.includes('ustadz') || lowerMsg.includes('siapa')) {
+            response = 'Platform ini dibimbing oleh asatidzah berkompeten, antara lain Dr. Syafiq Riza Basalamah, Dr. Firanda Andirja, Ust. M. Nuzul Dzikri, dan Ust. Ami Nur Baits.';
+        } else {
+            response = 'Pertanyaan yang menarik! Saya adalah asisten virtual berbasis simulasi. Untuk saat ini, saya sarankan Anda mengeksplorasi halaman <a href="courses.html" style="color: var(--primary-color);">Daftar Kelas</a> atau <a href="kitab.html" style="color: var(--primary-color);">Koleksi Kitab</a> untuk menemukan kajian yang Anda butuhkan.'
+        }
+        // Add bot message
+        messagesContainer.innerHTML += `<div class="ai-message system-message"><div class="message-content">${response}</div></div>`;
+        scrollToBottom(messagesContainer);
+    }, 1500);
+}

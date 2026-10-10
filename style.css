@@ -13,8 +13,8 @@
     /* Dark Charcoal/Maroon (accent) */
     --text-dark: #2D1B1E;
     /* Dark Charcoal-Maroon */
-    --text-light: #8B7355;
-    /* Warm Brown */
+    --text-light: #574A4D;
+    /* Muted Charcoal */
 
     /* Glassmorphism Variables (Light Mode) */
     --glass-bg: rgba(253, 248, 244, 0.95);
@@ -59,17 +59,18 @@
 
 /* Dark Theme Variables */
 [data-theme="dark"] {
-    /* Primary Colors: Soft Rose on Dark */
-    --primary-color: #E8B4B8;
-    /* Soft Rose */
-    --primary-dark: #F5D5D8;
-    --primary-light: rgba(232, 180, 184, 0.15);
-    --secondary-color: #C4A882;
-    /* Warm Tan */
+    /* Primary Colors: Solid Maroon */
+    --primary-color: #6B2D3E;
+    /* Deep Maroon */
+    --primary-dark: #4A1D2B;
+    --primary-light: rgba(107, 45, 62, 0.25);
+    --secondary-color: #A89F9E;
+    /* Muted Cream for contrast */
 
     /* Text Colors */
-    --text-dark: #F5EDE5;
-    --text-light: #C4A882;
+    --text-dark: #FDF8F4;
+    /* Warm Cream for text on dark bg */
+    --text-light: #A89F9E;
 
     /* Background Colors */
     --bg-white: #1A0F11;
@@ -77,7 +78,7 @@
 
     /* Glassmorphism Variables (Dark Mode) */
     --glass-bg: rgba(42, 26, 30, 0.95);
-    --glass-border: 1px solid rgba(232, 180, 184, 0.1);
+    --glass-border: 1px solid rgba(196, 168, 130, 0.15);
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
 
     --bg-light: #2A1A1E;
@@ -91,8 +92,10 @@
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
 
     /* Gradients */
-    --gradient-text: linear-gradient(to right, #E8B4B8, #F5D5D8);
-    --gradient-primary: linear-gradient(135deg, #E8B4B8 0%, #F5D5D8 100%);
+    --gradient-text: linear-gradient(to right, #FDF8F4, #A89F9E);
+    /* Cream to Tan */
+    --gradient-primary: linear-gradient(135deg, #6B2D3E 0%, #4A1D2B 100%);
+    /* Solid Maroon gradient */
 }
 
 
@@ -280,7 +283,7 @@ img {
 
 .btn-primary {
     background: var(--gradient-primary);
-    color: var(--bg-white);
+    color: #FDF8F4; /* Always cream/white for contrast against maroon */
     box-shadow: 0 4px 14px 0 rgba(107, 45, 62, 0.39); /* Maroon shadow */
 }
 
@@ -301,8 +304,18 @@ img {
 
 .btn-outline:hover {
     background: var(--primary-color);
-    color: var(--bg-white);
+    color: #FDF8F4;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .btn-outline {
+    color: var(--text-dark);
+    border-color: var(--text-dark);
+}
+
+[data-theme="dark"] .btn-outline:hover {
+    background: var(--text-dark);
+    color: var(--bg-dark);
 }
 
 
@@ -328,7 +341,7 @@ img {
 .badge {
     display: inline-block;
     padding: 0.5rem 1rem;
-    background: rgba(107, 45, 62, 0.1);
+    background: var(--primary-light);
     color: var(--primary-color);
     border-radius: var(--radius-full);
     font-weight: 600;
@@ -382,15 +395,15 @@ img {
 
 
 [data-theme="dark"] .header.scrolled {
-    background: var(--primary-color) !important;
+    background: var(--glass-bg) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 
 [data-theme="dark"] .header {
-    background: var(--primary-color) !important;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
 }
@@ -756,9 +769,10 @@ img {
 }
 
 
-.logo span.highlight {
+.logo span.highlight,
+.logo-footer span.highlight {
     color: var(--text-light);
-    /* Gray for "ilmu" */
+    /* Muted text for "ilmu" */
     display: inline;
     /* Keep inline for dot */
 }
@@ -829,6 +843,14 @@ img {
     width: 100%;
 }
 
+[data-theme="dark"] .nav-link:hover,
+[data-theme="dark"] .nav-link.active {
+    color: var(--text-dark);
+}
+[data-theme="dark"] .nav-link::after {
+    background-color: var(--text-dark);
+}
+
 
 .header-actions {
     display: flex;
@@ -843,7 +865,9 @@ img {
     cursor: pointer;
     font-size: 1.2rem;
     color: var(--text-dark);
-    padding: 0.5rem;
+    width: 40px;
+    height: 40px;
+    padding: 0;
     border-radius: 50%;
     transition: var(--transition);
     display: flex;
@@ -1326,7 +1350,7 @@ img {
 
 [data-theme="dark"] .hero-stats {
     box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
-    background: linear-gradient(145deg, var(--bg-card), #0f172a);
+    background: linear-gradient(145deg, var(--bg-card), var(--bg-dark));
 }
 
 
@@ -1358,6 +1382,9 @@ img {
     margin-bottom: 0.25rem;
     line-height: 1;
 }
+[data-theme="dark"] .stat-number {
+    color: var(--text-dark);
+}
 
 
 .stat-label {
@@ -1371,20 +1398,16 @@ img {
 
 @media (max-width: 768px) {
     .hero-stats {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: 2rem;
         padding: 2rem;
         border-radius: 20px;
     }
 
     .stat-item:not(:last-child)::after {
-        right: 0;
-        top: auto;
-        bottom: -1rem;
-        height: 1px;
-        width: 60%;
-        left: 50%;
-        transform: translateX(-50%);
+        display: none;
     }
 
 
@@ -2665,6 +2688,9 @@ justify-content: flex-start;
     width: 20px;
     color: var(--primary-color);
 }
+[data-theme="dark"] .footer-links li i {
+    color: var(--text-dark);
+}
 
 
 .footer-bottom {
@@ -3682,17 +3708,16 @@ justify-content: flex-start;
 }
 
 
-/* Ensure Primary Buttons have dark text on Gold background for readability */
+/* Ensure Primary Buttons have light text for readability */
 [data-theme="dark"] .btn-primary {
-    color: #000000;
-    /* font-weight: 700; Removed to prevent layout shift */
+    color: #FDF8F4 !important;
 }
 
 
 /* Sync 'Lihat Semua Kelas' with Primary Button in Dark Mode */
 [data-theme="dark"] .btn-see-all {
     background: var(--gradient-primary);
-    color: #000000 !important;
+    color: #FDF8F4 !important;
     border: none;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -3706,11 +3731,10 @@ justify-content: flex-start;
 }
 
 
-/* Make logo highlight brighter in dark mode */
+/* Make logo highlight match muted text in dark mode */
 [data-theme="dark"] .logo span.highlight,
 [data-theme="dark"] .logo-footer span.highlight {
-    color: var(--border-color);
-    /* Silver/White */
+    color: var(--text-light);
 }
 
 
@@ -3782,8 +3806,8 @@ justify-content: flex-start;
 
 /* Footer Dark Mode */
 [data-theme="dark"] .footer {
-    background-color: #0F172A;
-    /* Deep Navy/Black */
+    background-color: var(--bg-dark);
+    /* Deep Maroon/Black */
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -3799,7 +3823,7 @@ justify-content: flex-start;
 
 
 [data-theme="dark"] .footer-links a:hover {
-    color: var(--primary-color);
+    color: var(--text-dark);
 }
 
 
@@ -8552,8 +8576,9 @@ justify-content: flex-start;
 
     /* Hero Section */
     .hero-container {
+        display: flex;
         flex-direction: column-reverse;
-        padding-top: 100px;
+        padding-top: 2rem;
         text-align: center;
     }
 
@@ -10851,6 +10876,9 @@ body.menu-open {
     margin: 0 1rem;
     animation: pulse-glow 2s infinite;
 }
+[data-theme="dark"] .ai-sparkle-icon {
+    color: var(--text-dark);
+}
 
 .ai-search-box input {
     flex: 1;
@@ -10894,13 +10922,23 @@ body.menu-open {
     border-radius: 20px;
     text-decoration: none;
     transition: var(--transition);
-    border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .ai-search-tags a {
+    color: var(--text-dark);
+    background: transparent;
 }
 
 .ai-search-tags a:hover {
     background: var(--primary-color);
     color: var(--bg-white);
     border-color: var(--primary-color);
+}
+
+[data-theme="dark"] .ai-search-tags a:hover {
+    background: var(--text-dark);
+    color: var(--bg-dark);
+    border-color: var(--text-dark);
 }
 
 
@@ -10919,7 +10957,7 @@ body.menu-open {
     bottom: 2rem;
     right: 2rem;
     background: var(--primary-color);
-    color: var(--bg-white);
+    color: #FDF8F4;
     border: none;
     width: 60px;
     height: 60px;
@@ -11750,7 +11788,7 @@ body > section {
 }
 
 [data-theme="dark"] .global-top-ad-bar {
-    background: linear-gradient(135deg, #1e293b, #0f172a);
+    background: linear-gradient(135deg, var(--primary-dark), #1A0F11);
     border-bottom: 1px solid var(--border-color);
 }
 
