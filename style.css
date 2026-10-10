@@ -9,16 +9,16 @@
     /* Darker Maroon */
     --primary-light: rgba(107, 45, 62, 0.1);
     /* Maroon tint for backgrounds */
-    --secondary-color: #B4975A;
-    /* Warm Gold (accent) */
+    --secondary-color: #2D1B1E;
+    /* Dark Charcoal/Maroon (accent) */
     --text-dark: #2D1B1E;
-    /* Dark Brown-Maroon */
+    /* Dark Charcoal-Maroon */
     --text-light: #8B7355;
     /* Warm Brown */
 
     /* Glassmorphism Variables (Light Mode) */
     --glass-bg: rgba(253, 248, 244, 0.95);
-    --glass-border: 1px solid rgba(180, 151, 90, 0.15);
+    --glass-border: 1px solid rgba(107, 45, 62, 0.15);
     --glass-shadow: 0 8px 32px 0 rgba(107, 45, 62, 0.06);
     --glass-blur: blur(12px);
 
@@ -27,14 +27,14 @@
     --bg-light: #F5EDE5;
     /* Light Beige */
     --bg-dark: #2D1B1E;
-    /* Dark Brown */
+    /* Dark Charcoal */
     --bg-card: #FFFFFF;
     --border-color: #E8DDD3;
     /* Warm border */
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, #6B2D3E 0%, #8B4557 100%);
-    --gradient-text: linear-gradient(to right, #6B2D3E, #B4975A);
+    --gradient-primary: linear-gradient(135deg, #6B2D3E 0%, #4A1D2B 100%);
+    --gradient-text: linear-gradient(to right, #6B2D3E, #2D1B1E);
 
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 rgba(107, 45, 62, 0.05);
@@ -59,13 +59,13 @@
 
 /* Dark Theme Variables */
 [data-theme="dark"] {
-    /* Primary Colors: Soft Rose-Gold on Dark */
+    /* Primary Colors: Soft Rose on Dark */
     --primary-color: #E8B4B8;
     /* Soft Rose */
     --primary-dark: #F5D5D8;
     --primary-light: rgba(232, 180, 184, 0.15);
-    --secondary-color: #D4A853;
-    /* Gold */
+    --secondary-color: #C4A882;
+    /* Warm Tan */
 
     /* Text Colors */
     --text-dark: #F5EDE5;
@@ -91,8 +91,8 @@
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
 
     /* Gradients */
-    --gradient-text: linear-gradient(to right, #E8B4B8, #D4A853);
-    --gradient-primary: linear-gradient(135deg, #E8B4B8 0%, #D4A853 100%);
+    --gradient-text: linear-gradient(to right, #E8B4B8, #F5D5D8);
+    --gradient-primary: linear-gradient(135deg, #E8B4B8 0%, #F5D5D8 100%);
 }
 
 
