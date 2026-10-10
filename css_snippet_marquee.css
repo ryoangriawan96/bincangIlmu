@@ -1,0 +1,26 @@
+/* Marquee Animation */
+.radio-metadata-marquee {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee-content {
+    animation: scroll-left 15s linear infinite;
+    padding-left: 100%;
+    /* Start from off-screen right */
+}
+
+/* Pause marquee on hover */
+.radio-metadata-marquee:hover .marquee-content {
+    animation-play-state: paused;
+}
+
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
