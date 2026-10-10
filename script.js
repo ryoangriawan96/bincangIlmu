@@ -866,6 +866,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function performLogin() {
     const emailInput = document.querySelector('#loginForm input[type="email"]');
     const passwordInput = document.querySelector('#loginForm input[type="password"]');
+    const roleSelect = document.getElementById('loginRole');
+    let role = roleSelect ? roleSelect.value : '';
     
     if (!emailInput || !passwordInput) return;
     
@@ -882,6 +884,11 @@ function performLogin() {
     
     if (user) {
         // Set session for ALL roles (including Admin)
+        // If role selected, ensure it matches
+        if (role && user.role !== role) {
+            showToast("Gagal!", `Akun dengan email ${email} bukan sebagai ${role}.`, "error");
+            return;
+        }
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('currentUser', JSON.stringify({ name: user.name, email: user.email, role: user.role }));
         
