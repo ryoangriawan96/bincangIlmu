@@ -12954,6 +12954,27 @@ img {
     box-shadow: none;
 }
 
+@media (min-width: 1100px) {
+    .blog-page-toolbar {
+        grid-template-columns: minmax(14rem, 0.85fr) minmax(24rem, 1.5fr) minmax(17rem, 0.9fr);
+        grid-template-areas: "heading filters search";
+        gap: 1rem 1.5rem;
+        align-items: center;
+    }
+
+    .blog-page-toolbar .blog-filters {
+        flex-wrap: wrap;
+        align-content: center;
+        overflow: visible;
+        gap: 0.5rem;
+    }
+
+    .blog-page-toolbar .filter-pill {
+        padding: 0.55rem 0.8rem;
+        font-size: 0.82rem;
+    }
+}
+
 .blog-layout {
     grid-template-columns: minmax(0, 1fr) minmax(250px, 300px);
     gap: clamp(1.25rem, 2.5vw, 2rem);
