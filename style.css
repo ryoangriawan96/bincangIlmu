@@ -12837,3 +12837,427 @@ img {
         gap: 0.75rem;
     }
 }
+
+/* Blog and kitab pages use the same calm discovery pattern as Fatwa. */
+.blog-page-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+    grid-template-areas:
+        "heading search"
+        "filters filters";
+    align-items: center;
+    gap: 1.25rem 2rem;
+    margin: 0 auto 2rem;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 1.4rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.blog-toolbar-heading {
+    grid-area: heading;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    min-width: 0;
+}
+
+.blog-toolbar-icon {
+    display: grid;
+    flex: 0 0 3rem;
+    width: 3rem;
+    height: 3rem;
+    place-items: center;
+    border-radius: 0.95rem;
+    background: var(--primary-light);
+    color: var(--primary-color);
+    font-size: 1.15rem;
+}
+
+.blog-toolbar-kicker,
+.kitab-header-kicker {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--primary-color);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.blog-toolbar-heading h2 {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    line-height: 1.25;
+}
+
+.blog-toolbar-heading p,
+.kitab-header-copy p {
+    margin: 0.35rem 0 0;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.blog-page-toolbar .blog-filters {
+    grid-area: filters;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0.1rem 0 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.blog-page-toolbar .filter-pill {
+    flex: 0 0 auto;
+    padding: 0.62rem 1rem;
+    background: var(--bg-light);
+    border-color: var(--border-color);
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.blog-page-toolbar .filter-pill.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--bg-white);
+}
+
+.blog-page-toolbar .blog-search-wrapper {
+    grid-area: search;
+    width: 100%;
+    margin: 0;
+}
+
+.blog-page-toolbar .blog-search-wrapper input {
+    min-height: 3.15rem;
+    background: var(--bg-white);
+    border-color: var(--border-color);
+    border-radius: 1rem;
+    box-shadow: none;
+}
+
+.blog-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(250px, 300px);
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.featured-carousel-container {
+    margin-bottom: 2rem;
+    border-radius: 1.35rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.featured-slide {
+    min-height: 340px;
+}
+
+.featured-slide .featured-blog-img-wrapper {
+    flex: 0 0 43%;
+    min-height: 340px;
+}
+
+.featured-slide .featured-blog-content {
+    flex: 1 1 57%;
+    padding: clamp(1.4rem, 3vw, 2.4rem);
+    padding-bottom: 3.75rem;
+}
+
+.featured-slide .featured-blog-content .blog-title {
+    font-size: clamp(1.4rem, 2.4vw, 2rem) !important;
+    line-height: 1.25 !important;
+    margin-bottom: 0.8rem !important;
+}
+
+.featured-slide .featured-blog-content > p {
+    margin-bottom: 1.1rem !important;
+    font-size: 0.96rem;
+}
+
+.featured-slide .featured-blog-content .blog-author {
+    margin-bottom: 1rem !important;
+}
+
+.featured-carousel-dots {
+    right: 1.5rem;
+    bottom: 1rem;
+}
+
+.sub-blog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem;
+}
+
+.blog-card {
+    align-self: start;
+    height: auto;
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 1.15rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.blog-card > .blog-thumb {
+    height: auto;
+    flex: 0 0 auto;
+    aspect-ratio: 16 / 10;
+    margin: 0;
+    border-radius: 0;
+}
+
+.blog-card > .blog-thumb img {
+    height: 100%;
+}
+
+.blog-card .blog-content {
+    flex: 0 1 auto;
+    padding: 1.1rem 1.2rem 1.2rem;
+}
+
+.blog-card .blog-card-meta {
+    margin: 0 0 0.65rem;
+}
+
+.blog-card .blog-title {
+    margin-bottom: 0.65rem !important;
+    font-size: 1.1rem !important;
+    line-height: 1.4;
+}
+
+.blog-card .blog-content > p {
+    margin-bottom: 1rem !important;
+    font-size: 0.9rem !important;
+}
+
+.blog-card .blog-author {
+    padding-top: 0.85rem;
+}
+
+.blog-sidebar {
+    top: 96px;
+}
+
+.blog-sidebar .sidebar-widget {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+    border-radius: 1.2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.kitab-dashboard-section {
+    padding: clamp(2rem, 4vw, 3.5rem) 0 5rem;
+}
+
+.kitab-dashboard {
+    grid-template-columns: minmax(210px, 235px) minmax(0, 1fr);
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.kitab-sidebar {
+    padding: 1.1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 1.2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.kitab-sidebar .sidebar-section + .sidebar-section {
+    margin-top: 1.4rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.kitab-sidebar .sidebar-title {
+    margin-bottom: 0.65rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.11em;
+}
+
+.kitab-sidebar .sidebar-link {
+    padding: 0.65rem 0.75rem;
+    border-radius: 0.8rem;
+    font-size: 0.9rem;
+}
+
+.kitab-sidebar .sidebar-link.active {
+    background: var(--primary-light);
+    color: var(--primary-color);
+    box-shadow: none;
+}
+
+.kitab-sidebar .sidebar-link.active i {
+    color: var(--primary-color);
+}
+
+.kitab-content {
+    min-height: 0;
+}
+
+.kitab-content-header {
+    gap: 1.25rem;
+    margin-bottom: 1.4rem;
+}
+
+.kitab-header-copy {
+    min-width: 0;
+}
+
+.kitab-content-title {
+    margin: 0;
+    font-size: clamp(1.35rem, 2vw, 1.7rem);
+    line-height: 1.2;
+}
+
+.kitab-header-copy p {
+    font-size: 0.86rem;
+}
+
+.kitab-search-wrapper {
+    flex: 0 1 310px;
+    width: auto;
+}
+
+.kitab-search-wrapper input {
+    min-height: 3rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+}
+
+.book-grid-horizontal {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem;
+}
+
+.book-card-horizontal {
+    gap: 1rem;
+    padding: 1.1rem;
+    background: var(--bg-card);
+    border-radius: 1.1rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.horizontal-cover {
+    width: 88px;
+}
+
+.horizontal-info {
+    min-width: 0;
+}
+
+.horizontal-title {
+    font-size: 1rem;
+    line-height: 1.35;
+}
+
+.horizontal-author,
+.horizontal-desc {
+    font-size: 0.84rem;
+    line-height: 1.5;
+}
+
+.horizontal-actions {
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 0.75rem;
+}
+
+@media (max-width: 900px) {
+    .blog-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .blog-sidebar {
+        position: static;
+    }
+
+    .kitab-dashboard {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .kitab-sidebar {
+        box-shadow: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .blog-page-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "heading" "search" "filters";
+        gap: 1rem;
+        margin-bottom: 1.4rem;
+        padding: 1rem;
+        border-radius: 1.1rem;
+    }
+
+    .blog-toolbar-heading {
+        gap: 0.75rem;
+    }
+
+    .blog-toolbar-heading p {
+        font-size: 0.82rem;
+    }
+
+    .blog-page-toolbar .blog-filters {
+        margin-right: -0.2rem;
+        padding-right: 0.2rem;
+        scrollbar-width: none;
+    }
+
+    .blog-page-toolbar .blog-filters::-webkit-scrollbar {
+        display: none;
+    }
+
+    .blog-page-toolbar .filter-pill {
+        padding: 0.56rem 0.85rem;
+        font-size: 0.82rem;
+    }
+
+    .featured-slide .featured-blog-img-wrapper {
+        min-height: 0;
+        height: 210px;
+        flex: 0 0 210px;
+    }
+
+    .featured-slide .featured-blog-content {
+        padding: 1.2rem 1.1rem 3.6rem;
+    }
+
+    .featured-carousel-dots {
+        right: 0;
+        bottom: 0.8rem;
+        left: 0;
+        justify-content: center;
+    }
+
+    .sub-blog-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+    }
+
+    .blog-card .blog-content {
+        padding: 1rem;
+    }
+
+    .kitab-dashboard-section {
+        padding: 1.5rem 0 3rem;
+    }
+
+    .kitab-content-header {
+        align-items: stretch;
+    }
+
+    .kitab-search-wrapper {
+        flex-basis: 100%;
+    }
+
+    .book-grid-horizontal {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

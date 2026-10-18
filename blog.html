@@ -9,7 +9,7 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=256">
+    <link rel="stylesheet" href="style.css?v=258">
     <script>
         (function () {
             const savedTheme = localStorage.getItem('theme') || 'light';
@@ -122,7 +122,15 @@
     </div>
 
     <!-- Smart Filters & Search -->
-    <div class="blog-smart-bar container" style="margin-bottom: 2rem;">
+    <div class="blog-smart-bar blog-page-toolbar container">
+        <div class="blog-toolbar-heading">
+            <span class="blog-toolbar-icon"><i class="fas fa-feather-pointed" aria-hidden="true"></i></span>
+            <div>
+                <span class="blog-toolbar-kicker">Ruang Wawasan</span>
+                <h2>Jelajahi Artikel</h2>
+                <p>Temukan bacaan berdasarkan topik dan penulis.</p>
+            </div>
+        </div>
         <div class="blog-filters">
             <button class="filter-pill active" onclick="filterBlog('all', this)">Semua</button>
             <button class="filter-pill" onclick="filterBlog('Aqidah', this)">Aqidah</button>
