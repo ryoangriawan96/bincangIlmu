@@ -3636,29 +3636,53 @@ function initAdCarousel() {
     }
 }
 
-// Render on load. Keep decorative promo icons out of the CTA area.
+// Render on load. Keep the promo icon subtle and clear of the CTA.
 document.addEventListener('DOMContentLoaded', () => {
     const style = document.createElement('style');
     style.innerHTML = `
     .ad-decoration-icon {
-        display: none;
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        color: rgba(255, 255, 255, 0.16);
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        line-height: 1;
+        pointer-events: none;
+        z-index: 1;
     }
     .ad-slide .ad-banner-custom::after {
         content: none;
     }
     .ad-slide .btn-ad-action {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         flex: 0 0 auto;
-        min-height: 3.25rem;
-        padding: 0.85rem 1.75rem;
+        min-height: 3rem;
+        padding: 0.75rem 1.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.85);
+        border-radius: var(--radius-full, 999px);
+        background: #FDF8F4;
+        color: var(--primary-color, #6B2D3E);
+        font-size: 1rem;
+        font-weight: 600;
         line-height: 1.25;
+        box-shadow: 0 4px 14px rgba(28, 15, 19, 0.16);
     }
     .ad-slide .btn-ad-action:focus-visible {
         outline: 3px solid rgba(255, 255, 255, 0.85);
         outline-offset: 3px;
     }
+    .ad-slide .btn-ad-action:hover {
+        background: #FFFFFF;
+        color: var(--primary-color, #6B2D3E);
+        transform: translateY(-2px);
+    }
     @media (max-width: 768px) {
+        .ad-slide .ad-decoration-icon {
+            top: 0.75rem;
+            right: 0.75rem;
+            font-size: 2.5rem;
+        }
         .ad-slide .btn-ad-action {
             width: 100%;
         }
