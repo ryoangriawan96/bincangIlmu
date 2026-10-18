@@ -3636,21 +3636,32 @@ function initAdCarousel() {
     }
 }
 
-// Render on load + inject decoration icon styles
+// Render on load. Keep decorative promo icons out of the CTA area.
 document.addEventListener('DOMContentLoaded', () => {
     const style = document.createElement('style');
     style.innerHTML = `
     .ad-decoration-icon {
-        position: absolute;
-        right: 3rem;
-        top: auto;
-        font-size: 10rem;
-        color: rgba(255, 255, 255, 0.2);
-        z-index: -1;
-        pointer-events: none;
+        display: none;
+    }
+    .ad-slide .ad-banner-custom::after {
+        content: none;
+    }
+    .ad-slide .btn-ad-action {
+        position: relative;
+        z-index: 1;
+        flex: 0 0 auto;
+        min-height: 3.25rem;
+        padding: 0.85rem 1.75rem;
+        line-height: 1.25;
+    }
+    .ad-slide .btn-ad-action:focus-visible {
+        outline: 3px solid rgba(255, 255, 255, 0.85);
+        outline-offset: 3px;
     }
     @media (max-width: 768px) {
-        .ad-decoration-icon { display: none; }
+        .ad-slide .btn-ad-action {
+            width: 100%;
+        }
     }
     `;
     document.head.appendChild(style);
