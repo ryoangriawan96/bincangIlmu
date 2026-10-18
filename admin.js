@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadAdminBlogs();
         loadAdminFatwas();
         loadAdminAds();
+        loadAdminPartners();
         loadDonationCardForm();
         document.getElementById('donationCardImage')?.addEventListener('input', updateDonationCardImagePreview);
         renderUsers();
@@ -29,7 +30,7 @@ async function requireAdminAccess() {
 async function loadAdminCollections() {
     const collections = [
         ['kitab', kitabData], ['courses', coursesData], ['blogs', blogsData],
-        ['fatwas', fatwasData], ['ads', adsData]
+        ['fatwas', fatwasData], ['ads', adsData], ['partners', partnersData]
     ];
     for (const [endpoint, map] of collections) {
         const current = await adminApi(`/${endpoint}`, 'GET');
@@ -470,9 +471,9 @@ async function deleteFatwa(key) {
 
 /* ================== RESET ================== */
 async function resetAllData() {
-    if (!confirm("PERINGATAN: Ini akan menghapus konten tambahan kursus, kitab, artikel, fatwa, dan iklan. Akun pengguna tidak dihapus. Lanjutkan?")) return;
+    if (!confirm("PERINGATAN: Ini akan menghapus konten kursus, kitab, artikel, fatwa, iklan, dan mitra. Akun pengguna tidak dihapus. Lanjutkan?")) return;
     try {
-        for (const [endpoint, map] of [['kitab', kitabData], ['courses', coursesData], ['blogs', blogsData], ['fatwas', fatwasData], ['ads', adsData]]) {
+        for (const [endpoint, map] of [['kitab', kitabData], ['courses', coursesData], ['blogs', blogsData], ['fatwas', fatwasData], ['ads', adsData], ['partners', partnersData]]) {
             for (const id of Object.keys(map)) await deleteContent(endpoint, map, id);
         }
         alert("Konten berhasil di-reset. Memuat ulang halaman...");
@@ -501,7 +502,8 @@ const adminDefaultAds = {
         buttonText: "Daftar Gratis Sekarang",
         buttonLink: "#",
         icon: "fas fa-mosque",
-        type: "cta"
+        type: "cta",
+        sortOrder: 1
     },
     "ad_2": {
         title: "Penerimaan Santri Baru",
@@ -512,7 +514,8 @@ const adminDefaultAds = {
         buttonText: "Daftar Sekarang",
         buttonLink: "courses.html",
         icon: "fas fa-graduation-cap",
-        type: "promo"
+        type: "promo",
+        sortOrder: 2
     }
 };
 
@@ -569,10 +572,12 @@ function loadAdminAds() {
     const tbody = document.getElementById('adTableBody');
     if (!tbody) return;
     tbody.innerHTML = '';
-    for (const [key, ad] of Object.entries(adsData).filter(([id]) => id !== 'top-banner' && id !== 'donation-card')) {
+    const entries = Object.entries(adsData).filter(([id]) => id !== 'top-banner' && id !== 'donation-card').sort(([, a], [, b]) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0));
+    entries.forEach(([key, ad], index) => {
         tbody.innerHTML += `
             <tr>
                 <td><strong>${key}</strong></td>
+                <td>${Number(ad.sortOrder || index + 1)}</td>
                 <td><span class="category-pill">${ad.type.toUpperCase()}</span></td>
                 <td>${ad.title}</td>
                 <td>
@@ -580,12 +585,13 @@ function loadAdminAds() {
                     <button class="btn btn-sm btn-danger" onclick="deleteAd('${key}')"><i class="fas fa-trash"></i></button>
                 </td>
             </tr>`;
-    }
+    });
 }
 
 function openAdModal() {
     document.getElementById('adForm').reset();
     document.getElementById('adKey').readOnly = false;
+    document.getElementById('adSortOrder').value = Object.keys(adsData).filter(id => id !== 'top-banner' && id !== 'donation-card').length + 1;
     document.getElementById('adModalTitle').innerText = 'Tambah Iklan Baru';
     openModal('adModal');
 }
@@ -606,6 +612,7 @@ function editAd(key) {
     document.getElementById('adIcon').value = ad.icon;
     document.getElementById('adImageUrl').value = ad.imageUrl || "";
     document.getElementById('adSize').value = ad.size || "medium";
+    document.getElementById('adSortOrder').value = ad.sortOrder || 1;
     
     document.getElementById('adModalTitle').innerText = 'Edit Iklan';
     openModal('adModal');
@@ -627,7 +634,8 @@ async function saveAd(event) {
         buttonLink: document.getElementById('adButtonLink').value,
         icon: document.getElementById('adIcon').value,
         imageUrl: document.getElementById('adImageUrl').value,
-        size: document.getElementById('adSize').value
+        size: document.getElementById('adSize').value,
+        sortOrder: Math.max(1, Number(document.getElementById('adSortOrder').value) || 1)
     };
     
     try { await saveContent('ads', adsData, key, item); } catch (error) { return alert(error.message); }
@@ -642,6 +650,44 @@ async function deleteAd(key) {
         loadAdminAds();
         updateStats();
     }
+}
+
+/* ================== PARTNER CRUD ================== */
+function loadAdminPartners() {
+    const tbody = document.getElementById('partnerTableBody');
+    if (!tbody) return;
+    const entries = Object.entries(partnersData).sort(([, a], [, b]) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0));
+    tbody.innerHTML = entries.map(([id, partner]) => `<tr><td><img src="${escapeHtml(partner.imageUrl)}" alt="" style="width:72px;height:42px;object-fit:contain"></td><td><strong>${escapeHtml(partner.name)}</strong><br><small>${escapeHtml(id)}</small></td><td>${Number(partner.sortOrder || 0)}</td><td><button class="btn btn-sm btn-outline-primary" onclick="editPartner('${escapeHtml(id)}')"><i class="fas fa-edit"></i></button> <button class="btn btn-sm btn-danger" onclick="deletePartner('${escapeHtml(id)}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+}
+function openPartnerModal(id = '') {
+    document.getElementById('partnerForm').reset();
+    document.getElementById('partnerKey').readOnly = false;
+    document.getElementById('partnerModalTitle').textContent = id ? 'Edit Mitra Dakwah' : 'Tambah Mitra Dakwah';
+    if (id) {
+        const partner = partnersData[id];
+        document.getElementById('partnerKey').value = id;
+        document.getElementById('partnerKey').readOnly = true;
+        document.getElementById('partnerName').value = partner.name || '';
+        document.getElementById('partnerImage').value = partner.imageUrl || '';
+        document.getElementById('partnerSortOrder').value = partner.sortOrder || 1;
+    } else document.getElementById('partnerSortOrder').value = Object.keys(partnersData).length + 1;
+    openModal('partnerModal');
+}
+function editPartner(id) { openPartnerModal(id); }
+async function savePartner(event) {
+    event.preventDefault();
+    const id = document.getElementById('partnerKey').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+    const item = { name: document.getElementById('partnerName').value.trim(), imageUrl: document.getElementById('partnerImage').value.trim(), sortOrder: Math.max(1, Number(document.getElementById('partnerSortOrder').value) || 1) };
+    if (!id || !item.name || !item.imageUrl) return;
+    try { await saveContent('partners', partnersData, id, item); }
+    catch (error) { return alert(error.message); }
+    closeModal('partnerModal'); loadAdminPartners(); renderPartners();
+}
+async function deletePartner(id) {
+    if (!confirm(`Hapus mitra “${partnersData[id]?.name || id}”?`)) return;
+    try { await deleteContent('partners', partnersData, id); }
+    catch (error) { return alert(error.message); }
+    loadAdminPartners(); renderPartners();
 }
 
 

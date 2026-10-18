@@ -28,7 +28,7 @@ async function apiRequest(path, options = {}) {
 async function loadPublicContent() {
     const collections = [
         ['courses', coursesData], ['kitab', kitabData], ['blogs', blogsData],
-        ['fatwas', fatwasData], ['ads', adsData]
+        ['fatwas', fatwasData], ['ads', adsData], ['partners', partnersData]
     ];
     await Promise.all(collections.map(async ([endpoint, map]) => {
         try {
@@ -45,6 +45,7 @@ async function loadPublicContent() {
     if (document.getElementById('allBlogsGrid')) applyBlogFilters();
     if (document.getElementById('allFatwasGrid')) { renderFatwaList(fatwasData); renderPopularFatwas(); }
     if (document.getElementById('donationCard')) renderDonationCard();
+    renderPartners();
     if (location.pathname.endsWith('course-detail.html')) loadCourseDetail();
     if (location.pathname.endsWith('blog-detail.html')) loadBlogDetail();
     if (document.getElementById('fatwaContent')) loadFatwaDetail();
@@ -3432,7 +3433,8 @@ const defaultAds = {
         icon: "fas fa-mosque",
         type: "cta",
         imageUrl: "",
-        size: "medium"
+        size: "medium",
+        sortOrder: 1
     },
     "ad_2": {
         title: "Penerimaan Santri Baru",
@@ -3445,11 +3447,30 @@ const defaultAds = {
         icon: "fas fa-graduation-cap",
         type: "promo",
         imageUrl: "",
-        size: "medium"
+        size: "medium",
+        sortOrder: 2
     }
 };
 
 let adsData = defaultAds;
+
+const defaultPartners = [
+    { id: 'muhammadiyah', name: 'Muhammadiyah', imageUrl: 'images/logo_muhammadiyah.webp', sortOrder: 1 },
+    { id: 'hidayatullah', name: 'Hidayatullah', imageUrl: 'images/logo_hidayatullah.webp', sortOrder: 2 },
+    { id: 'nu', name: 'Nahdlatul Ulama', imageUrl: 'images/logo_nu.webp', sortOrder: 3 },
+    { id: 'persis', name: 'Persis', imageUrl: 'images/logo_persis.webp', sortOrder: 4 },
+    { id: 'alirsyad', name: 'Al-Irsyad', imageUrl: 'images/logo_alirsyad_official.webp', sortOrder: 5 },
+    { id: 'mui', name: 'MUI', imageUrl: 'images/logo_mui_official.png', sortOrder: 6 }
+];
+let partnersData = Object.fromEntries(defaultPartners.map(partner => [partner.id, partner]));
+
+function renderPartners() {
+    const marquee = document.getElementById('partnerMarquee');
+    if (!marquee) return;
+    const partners = Object.values(partnersData).sort((a, b) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0));
+    const makeLogo = partner => `<img src="${escapeHtml(partner.imageUrl)}" alt="${escapeHtml(partner.name)}" class="partner-logo" decoding="async" loading="lazy">`;
+    marquee.innerHTML = partners.map(makeLogo).join('') + partners.map(makeLogo).join('');
+}
 
 function renderDonationCard() {
     const root = document.getElementById('donationCard');
@@ -3479,7 +3500,8 @@ function renderAds() {
     if (oldDots) oldDots.remove();
     
     track.innerHTML = '';
-    const adEntries = Object.entries(adsData).filter(([id]) => id !== 'top-banner' && id !== 'donation-card');
+    const adEntries = Object.entries(adsData).filter(([id]) => id !== 'top-banner' && id !== 'donation-card')
+        .sort(([, a], [, b]) => Number(a.sortOrder || 0) - Number(b.sortOrder || 0));
     
     adEntries.forEach(([key, ad], index) => {
         const slide = document.createElement('div');

@@ -8,7 +8,7 @@
         document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=266">
+    <link rel="stylesheet" href="style.css?v=271">
     <link rel="stylesheet" href="admin.css?v=3">
     <link rel="stylesheet" href="responsive.css?v=21">
 </head>
@@ -41,8 +41,9 @@
                     <i class="fas fa-balance-scale"></i> Kelola Fatwa
                 </a>
                 <a href="#" class="admin-nav-link" onclick="switchTab('ads', this)">
-                    <i class="fas fa-bullhorn"></i> Kelola Iklan
+                    <i class="fas fa-images"></i> Carousel Beranda
                 </a>
+                <a href="#" class="admin-nav-link" onclick="switchTab('partners', this)"><i class="fas fa-handshake"></i> Kelola Mitra</a>
                 <a href="#" class="admin-nav-link" onclick="switchTab('users', this)">
                     <i class="fas fa-users"></i> Kelola Pengguna
                 </a>
@@ -222,11 +223,11 @@
             <section id="tab-ads" class="admin-section" style="display:none;">
                 <div class="admin-header flex-between">
                     <div>
-                        <h1>Kelola Iklan</h1>
-                        <p>Atur iklan CTA/promo dan banner atas yang tampil di website Anda.</p>
+                        <h1>Carousel Beranda</h1>
+                        <p>Tambah, edit, hapus, dan atur urutan slide promosi yang tampil di halaman utama.</p>
                     </div>
                     <button class="btn btn-primary" onclick="openAdModal()">
-                        <i class="fas fa-plus"></i> Tambah Iklan
+                        <i class="fas fa-plus"></i> Tambah Slide
                     </button>
                 </div>
 
@@ -235,9 +236,7 @@
                     <table class="admin-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Tipe</th>
-                                <th>Judul</th>
+                                <th>ID</th><th>Urutan</th><th>Tipe</th><th>Judul</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -312,6 +311,11 @@
                         <button type="submit" class="btn btn-primary" style="padding: 0.8rem 1.5rem;"><i class="fas fa-save"></i> Simpan Pengaturan Iklan</button>
                     </form>
                 </div>
+            </section>
+
+            <section id="tab-partners" class="admin-section" style="display:none;">
+                <div class="admin-header flex-between"><div><h1>Mitra Dakwah</h1><p>Kelola logo mitra yang tampil pada bagian Mitra Dakwah Kami di beranda.</p></div><button class="btn btn-primary" onclick="openPartnerModal()"><i class="fas fa-plus"></i> Tambah Mitra</button></div>
+                <div class="admin-table-container"><table class="admin-table"><thead><tr><th>Logo</th><th>Nama</th><th>Urutan</th><th>Aksi</th></tr></thead><tbody id="partnerTableBody"></tbody></table></div>
             </section>
 
             <section id="tab-users" class="admin-section" style="display:none;">
@@ -664,16 +668,19 @@
                             <option value="large">Besar (320px)</option>
                         </select>
                     </div>
+                    <div class="form-group"><label>Urutan Slide</label><input type="number" id="adSortOrder" min="1" step="1" value="1" required><small style="color:var(--text-light);">Angka lebih kecil tampil lebih dahulu.</small></div>
                     <button type="submit" class="btn btn-primary" style="width:100%; margin-top: 1rem;">Simpan Iklan</button>
                 </form>
             </div>
         </div>
     </div>
 
+    <div id="partnerModal" class="admin-modal"><div class="admin-modal-content" style="max-width:560px;"><div class="admin-modal-header"><h2 id="partnerModalTitle">Tambah Mitra Dakwah</h2><button class="close-modal" onclick="closeModal('partnerModal')"><i class="fas fa-times"></i></button></div><div class="admin-modal-body"><form id="partnerForm" onsubmit="savePartner(event)"><div class="form-group"><label>ID Mitra (unik)</label><input id="partnerKey" required placeholder="contoh: lembaga-ilmu"></div><div class="form-group"><label>Nama Mitra</label><input id="partnerName" required placeholder="Nama mitra"></div><div class="form-group"><label>URL / Path Logo</label><input id="partnerImage" required placeholder="images/logo-mitra.webp"></div><div class="form-group"><label>Urutan Tampil</label><input id="partnerSortOrder" type="number" min="1" step="1" required></div><button class="btn btn-primary" type="submit" style="width:100%;">Simpan Mitra</button></form></div></div></div>
+
     <!-- Scripts -->
     <script src="api-config.js"></script>
-    <script src="script.js?v=239"></script>
-    <script src="admin.js?v=233"></script>
+    <script src="script.js?v=241"></script>
+    <script src="admin.js?v=234"></script>
 
     <!-- Smart Search Overlay -->
     <div id="searchOverlay" class="search-overlay">
