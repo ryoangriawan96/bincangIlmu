@@ -843,7 +843,7 @@ table {
 
 /* Match the blog category controls to Fatwa's wrapped chip layout. */
 @media (max-width: 640px) {
-    .blog-smart-bar {
+    .blog-smart-bar:not(.blog-page-toolbar) {
         display: flex;
         flex-direction: column;
         align-items: stretch;
