@@ -32,7 +32,7 @@ router.post('/', authenticateToken, requireAdmin, (req, res) => {
   try {
     const newItem = {
       ...req.body,
-      id: require('uuid').v4(),
+      id: typeof req.body.id === 'string' ? req.body.id : require('uuid').v4(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };

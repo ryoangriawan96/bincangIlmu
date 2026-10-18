@@ -8,7 +8,11 @@ const stores = new Map();
  * @returns {Object} with methods: getData, push, write
  */
 function getDB(collectionName) {
-  const filePath = path.resolve(__dirname, '../data', `${collectionName}.json`);
+  const dataDirectory = process.env.DATA_DIR
+    ? path.resolve(process.env.DATA_DIR)
+    : path.resolve(__dirname, '../data');
+  const filePath = path.resolve(dataDirectory, `${collectionName}.json`);
+  if (!filePath.startsWith(`${dataDirectory}${path.sep}`)) throw new Error('Invalid collection name');
   
   // Pastikan file ada dan berisi array
   if (!stores.has(collectionName)) {
@@ -19,8 +23,7 @@ function getDB(collectionName) {
         data = JSON.parse(content);
         if (!data || !Array.isArray(data.data)) data = { data: [] };
       } catch (err) {
-        console.error(`Error reading ${filePath}:`, err);
-        data = { data: [] };
+        throw new Error(`Unable to read database file ${filePath}: ${err.message}`);
       }
     }
     stores.set(collectionName, data);
@@ -55,7 +58,10 @@ function getDB(collectionName) {
      * Tuliskan data ke file
      */
     write: () => {
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+      fs.mkdirSync(dataDirectory, { recursive: true });
+      const temporaryPath = `${filePath}.${process.pid}.tmp`;
+      fs.writeFileSync(temporaryPath, JSON.stringify(data, null, 2), { mode: 0o600 });
+      fs.renameSync(temporaryPath, filePath);
     },
     
     /**

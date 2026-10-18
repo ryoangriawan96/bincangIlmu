@@ -1,27 +1,58 @@
 /* Main JavaScript for Bincang Ilmu */
 
-// --- DEFAULT USERS & INITIALIZATION ---
-const defaultUsers = [
-    { name: 'Administrator', email: 'admin@bincangilmu.com', password: 'admin', role: 'Admin' },
-    { name: 'Ustadz Ahmad', email: 'ahmad@mail.com', password: 'password', role: 'Pengajar' },
-    { name: 'Budi Santoso', email: 'budi@mail.com', password: 'password', role: 'Siswa' }
-];
-
-// Initialize users database with merge logic
-(function initUsersDB() {
-    let usersData = JSON.parse(localStorage.getItem('admin_users'));
-    if (!usersData || usersData.length === 0) {
-        usersData = JSON.parse(JSON.stringify(defaultUsers));
-        localStorage.setItem('admin_users', JSON.stringify(usersData));
-    } else {
-        // Ensure admin account always exists
-        const hasAdmin = usersData.some(u => u.email === 'admin@bincangilmu.com');
-        if (!hasAdmin) {
-            usersData.unshift({ name: 'Administrator', email: 'admin@bincangilmu.com', password: 'admin', role: 'Admin' });
-            localStorage.setItem('admin_users', JSON.stringify(usersData));
-        }
+// User accounts and authentication are managed by the backend API.
+const API_BASE = (window.API_BASE || '/api').replace(/\/$/, '');
+// Clear credentials from the former browser-only demo login. They are not valid sessions.
+['admin_users', 'isLoggedIn', 'currentUser', 'isAdmin'].forEach(key => localStorage.removeItem(key));
+const sessionUser = () => {
+    try { return JSON.parse(sessionStorage.getItem('currentUser') || 'null'); }
+    catch { return null; }
+};
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+async function apiRequest(path, options = {}) {
+    const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+    const token = sessionStorage.getItem('authToken');
+    if (token) headers.Authorization = `Bearer ${token}`;
+    const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(body.error || 'Permintaan gagal. Coba lagi.');
+    return body;
+}
+async function loadPublicContent() {
+    const collections = [
+        ['courses', coursesData], ['kitab', kitabData], ['blogs', blogsData],
+        ['fatwas', fatwasData], ['ads', adsData]
+    ];
+    for (const [endpoint, map] of collections) {
+        try {
+            const items = await apiRequest(`/${endpoint}`);
+            if (Array.isArray(items) && items.length) {
+                Object.keys(map).forEach(id => delete map[id]);
+                Object.assign(map, Object.fromEntries(items.map(item => [item.id, item])));
+            }
+        } catch (_) { /* Keep bundled read-only content when the API is unavailable. */ }
     }
-})();
+    if (document.getElementById('allCoursesGrid')) filterCourseList();
+    if (document.getElementById('kitabGrid')) filterKitabList();
+    if (document.getElementById('allBlogsGrid')) applyBlogFilters();
+    if (document.getElementById('allFatwasGrid')) { renderFatwaList(fatwasData); renderPopularFatwas(); }
+    if (location.pathname.endsWith('course-detail.html')) loadCourseDetail();
+    if (location.pathname.endsWith('blog-detail.html')) loadBlogDetail();
+    if (document.getElementById('fatwaContent')) loadFatwaDetail();
+    if (document.querySelector('.ad-carousel-track')) renderAds();
+    renderTopAd();
+}
+async function verifySession() {
+    if (!sessionStorage.getItem('authToken')) return;
+    try {
+        const user = await apiRequest('/auth/me');
+        sessionStorage.setItem('currentUser', JSON.stringify(user));
+    } catch (_) {
+        sessionStorage.removeItem('authToken');
+        sessionStorage.removeItem('isLoggedIn');
+        sessionStorage.removeItem('currentUser');
+    }
+}
 
 // Course Data Database
 let coursesData = {
@@ -327,14 +358,6 @@ let blogsData = {
     }
 };
 
-// Sync with Local Storage for Admin modifications
-if (localStorage.getItem('admin_courses')) {
-    coursesData = JSON.parse(localStorage.getItem('admin_courses'));
-    for (let k in coursesData) {
-        if (!coursesData[k].instructorImg) coursesData[k].instructorImg = "https://randomuser.me/api/portraits/men/11.jpg";
-    }
-}
-
 // Kitab Data Database
 let kitabData = {
     "tauhid": {
@@ -591,10 +614,6 @@ let kitabData = {
     }
 };
 
-if (localStorage.getItem('admin_kitabs')) {
-    kitabData = JSON.parse(localStorage.getItem('admin_kitabs'));
-}
-
 // Fatwas Data Database
 let fatwasData = {
     'sholat-jamak': {
@@ -655,19 +674,6 @@ for (let i = 1; i <= 3; i++) {
 }
 // --- END MOCK DATA DUPLICATION ---
 
-if (localStorage.getItem('admin_blogs')) {
-    blogsData = JSON.parse(localStorage.getItem('admin_blogs'));
-    for (let k in blogsData) {
-        if (typeof blogsData[k].author === 'string') {
-            blogsData[k].author = { name: blogsData[k].author, img: "https://randomuser.me/api/portraits/men/1.jpg" };
-        }
-    }
-}
-
-if (localStorage.getItem('admin_fatwas')) {
-    fatwasData = JSON.parse(localStorage.getItem('admin_fatwas'));
-}
-
 // Theme Toggle Logic
 function toggleTheme() {
     const html = document.documentElement;
@@ -694,6 +700,8 @@ function updateThemeIcon(theme) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    loadPublicContent();
+    verifySession().then(checkAuthState);
     // Initialize Theme
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -800,14 +808,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            performLogin();
+            showToast("Belum tersedia", "Login dengan Google belum dikonfigurasi.", "error");
         });
     }
 
     // Handle Register Form Submit
     const registerForm = document.querySelector('#registerForm form');
     if (registerForm) {
-        registerForm.addEventListener('submit', (e) => {
+        registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const inputs = registerForm.querySelectorAll('input');
             let name = inputs[0].value.trim();
@@ -821,8 +829,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            if (password.length < 6) {
-                showToast("Gagal!", "Password minimal 6 karakter.", "error");
+            if (password.length < 8) {
+                showToast("Gagal!", "Password minimal 8 karakter.", "error");
                 return;
             }
             
@@ -831,24 +839,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            let usersData = JSON.parse(localStorage.getItem('admin_users')) || [];
-            
-            if (usersData.some(u => u.email === email)) {
-                showToast("Gagal!", "Email sudah terdaftar! Silakan login.", "error");
-                switchAuthTab('login');
-                return;
+            try {
+                const result = await apiRequest('/auth/register', { method: 'POST', body: JSON.stringify({ name, email, password }) });
+                sessionStorage.setItem('authToken', result.token);
+                sessionStorage.setItem('currentUser', JSON.stringify(result.user));
+                sessionStorage.setItem('isLoggedIn', 'true');
+                closeModal(); checkAuthState();
+                showToast("Pendaftaran Berhasil!", `Selamat datang di Bincang Ilmu, ${name}.`, "success");
+            } catch (error) {
+                showToast("Pendaftaran gagal", error.message, "error");
             }
-            
-            // Save new user to database
-            usersData.push({ name, email, password, role: 'Siswa', registeredAt: new Date().toISOString() });
-            localStorage.setItem('admin_users', JSON.stringify(usersData));
-            
-            // Auto login after register
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('currentUser', JSON.stringify({ name, email, role: 'Siswa' }));
-            closeModal();
-            checkAuthState();
-            showToast("Pendaftaran Berhasil!", `Selamat datang di Bincang Ilmu, ${name}.`, "success");
         });
     }
 
@@ -863,7 +863,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Authentication Functions
-function performLogin() {
+async function performLogin() {
     const emailInput = document.querySelector('#loginForm input[type="email"]');
     const passwordInput = document.querySelector('#loginForm input[type="password"]');
     const roleSelect = document.getElementById('loginRole');
@@ -879,45 +879,43 @@ function performLogin() {
         return;
     }
     
-    const usersData = JSON.parse(localStorage.getItem('admin_users')) || [];
-    const user = usersData.find(u => u.email === email && u.password === password);
-    
-    if (user) {
+    try {
+        const result = await apiRequest('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
+        const user = result.user;
         // Set session for ALL roles (including Admin)
         // If role selected, ensure it matches
         if (role && user.role !== role) {
             showToast("Gagal!", `Akun dengan email ${email} bukan sebagai ${role}.`, "error");
             return;
         }
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('currentUser', JSON.stringify({ name: user.name, email: user.email, role: user.role }));
+        sessionStorage.setItem('authToken', result.token);
+        sessionStorage.setItem('isLoggedIn', 'true');
+        sessionStorage.setItem('currentUser', JSON.stringify(user));
         
         if (user.role === 'Admin') {
-            localStorage.setItem('isAdmin', 'true');
             window.location.href = 'admin.html';
             return;
         } else {
-            localStorage.removeItem('isAdmin');
             closeModal();
             checkAuthState();
             showToast("Login Berhasil!", `Selamat datang kembali, ${user.name}.`, "success");
         }
-    } else {
-        showToast("Login Gagal!", "Email atau password salah.", "error");
+    } catch (error) {
+        showToast("Login Gagal!", error.message, "error");
     }
 }
 
 function performLogout() {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('isAdmin');
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('currentUser');
     checkAuthState();
     window.location.reload();
 }
 
 function checkAuthState() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const isLoggedIn = Boolean(sessionStorage.getItem('authToken'));
+    const currentUser = sessionUser();
     const body = document.body;
     
     const loginBtn = document.getElementById('loginBtn');
@@ -952,7 +950,7 @@ function checkAuthState() {
             
             // Inject Admin Dashboard link for Admin/Pengajar
             let adminLink = userProfile.querySelector('.admin-dashboard-link');
-            if (currentUser.role === 'Admin' || currentUser.role === 'Pengajar') {
+            if (currentUser.role === 'Admin') {
                 if (!adminLink) {
                     const dropdownMenu = userProfile.querySelector('.dropdown-menu');
                     if (dropdownMenu) {
@@ -1105,7 +1103,6 @@ function playLesson(element, videoSrc) {
     // Implies: If NOT logged in, maybe they shouldn't open? 
     // Let's check login state.
 
-    // const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     // if (!isLoggedIn && element.querySelector('.fa-lock')) {
     //    openModal('login');
     //    return;
@@ -1114,7 +1111,7 @@ function playLesson(element, videoSrc) {
     // but the presence of locks implies it. I'll implement a soft check.
 
     const hasLock = element.querySelector('.fa-lock');
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const isLoggedIn = Boolean(sessionStorage.getItem('authToken'));
 
     if (hasLock && !isLoggedIn) {
         openModal('login');
@@ -2098,7 +2095,7 @@ window.openProfileModal = function (type) {
     if (modal) {
         // Populate settings modal with actual user data
         if (type === 'settings') {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const currentUser = sessionUser();
             if (currentUser) {
                 const inputs = modal.querySelectorAll('.form-input');
                 if (inputs[0]) inputs[0].value = currentUser.name || '';
@@ -2115,7 +2112,7 @@ window.openProfileModal = function (type) {
             const container = document.getElementById('myCoursesContainer');
             if (container && typeof coursesData !== 'undefined') {
                 container.innerHTML = '';
-                const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+                const currentUser = sessionUser() || {};
                 // New users have no enrolled courses
                 const enrolledCourses = currentUser.enrolledCourses || [];
                 
@@ -2165,7 +2162,7 @@ window.openProfileModal = function (type) {
         // Populate certificates dynamically — only completed courses
         if (type === 'certificates') {
             const container = document.getElementById('myCertificatesContainer');
-            const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+            const currentUser = sessionUser() || {};
             const userName = currentUser.name || 'Pengguna';
             const enrolledCourses = currentUser.enrolledCourses || [];
             
@@ -2232,7 +2229,7 @@ window.openProfileModal = function (type) {
     }
 }
 
-window.closeProfileModal = function (type) {
+window.closeProfileModal = async function (type) {
     let modalId = '';
     if (type === 'settings') modalId = 'settingsModal';
     if (type === 'courses') modalId = 'coursesModal';
@@ -2243,24 +2240,18 @@ window.closeProfileModal = function (type) {
     if (modal) {
         // Save profile changes when closing settings modal
         if (type === 'settings') {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const currentUser = sessionUser();
             if (currentUser) {
                 const inputs = modal.querySelectorAll('.form-input');
                 const newName = inputs[0] ? inputs[0].value.trim() : currentUser.name;
                 const newEmail = inputs[1] ? inputs[1].value.trim() : currentUser.email;
                 
-                // Update currentUser in localStorage
-                currentUser.name = newName;
-                currentUser.email = newEmail;
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                
-                // Also update in admin_users database
-                let usersData = JSON.parse(localStorage.getItem('admin_users')) || [];
-                const userIndex = usersData.findIndex(u => u.email === currentUser.email || u.name === newName);
-                if (userIndex !== -1) {
-                    usersData[userIndex].name = newName;
-                    usersData[userIndex].email = newEmail;
-                    localStorage.setItem('admin_users', JSON.stringify(usersData));
+                try {
+                    const updatedUser = await apiRequest('/auth/me', { method: 'PUT', body: JSON.stringify({ name: newName, email: newEmail }) });
+                    sessionStorage.setItem('currentUser', JSON.stringify({ ...currentUser, ...updatedUser }));
+                } catch (error) {
+                    if (typeof showToast === 'function') showToast('Gagal memperbarui profil', error.message, 'error');
+                    return;
                 }
                 
                 // Refresh navbar profile
@@ -2277,9 +2268,9 @@ window.closeProfileModal = function (type) {
 }
 
 window.handleLogout = function () {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('isAdmin');
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('currentUser');
     window.location.reload();
 }
 
@@ -2287,13 +2278,13 @@ window.handleLogout = function () {
 
 // Enroll in a course
 window.enrollCourse = function (courseId) {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const isLoggedIn = Boolean(sessionStorage.getItem('authToken'));
     if (!isLoggedIn) {
         openModal('login');
         return;
     }
     
-    const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+    const currentUser = sessionUser() || {};
     const enrolledCourses = currentUser.enrolledCourses || [];
     
     // Check if already enrolled
@@ -2305,7 +2296,7 @@ window.enrollCourse = function (courseId) {
     if (!alreadyEnrolled) {
         enrolledCourses.push({ id: courseId, progress: 0, enrolledAt: new Date().toISOString() });
         currentUser.enrolledCourses = enrolledCourses;
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
         
         if (typeof showToast === 'function') {
             showToast("Berhasil Mendaftar!", "Kursus telah ditambahkan ke daftar kursus Anda.", "success");
@@ -2648,18 +2639,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const oldArea3 = navMenu.querySelector('.mobile-auth-area, .mobile-profile-area, .mobile-nav-links');
         if (oldArea3) oldArea3.remove();
         
-        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const isLoggedIn = Boolean(sessionStorage.getItem('authToken'));
+        const currentUser = sessionUser();
         
         if (isLoggedIn && currentUser) {
             // Show profile + menu links
             const profileArea = document.createElement('div');
             profileArea.className = 'mobile-profile-area';
             profileArea.innerHTML = `
-                <div class="profile-avatar-initial">${currentUser.name.charAt(0).toUpperCase()}</div>
+                <div class="profile-avatar-initial">${escapeHtml(String(currentUser.name || '?').charAt(0).toUpperCase())}</div>
                 <div class="profile-info">
-                    <strong>${currentUser.name}</strong>
-                    <span>${currentUser.email}</span>
+                    <strong>${escapeHtml(currentUser.name)}</strong>
+                    <span>${escapeHtml(currentUser.email)}</span>
                 </div>
             `;
             navMenu.appendChild(profileArea);
@@ -2667,7 +2658,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const navLinks = document.createElement('div');
             navLinks.className = 'mobile-nav-links';
             let adminLink = '';
-            if (currentUser.role === 'Admin' || currentUser.role === 'Pengajar') {
+            if (currentUser.role === 'Admin') {
                 adminLink = '<a href="admin.html"><i class="fas fa-tachometer-alt"></i> Akses Dasbor</a>';
             }
             navLinks.innerHTML = `
@@ -2945,7 +2936,7 @@ function submitReview() {
     const reviewTextValue = textEl ? textEl.value.trim() : '';
 
     // Get current user name
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser = sessionUser();
     const userName = currentUser && currentUser.name ? currentUser.name : 'Pelajar Bincang Ilmu';
 
     // Create review object
@@ -3479,11 +3470,7 @@ const defaultAds = {
     }
 };
 
-let adsData = JSON.parse(localStorage.getItem('admin_ads'));
-if (!adsData || Object.keys(adsData).length === 0) {
-    adsData = defaultAds;
-    localStorage.setItem('admin_ads', JSON.stringify(adsData));
-}
+let adsData = defaultAds;
 
 function renderAds() {
     const track = document.querySelector('.ad-carousel-track');
@@ -3494,7 +3481,7 @@ function renderAds() {
     if (oldDots) oldDots.remove();
     
     track.innerHTML = '';
-    const adEntries = Object.entries(adsData);
+    const adEntries = Object.entries(adsData).filter(([id]) => id !== 'top-banner');
     
     adEntries.forEach(([key, ad], index) => {
         const slide = document.createElement('div');
@@ -3636,21 +3623,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // --- TOP AD BAR RENDER ---
-document.addEventListener('DOMContentLoaded', () => {
+function renderTopAd() {
     // Jangan tampilkan Top Ad di halaman Admin
     if (document.querySelector('.admin-layout')) return;
 
-    const topAdData = JSON.parse(localStorage.getItem('admin_top_ad'));
+    const topAdData = adsData['top-banner'];
     if (topAdData && topAdData.active && topAdData.text) {
         const adBar = document.createElement('div');
         adBar.className = 'global-top-ad-bar';
         
-        let contentHtml = `<span class="ad-text">${topAdData.text}</span>`;
+        let contentHtml = `<span class="ad-text">${escapeHtml(topAdData.text)}</span>`;
         if (topAdData.btnText) {
             if (topAdData.link) {
-                contentHtml += `<a href="${topAdData.link}" class="ad-btn">${topAdData.btnText} <i class="fas fa-arrow-right"></i></a>`;
+                const target = String(topAdData.link);
+                const parsed = new URL(target, window.location.href);
+                const safeLink = ['http:', 'https:'].includes(parsed.protocol) ? escapeHtml(target) : '#';
+                contentHtml += `<a href="${safeLink}" class="ad-btn">${escapeHtml(topAdData.btnText)} <i class="fas fa-arrow-right"></i></a>`;
             } else {
-                contentHtml += `<span class="ad-btn">${topAdData.btnText}</span>`;
+                contentHtml += `<span class="ad-btn">${escapeHtml(topAdData.btnText)}</span>`;
             }
         }
         
@@ -3698,70 +3688,30 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.style.paddingTop = '0';
         });
     }
-});
-function sendAIChatEnhanced() {
+}
+async function sendAIChatEnhanced() {
     const input = document.getElementById('aiChatInput');
-    const message = input.value.trim();
+    const message = input ? input.value.trim() : '';
     if (!message) return;
     const messagesContainer = document.getElementById('aiChatMessages');
-    // Add user message
-    messagesContainer.innerHTML += `<div class="ai-message user-message"><div class="message-content">${message}</div></div>`;
+    if (!messagesContainer) return;
+    const addMessage = (text, role) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = `ai-message ${role}-message`;
+        const content = document.createElement('div');
+        content.className = 'message-content';
+        content.textContent = text;
+        wrapper.appendChild(content);
+        messagesContainer.appendChild(wrapper);
+    };
+    addMessage(message, 'user');
     input.value = '';
     scrollToBottom(messagesContainer);
-    // Add typing indicator
-    const typingId = 'typing-' + Date.now();
-    messagesContainer.innerHTML += `<div class="ai-message system-message" id="${typingId}"><div class="message-content"><i class="fas fa-ellipsis-h fa-fade"></i> Mengetik...</div></div>`;
+    try {
+        const result = await apiRequest('/ai', { method: 'POST', body: JSON.stringify({ prompt: message }) });
+        addMessage(result.reply || 'Belum ada jawaban dari layanan AI.', 'system');
+    } catch (error) {
+        addMessage(error.message, 'system');
+    }
     scrollToBottom(messagesContainer);
-    // Simulate AI response
-    setTimeout(() => {
-        const typingEl = document.getElementById(typingId);
-        if (typingEl) typingEl.remove();
-        let response = '';
-        const lowerMsg = message.toLowerCase();
-        // 1. Course related queries
-        if (lowerMsg.includes('course') || lowerMsg.includes('kuliah') || lowerMsg.includes('kelas') || lowerMsg.includes('pelajaran')) {
-            const results = searchCourses(lowerMsg);
-            if (results.length > 0) {
-                response = '<strong>Berikut beberapa kursus yang mungkin relevan:</strong><br>';
-                results.forEach(r => {
-                    response += `<div style="margin-bottom:8px;"><strong>${r.title}</strong> (${r.category}) – ${r.instructor}<br>`;
-                    if (r.desc) response += `<small>${r.desc}</small><br></div>`;
-                });
-                response += `<br><a href="courses.html" class="btn btn-outline" style="margin-top:10px;display:inline-block;padding:5px 10px;font-size:0.8rem;">Lihat semua kursus</a>`;
-            } else {
-                response = 'Maaf, saya tidak menemukan kursus yang cocok dengan pertanyaan Anda. Anda bisa mencoba kata kunci lain atau menjelajahi daftar lengkap kursus.';
-            }
-        }
-        // 2. Kitab related queries
-        else if (lowerMsg.includes('kitab') || lowerMsg.includes('buku') || lowerMsg.includes('reference')) {
-            const results = searchKitab(lowerMsg);
-            if (results.length > 0) {
-                response = '<strong>Berikut beberapa kitab yang mungkin relevan:</strong><br>';
-                results.forEach(r => {
-                    response += `<div style="margin-bottom:8px;"><strong>${r.title}</strong> oleh ${r.author} (${r.category})<br>`;
-                    if (r.desc) response += `<small>${r.desc}</small><br></div>`;
-                });
-                response += `<br><a href="kitab.html" class="btn btn-outline" style="margin-top:10px;display:inline-block;padding:5px 10px;font-size:0.8rem;">Lihat semua kitab</a>`;
-            } else {
-                response = 'Maaf, saya tidak menemukan kitab yang cocok dengan pertanyaan Anda. Anda bisa mencoba kata kunci lain atau menjelajahi daftar lengkap kitab.';
-            }
-        }
-        // 3. Fatwa related queries
-        else if (lowerMsg.includes('fatwa') || lowerMsg.includes('kejadian') || lowerMsg.includes('punya')) {
-            response = 'Untuk informasi fatwa, silakan buka halaman <a href="fatwa.html" style="color:var(--primary-color);">Bank Fatwa</a> untuk mencari jawaban atas berbagai pertanyaan hukum.';
-        }
-        // 4. Existing keyword-based responses
-        else if (lowerMsg.includes('aqidah') || lowerMsg.includes('akidah')) {
-            response = 'Untuk pelajaran Aqidah, kami merekomendasikan kitab <strong>Kitab Tauhid</strong> atau <strong>Al-Ushul Ats-Tsalatsah</strong> yang diajarkan oleh Dr. Firanda Andirja. <br><br><a href="courses.html" class="btn btn-outline" style="margin-top: 10px; display: inline-block; padding: 5px 10px; font-size: 0.8rem;">Lihat Kelas Aqidah</a>';
-        } else if (lowerMsg.includes('daftar') || lowerMsg.includes('cara')) {
-            response = 'Untuk mendaftar, Anda cukup mengklik tombol "Mulai Belajar" di halaman ini, lalu buat akun menggunakan email Anda secara gratis. Seluruh materi bebas diakses!';
-        } else if (lowerMsg.includes('ustadz') || lowerMsg.includes('siapa')) {
-            response = 'Platform ini dibimbing oleh asatidzah berkompeten, antara lain Dr. Syafiq Riza Basalamah, Dr. Firanda Andirja, Ust. M. Nuzul Dzikri, dan Ust. Ami Nur Baits.';
-        } else {
-            response = 'Pertanyaan yang menarik! Saya adalah asisten virtual berbasis simulasi. Untuk saat ini, saya sarankan Anda mengeksplorasi halaman <a href="courses.html" style="color: var(--primary-color);">Daftar Kelas</a> atau <a href="kitab.html" style="color: var(--primary-color);">Koleksi Kitab</a> untuk menemukan kajian yang Anda butuhkan.'
-        }
-        // Add bot message
-        messagesContainer.innerHTML += `<div class="ai-message system-message"><div class="message-content">${response}</div></div>`;
-        scrollToBottom(messagesContainer);
-    }, 1500);
 }

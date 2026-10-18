@@ -29,8 +29,8 @@ router.get('/:id', (req, res) => {
 router.post('/', authenticateToken, requireAdmin, (req, res) => {
   try {
     const newItem = {
-      id: require('uuid').v4(),
       ...req.body,
+      id: typeof req.body.id === 'string' ? req.body.id : require('uuid').v4(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -49,7 +49,7 @@ router.put('/:id', authenticateToken, requireAdmin, (req, res) => {
     if (!item) return res.status(404).json({ error: 'Not found' });
     
     // Update item dengan data yang diterima
-    Object.assign(item, req.body, { updatedAt: new Date().toISOString() });
+    Object.assign(item, req.body, { id: req.params.id, updatedAt: new Date().toISOString() });
     
     db.write();
     res.json(item);

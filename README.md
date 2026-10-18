@@ -11,12 +11,12 @@ Platform pembelajaran Islam digital yang menyediakan kursus, kitab, artikel, dan
 - 🎙️ **Radio Islami** — Streaming radio 24/7
 - 🌙 **Dark Mode** — Tema gelap/terang
 - 👨‍💼 **Admin Dashboard** — Kelola semua konten
-- 🤖 **AI Chatbot** — Asisten virtual untuk menanya-jawab tentang materi
-- 💾 **Backend API** — RESTful API untuk manajemen data terpusat
+- 🤖 **AI Chatbot** — Endpoint antarmuka tersedia; layanan AI belum dikonfigurasi
+- 💾 **Backend API** — REST API untuk login, pendaftaran, katalog, dan dashboard admin
 
 ## 🚀 Demo
 
-Kunjungi: [https://USERNAME.github.io/bincangilmu](https://USERNAME.github.io/bincangilmu)
+Alamat demo publik belum dikonfigurasi.
 
 ## 🛠️ Teknologi
 
@@ -24,14 +24,15 @@ Kunjungi: [https://USERNAME.github.io/bincangilmu](https://USERNAME.github.io/bi
 - HTML5 + CSS3 + Vanilla JavaScript
 - Font Awesome Icons
 - Google Fonts
-- LocalStorage untuk penyimpanan data (frontend)
+- HTML/CSS/JavaScript vanilla; autentikasi memakai API dan sesi tab
+- `api-config.js` menentukan alamat backend API
 
 ### Backend
 - Node.js + Express.js
 - JWT untuk autentikasi
-- LowDB (JSON database) - bisa diganti dengan PostgreSQL
+- File JSON untuk data lokal; gunakan persistent disk pada deployment
 - RESTful API design
-- CORS enabled
+- CORS dibatasi ke origin yang dikonfigurasi
 - Static file serving
 
 ## 📂 Struktur
@@ -111,8 +112,13 @@ bincangilmu/
      - Runtime: Node
      - Build Command: `npm install`
      - Start Command: `npm start`
-   - Tambahkan environment variables di bagian "Environment"
-   - (Opsional) Tambahkan PostgreSQL sebagai Add-on
+   - Tambahkan `JWT_SECRET` dan `ADMIN_BOOTSTRAP_TOKEN` dengan nilai acak yang berbeda, masing-masing minimal 32 karakter
+   - Tambahkan `FRONTEND_ORIGIN` berisi origin frontend yang tepat (tanpa wildcard)
+   - Tambahkan persistent disk dan atur `DATA_DIR` sama dengan mount path disk, misalnya `/var/data`
+   - Jalankan satu instance backend bila menggunakan penyimpanan file JSON
+   - Jika frontend dan backend berada di host berbeda, atur `window.API_BASE` pada `api-config.js` ke URL backend yang berakhiran `/api`; pastikan `FRONTEND_ORIGIN` cocok dengan origin frontend
+   - Setelah deployment, buat akun admin pertama memakai endpoint bootstrap di atas, lalu hapus `ADMIN_BOOTSTRAP_TOKEN` dari environment
+   - Login dilakukan lewat API. Tidak ada akun admin atau kata sandi demo bawaan lagi
    - Klik "Create Web Service"
 
 ## 📄 Lisensi

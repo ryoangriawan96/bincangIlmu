@@ -2,23 +2,59 @@
 /* Admin Dashboard Logic */
 
 document.addEventListener('DOMContentLoaded', () => {
-    updateStats();
-    loadAdminKitabs();
-    loadAdminCourses();
-    loadAdminBlogs();
-    loadAdminFatwas();
-    loadAdminAds();
-    renderUsers();
+    requireAdminAccess().then(() => {
+        return loadAdminCollections();
+    }).then(() => {
+        updateStats();
+        loadAdminKitabs();
+        loadAdminCourses();
+        loadAdminBlogs();
+        loadAdminFatwas();
+        loadAdminAds();
+        renderUsers();
+    }).catch(() => { window.location.replace('index.html'); });
 });
 
-// Auto-refresh when another tab updates data
-window.addEventListener('storage', (e) => {
-    if (e.key === 'admin_users') {
-        if (typeof renderUsers === 'function') {
-            renderUsers();
+async function requireAdminAccess() {
+    const token = sessionStorage.getItem('authToken');
+    if (!token) throw new Error('Login admin diperlukan');
+    const apiBase = (window.API_BASE || '/api').replace(/\/$/, '');
+    const response = await fetch(`${apiBase}/users`, { headers: { Authorization: `Bearer ${token}` } });
+    if (!response.ok) throw new Error('Akses admin ditolak');
+    sessionStorage.setItem('adminUsers', JSON.stringify(await response.json()));
+}
+
+async function loadAdminCollections() {
+    const collections = [
+        ['kitab', kitabData], ['courses', coursesData], ['blogs', blogsData],
+        ['fatwas', fatwasData], ['ads', adsData]
+    ];
+    for (const [endpoint, map] of collections) {
+        const current = await adminApi(`/${endpoint}`, 'GET');
+        if (current.length === 0) {
+            for (const [id, value] of Object.entries(map)) {
+                current.push(await adminApi(`/${endpoint}`, 'POST', { ...value, id }));
+            }
         }
+        Object.keys(map).forEach(id => delete map[id]);
+        Object.assign(map, Object.fromEntries(current.map(item => [item.id, item])));
     }
-});
+}
+
+async function saveContent(endpoint, map, id, value) {
+    const previous = map[id];
+    const saved = previous
+        ? await adminApi(`/${endpoint}/${encodeURIComponent(previous.id || id)}`, 'PUT', value)
+        : await adminApi(`/${endpoint}`, 'POST', { ...value, id });
+    map[id] = saved;
+    return saved;
+}
+
+async function deleteContent(endpoint, map, id) {
+    const item = map[id];
+    if (item) await adminApi(`/${endpoint}/${encodeURIComponent(item.id || id)}`, 'DELETE');
+    delete map[id];
+}
 
 // Tab Switching
 function switchTab(tabId, element = null) {
@@ -52,11 +88,11 @@ function updateStats() {
     document.getElementById('statFatwaCount').innerText = Object.keys(fatwasData).length;
     
     // User & Ad stats
-    const usersCount = (JSON.parse(localStorage.getItem('admin_users')) || []).length;
+    const usersCount = JSON.parse(sessionStorage.getItem('adminUsers') || '[]').length;
     const statUserEl = document.getElementById('statUserCount');
     if (statUserEl) statUserEl.innerText = usersCount;
     
-    const adsCount = Object.keys(adsData || {}).length;
+    const adsCount = Object.keys(adsData || {}).filter(id => id !== 'top-banner').length;
     const statAdEl = document.getElementById('statAdCount');
     if (statAdEl) statAdEl.innerText = adsCount;
 }
@@ -102,12 +138,12 @@ function editKitab(key) {
     openModal('kitabModal');
 }
 
-function saveKitab(event) {
+async function saveKitab(event) {
     event.preventDefault();
     const key = document.getElementById('kitabKey').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '_');
     if (!key) return alert("ID Tidak Valid!");
     
-    kitabData[key] = {
+    const item = {
         title: document.getElementById('kitabTitle').value,
         author: document.getElementById('kitabAuthor').value,
         category: document.getElementById('kitabCategory').value,
@@ -116,16 +152,15 @@ function saveKitab(event) {
         image: document.getElementById('kitabImage').value
     };
     
-    localStorage.setItem('admin_kitabs', JSON.stringify(kitabData));
+    try { await saveContent('kitab', kitabData, key, item); } catch (error) { return alert(error.message); }
     closeModal('kitabModal');
     loadAdminKitabs();
     updateStats();
 }
 
-function deleteKitab(key) {
+async function deleteKitab(key) {
     if (confirm(`Hapus kitab "${key}"?`)) {
-        delete kitabData[key];
-        localStorage.setItem('admin_kitabs', JSON.stringify(kitabData));
+        try { await deleteContent('kitab', kitabData, key); } catch (error) { return alert(error.message); }
         loadAdminKitabs();
         updateStats();
     }
@@ -254,7 +289,7 @@ function getCurriculumData() {
 }
 /* -------------------------------- */
 
-function saveCourse(event) {
+async function saveCourse(event) {
     event.preventDefault();
     const key = document.getElementById('courseKey').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '_');
     if (!key) return alert("ID Tidak Valid!");
@@ -262,7 +297,7 @@ function saveCourse(event) {
     // Parse the DOM to get the curriculum JSON
     const newCurriculum = getCurriculumData();
 
-    coursesData[key] = {
+    const item = {
         title: document.getElementById('courseTitle').value,
         instructor: document.getElementById('courseInstructor').value,
         instructorImg: coursesData[key] && coursesData[key].instructorImg ? coursesData[key].instructorImg : "https://randomuser.me/api/portraits/men/11.jpg",
@@ -274,16 +309,15 @@ function saveCourse(event) {
         curriculum: newCurriculum
     };
     
-    localStorage.setItem('admin_courses', JSON.stringify(coursesData));
+    try { await saveContent('courses', coursesData, key, item); } catch (error) { return alert(error.message); }
     closeModal('courseModal');
     loadAdminCourses();
     updateStats();
 }
 
-function deleteCourse(key) {
+async function deleteCourse(key) {
     if (confirm(`Hapus kursus "${key}"?`)) {
-        delete coursesData[key];
-        localStorage.setItem('admin_courses', JSON.stringify(coursesData));
+        try { await deleteContent('courses', coursesData, key); } catch (error) { return alert(error.message); }
         loadAdminCourses();
         updateStats();
     }
@@ -330,12 +364,12 @@ function editBlog(key) {
     openModal('blogModal');
 }
 
-function saveBlog(event) {
+async function saveBlog(event) {
     event.preventDefault();
     const key = document.getElementById('blogKey').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '_');
     if (!key) return alert("ID Tidak Valid!");
     
-    blogsData[key] = {
+    const item = {
         title: document.getElementById('blogTitle').value,
         author: { name: document.getElementById('blogAuthor').value, img: blogsData[key] && blogsData[key].author && blogsData[key].author.img ? blogsData[key].author.img : "https://randomuser.me/api/portraits/men/1.jpg" },
         category: document.getElementById('blogCategory').value,
@@ -345,16 +379,15 @@ function saveBlog(event) {
         image: document.getElementById('blogImage').value || "https://images.unsplash.com/photo-1455390582262-044cdead2708?w=800&q=80"
     };
     
-    localStorage.setItem('admin_blogs', JSON.stringify(blogsData));
+    try { await saveContent('blogs', blogsData, key, item); } catch (error) { return alert(error.message); }
     closeModal('blogModal');
     loadAdminBlogs();
     updateStats();
 }
 
-function deleteBlog(key) {
+async function deleteBlog(key) {
     if (confirm(`Hapus artikel "${key}"?`)) {
-        delete blogsData[key];
-        localStorage.setItem('admin_blogs', JSON.stringify(blogsData));
+        try { await deleteContent('blogs', blogsData, key); } catch (error) { return alert(error.message); }
         loadAdminBlogs();
         updateStats();
     }
@@ -401,12 +434,12 @@ function editFatwa(key) {
     openModal('fatwaModal');
 }
 
-function saveFatwa(event) {
+async function saveFatwa(event) {
     event.preventDefault();
     const key = document.getElementById('fatwaKey').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '_');
     if (!key) return alert("ID Tidak Valid!");
     
-    fatwasData[key] = {
+    const item = {
         title: document.getElementById('fatwaTitle').value,
         mufti: document.getElementById('fatwaMufti').value,
         category: document.getElementById('fatwaCategory').value,
@@ -417,34 +450,30 @@ function saveFatwa(event) {
         status: "Selesai"
     };
     
-    localStorage.setItem('admin_fatwas', JSON.stringify(fatwasData));
+    try { await saveContent('fatwas', fatwasData, key, item); } catch (error) { return alert(error.message); }
     closeModal('fatwaModal');
     loadAdminFatwas();
     updateStats();
 }
 
-function deleteFatwa(key) {
+async function deleteFatwa(key) {
     if (confirm(`Hapus fatwa "${key}"?`)) {
-        delete fatwasData[key];
-        localStorage.setItem('admin_fatwas', JSON.stringify(fatwasData));
+        try { await deleteContent('fatwas', fatwasData, key); } catch (error) { return alert(error.message); }
         loadAdminFatwas();
         updateStats();
     }
 }
 
 /* ================== RESET ================== */
-function resetAllData() {
-    if (confirm("PERINGATAN: Ini akan menghapus semua data yang Anda tambahkan dan mengembalikan website ke kondisi awal. Lanjutkan?")) {
-        localStorage.removeItem('admin_kitabs');
-        localStorage.removeItem('admin_courses');
-        localStorage.removeItem('admin_blogs');
-        localStorage.removeItem('admin_fatwas');
-        localStorage.removeItem('admin_ads');
-        localStorage.removeItem('admin_users');
-        localStorage.removeItem('admin_top_ad');
-        alert("Data berhasil di-reset! Memuat ulang halaman...");
+async function resetAllData() {
+    if (!confirm("PERINGATAN: Ini akan menghapus konten tambahan kursus, kitab, artikel, fatwa, dan iklan. Akun pengguna tidak dihapus. Lanjutkan?")) return;
+    try {
+        for (const [endpoint, map] of [['kitab', kitabData], ['courses', coursesData], ['blogs', blogsData], ['fatwas', fatwasData], ['ads', adsData]]) {
+            for (const id of Object.keys(map)) await deleteContent(endpoint, map, id);
+        }
+        alert("Konten berhasil di-reset. Memuat ulang halaman...");
         location.reload();
-    }
+    } catch (error) { alert(`Reset gagal: ${error.message}`); }
 }
 
 
@@ -474,17 +503,13 @@ const adminDefaultAds = {
     }
 };
 
-adsData = JSON.parse(localStorage.getItem('admin_ads'));
-if (!adsData || Object.keys(adsData).length === 0) {
-    adsData = adminDefaultAds;
-    localStorage.setItem('admin_ads', JSON.stringify(adsData));
-}
+adsData = adminDefaultAds;
 
 function loadAdminAds() {
     const tbody = document.getElementById('adTableBody');
     if (!tbody) return;
     tbody.innerHTML = '';
-    for (const [key, ad] of Object.entries(adsData)) {
+    for (const [key, ad] of Object.entries(adsData).filter(([id]) => id !== 'top-banner')) {
         tbody.innerHTML += `
             <tr>
                 <td><strong>${key}</strong></td>
@@ -526,12 +551,12 @@ function editAd(key) {
     openModal('adModal');
 }
 
-function saveAd(event) {
+async function saveAd(event) {
     event.preventDefault();
     const key = document.getElementById('adKey').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '_');
     if (!key) return alert("ID Tidak Valid!");
     
-    adsData[key] = {
+    const item = {
         type: document.getElementById('adType').value,
         badgeText: document.getElementById('adBadgeText').value,
         badgeIcon: document.getElementById('adBadgeIcon').value,
@@ -545,16 +570,15 @@ function saveAd(event) {
         size: document.getElementById('adSize').value
     };
     
-    localStorage.setItem('admin_ads', JSON.stringify(adsData));
+    try { await saveContent('ads', adsData, key, item); } catch (error) { return alert(error.message); }
     closeModal('adModal');
     loadAdminAds();
     updateStats();
 }
 
-function deleteAd(key) {
+async function deleteAd(key) {
     if(confirm('Yakin ingin menghapus iklan ini?')) {
-        delete adsData[key];
-        localStorage.setItem('admin_ads', JSON.stringify(adsData));
+        try { await deleteContent('ads', adsData, key); } catch (error) { return alert(error.message); }
         loadAdminAds();
         updateStats();
     }
@@ -567,7 +591,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadTopAdSettings() {
-    const topAdData = JSON.parse(localStorage.getItem('admin_top_ad')) || { active: false, text: '', btnText: '', link: '' };
+    adminApi('/ads/top-banner', 'GET').then(data => { adsData['top-banner'] = data; loadForm(data); }).catch(() => loadForm());
+    function loadForm(topAdData = { active: false, text: '', btnText: '', link: '' }) {
     const statusCheckbox = document.getElementById('topAdStatus');
     if (statusCheckbox) {
         statusCheckbox.checked = topAdData.active;
@@ -580,9 +605,10 @@ function loadTopAdSettings() {
         document.getElementById('topAdBtnText').value = topAdData.btnText || '';
         document.getElementById('topAdLink').value = topAdData.link || '';
     }
+    }
 }
 
-function saveTopAd(event) {
+async function saveTopAd(event) {
     event.preventDefault();
     const topAdData = {
         active: document.getElementById('topAdStatus').checked,
@@ -590,7 +616,8 @@ function saveTopAd(event) {
         btnText: document.getElementById('topAdBtnText').value,
         link: document.getElementById('topAdLink').value
     };
-    localStorage.setItem('admin_top_ad', JSON.stringify(topAdData));
+    try { await saveContent('ads', adsData, 'top-banner', { ...topAdData, type: 'banner', title: topAdData.text }); }
+    catch (error) { return alert(error.message); }
     if(typeof showToast === 'function') {
         showToast("Disimpan!", "Pengaturan Iklan Banner Atas berhasil disimpan.", "success");
     } else {
@@ -603,7 +630,7 @@ function renderUsers() {
     const tbody = document.getElementById('usersTableBody');
     if (!tbody) return;
     
-    usersData = JSON.parse(localStorage.getItem('admin_users')) || [];
+    usersData = JSON.parse(sessionStorage.getItem('adminUsers') || '[]');
     tbody.innerHTML = '';
     
     usersData.forEach((user, index) => {
@@ -613,41 +640,30 @@ function renderUsers() {
         if(user.role === 'Admin') roleBadgeClass = 'badge-danger';
         if(user.role === 'Pengajar') roleBadgeClass = 'badge-primary';
         
-        // Use a generic placeholder password if none exists (for old data)
-        const displayPassword = user.password || '******';
-        
-        // Format registration date
-        let registeredDate = '-';
-        if (user.registeredAt) {
-            const dateObj = new Date(user.registeredAt);
-            registeredDate = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-        }
-        
-        tr.innerHTML = `
-            <td>
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <div style="width:35px; height:35px; border-radius:50%; background:var(--primary-light); color:var(--primary-color); display:flex; align-items:center; justify-content:center; font-weight:bold;">
-                        ${user.name.charAt(0).toUpperCase()}
-                    </div>
-                    <strong>${user.name}</strong>
-                </div>
-            </td>
-            <td>${user.email}</td>
-            <td style="font-family: monospace; letter-spacing: 1px;">${displayPassword}</td>
-            <td><span class="badge ${roleBadgeClass}">${user.role}</span></td>
-            <td><span style="color: var(--text-light); font-size: 0.9em;">${registeredDate}</span></td>
-            <td><span style="color: green;"><i class="fas fa-check-circle"></i> Aktif</span></td>
-            <td>
-                <button class="btn btn-sm btn-outline-primary" onclick="editUser('${user.email}')" title="Edit"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-sm btn-danger" onclick="deleteUser('${user.email}')" title="Hapus"><i class="fas fa-trash"></i></button>
-            </td>
-        `;
+        const nameCell = document.createElement('td');
+        const identity = document.createElement('div'); identity.style.cssText = 'display:flex;align-items:center;gap:10px;';
+        const avatar = document.createElement('div'); avatar.style.cssText = 'width:35px;height:35px;border-radius:50%;background:var(--primary-light);color:var(--primary-color);display:flex;align-items:center;justify-content:center;font-weight:bold;';
+        avatar.textContent = String(user.name || '?').slice(0, 1).toUpperCase();
+        const name = document.createElement('strong'); name.textContent = user.name || '';
+        identity.append(avatar, name); nameCell.appendChild(identity);
+        const emailCell = document.createElement('td'); emailCell.textContent = user.email || '';
+        const passwordCell = document.createElement('td'); passwordCell.textContent = '••••••'; passwordCell.style.cssText = 'font-family:monospace;letter-spacing:1px;';
+        const roleCell = document.createElement('td'); const badge = document.createElement('span'); badge.className = 'badge ' + roleBadgeClass; badge.textContent = user.role || 'Siswa'; roleCell.appendChild(badge);
+        const dateCell = document.createElement('td'); const dateLabel = document.createElement('span'); dateLabel.style.cssText = 'color:var(--text-light);font-size:0.9em;';
+        const parsedDate = user.createdAt ? new Date(user.createdAt) : null;
+        dateLabel.textContent = parsedDate && !Number.isNaN(parsedDate.valueOf()) ? parsedDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'; dateCell.appendChild(dateLabel);
+        const statusCell = document.createElement('td'); statusCell.textContent = 'Aktif'; statusCell.style.color = 'green';
+        const actionsCell = document.createElement('td');
+        const editButton = document.createElement('button'); editButton.className = 'btn btn-sm btn-outline-primary'; editButton.title = 'Edit'; editButton.innerHTML = '<i class="fas fa-edit"></i>'; editButton.addEventListener('click', () => editUser(user.email));
+        const deleteButton = document.createElement('button'); deleteButton.className = 'btn btn-sm btn-danger'; deleteButton.title = 'Hapus'; deleteButton.innerHTML = '<i class="fas fa-trash"></i>'; deleteButton.addEventListener('click', () => deleteUser(user.email));
+        actionsCell.append(editButton, deleteButton);
+        tr.append(nameCell, emailCell, passwordCell, roleCell, dateCell, statusCell, actionsCell);
         tbody.appendChild(tr);
     });
 }
 
 function editUser(email) {
-    usersData = JSON.parse(localStorage.getItem('admin_users')) || [];
+    usersData = JSON.parse(sessionStorage.getItem('adminUsers') || '[]');
     const user = usersData.find(u => u.email === email);
     if (!user) return;
     
@@ -661,9 +677,9 @@ function editUser(email) {
     openModal('userModal');
 }
 
-function saveUser(event) {
+async function saveUser(event) {
     event.preventDefault();
-    usersData = JSON.parse(localStorage.getItem('admin_users')) || [];
+    usersData = JSON.parse(sessionStorage.getItem('adminUsers') || '[]');
     
     const originalEmail = document.getElementById('userOriginalEmail').value;
     const name = document.getElementById('userName').value;
@@ -675,10 +691,12 @@ function saveUser(event) {
         // Edit mode
         const index = usersData.findIndex(u => u.email === originalEmail);
         if (index !== -1) {
-            usersData[index].name = name;
-            usersData[index].email = email;
-            usersData[index].role = role;
-            if (password) usersData[index].password = password; // Only update password if provided
+            const changes = { name, email, role };
+            if (password) changes.password = password;
+            try {
+                const updated = await adminApi(`/users/${encodeURIComponent(usersData[index].id)}`, 'PUT', changes);
+                usersData[index] = updated;
+            } catch (error) { alert(error.message); return; }
         }
     } else {
         // Add mode
@@ -691,10 +709,12 @@ function saveUser(event) {
             alert("Email sudah terdaftar!");
             return;
         }
-        usersData.push({ name, email, password, role, registeredAt: new Date().toISOString() });
+        try {
+            usersData.push(await adminApi('/users', 'POST', { name, email, password, role }));
+        } catch (error) { alert(error.message); return; }
     }
     
-    localStorage.setItem('admin_users', JSON.stringify(usersData));
+    sessionStorage.setItem('adminUsers', JSON.stringify(usersData));
     closeModal('userModal');
     renderUsers();
     updateStats();
@@ -705,17 +725,27 @@ function saveUser(event) {
 }
 
 function deleteUser(email) {
-    if (email === 'admin@bincangilmu.com') {
-        alert("Tidak dapat menghapus Administrator utama!");
-        return;
-    }
     if (confirm(`Apakah Anda yakin ingin menghapus pengguna dengan email: ${email}?`)) {
-        usersData = JSON.parse(localStorage.getItem('admin_users')) || [];
-        usersData = usersData.filter(u => u.email !== email);
-        localStorage.setItem('admin_users', JSON.stringify(usersData));
-        renderUsers();
-        updateStats();
+        usersData = JSON.parse(sessionStorage.getItem('adminUsers') || '[]');
+        const user = usersData.find(u => u.email === email);
+        if (user) adminApi(`/users/${encodeURIComponent(user.id)}`, 'DELETE').then(() => {
+            usersData = usersData.filter(u => u.id !== user.id);
+            sessionStorage.setItem('adminUsers', JSON.stringify(usersData));
+            renderUsers(); updateStats();
+        }).catch(error => alert(error.message));
     }
+}
+
+async function adminApi(path, method, payload) {
+    const apiBase = (window.API_BASE || '/api').replace(/\/$/, '');
+    const response = await fetch(`${apiBase}${path}`, {
+        method,
+        headers: { Authorization: `Bearer ${sessionStorage.getItem('authToken')}`, 'Content-Type': 'application/json' },
+        body: payload ? JSON.stringify(payload) : undefined
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || 'Permintaan admin gagal.');
+    return result;
 }
 
 // Add renderUsers to DOMContentLoaded
