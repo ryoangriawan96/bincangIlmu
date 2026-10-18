@@ -10016,6 +10016,19 @@ body.menu-open {
     transition: transform 0.5s ease;
 }
 
+/* Keep the thumbnail wrapper the same height as its image. */
+.blog-card > .blog-thumb {
+    height: 200px;
+    min-height: 0;
+    flex: 0 0 200px;
+    aspect-ratio: auto;
+    margin-bottom: 0.75rem;
+}
+
+.blog-card > .blog-thumb img {
+    height: 100%;
+}
+
 .blog-card:hover .blog-thumb img {
     transform: scale(1.05);
 }
