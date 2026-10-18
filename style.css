@@ -12049,12 +12049,7 @@ img {
     }
     .hero-content { order: 0; width: 100%; min-width: 0; margin-top: 0; }
     .hero-image {
-        order: 1;
-        width: min(100%, 390px);
-        height: clamp(180px, 46vw, 300px);
-        min-height: 0;
-        margin-inline: auto;
-        overflow: hidden;
+        display: none;
     }
     .hero-bg-animation { display: none; }
     .hero-slider-container { width: 100%; height: 100%; overflow: hidden; }
