@@ -12840,7 +12840,7 @@ img {
 
 /* Blog and kitab pages use the same calm discovery pattern as Fatwa. */
 .blog-page-toolbar {
-    display: grid;
+    display: grid !important;
     grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
     grid-template-areas:
         "heading search"
