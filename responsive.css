@@ -490,6 +490,31 @@ table {
     .scrolling-grid {
         grid-auto-columns: minmax(0, 82vw);
     }
+
+    .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: clamp(0.5rem, 2vw, 1rem);
+        padding: clamp(1rem, 3vw, 1.5rem) clamp(0.65rem, 2vw, 1rem);
+    }
+
+    .hero-stats .stat-item {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .hero-stats .stat-number {
+        font-size: clamp(1.35rem, 4vw, 1.8rem);
+        line-height: 1.1;
+        white-space: nowrap;
+    }
+
+    .hero-stats .stat-label {
+        font-size: clamp(0.58rem, 1.7vw, 0.75rem);
+        letter-spacing: 0.02em;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+    }
 }
 
 @media (max-width: 640px) {
