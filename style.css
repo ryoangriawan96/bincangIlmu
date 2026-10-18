@@ -12120,3 +12120,53 @@ img {
     .footer-bottom p { font-size: 0.85rem; }
     .hero-stats { margin-top: 1.25rem; }
 }
+
+/* Keep the promo badge and message stacked in the small ad carousel. */
+@media (max-width: 768px) {
+    .ad-carousel-track {
+        height: clamp(320px, 65vw, 360px);
+    }
+
+    .ad-slide .ad-banner-custom {
+        flex-direction: column;
+        justify-content: center;
+        align-items: stretch;
+        gap: 0.75rem;
+        padding: 1.25rem;
+        text-align: center;
+    }
+
+    .ad-slide .ad-badge {
+        align-self: center;
+        margin: 0;
+    }
+
+    .ad-slide .ad-content-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .ad-slide .ad-text {
+        min-width: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .ad-slide .ad-text h3 {
+        margin-bottom: 0.4rem;
+        font-size: clamp(1.2rem, 5vw, 1.6rem);
+    }
+
+    .ad-slide .ad-text p {
+        font-size: 0.95rem;
+        line-height: 1.45;
+    }
+
+    .ad-slide .btn-ad-action {
+        width: auto;
+        max-width: 100%;
+        padding: 0.75rem 1.25rem;
+        font-size: 0.95rem;
+    }
+}
