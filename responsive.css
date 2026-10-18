@@ -86,6 +86,45 @@ section,
     gap: 0.65rem;
 }
 
+@media (min-width: 769px) {
+    /* Keep the promo badge above the message instead of beside/over it. */
+    .ad-slide .ad-banner-custom {
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1.5rem clamp(1.5rem, 4vw, 3rem);
+    }
+
+    .ad-slide .ad-badge {
+        align-self: flex-start;
+        margin: 0;
+    }
+
+    .ad-slide .ad-content-wrapper {
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: clamp(1rem, 3vw, 2.5rem);
+        min-width: 0;
+    }
+
+    .ad-slide .ad-text {
+        flex: 1 1 0%;
+        min-width: 0;
+    }
+
+    .ad-slide .ad-text h3,
+    .ad-slide .ad-text p {
+        overflow-wrap: anywhere;
+    }
+
+    .ad-slide .btn-ad-action {
+        flex: 0 0 auto;
+        max-width: 100%;
+        padding: 0.85rem clamp(1rem, 2.2vw, 2rem);
+    }
+}
+
 /* Keep the Kitab catalog at two cards per desktop row. */
 #kitabGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
