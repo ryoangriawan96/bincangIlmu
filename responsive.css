@@ -855,4 +855,54 @@ table {
         font-size: clamp(0.68rem, 3vw, 0.85rem);
         line-height: 1.25;
     }
+
+    .ai-search-box {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.55rem;
+        padding: 0.65rem;
+    }
+
+    .ai-sparkle-icon {
+        top: 1.25rem;
+        transform: none;
+    }
+
+    .ai-search-box input {
+        grid-column: 1;
+        grid-row: 1;
+        width: 100%;
+        min-height: 48px;
+    }
+
+    .ai-search-box .btn-ai-search {
+        grid-column: 1;
+        grid-row: 2;
+        width: 100%;
+        min-height: 46px;
+    }
+
+    .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.65rem;
+        padding: 1.25rem 0.75rem;
+    }
+
+    .hero-stats .stat-item {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .hero-stats .stat-number {
+        font-size: clamp(1.35rem, 6vw, 1.75rem);
+        white-space: nowrap;
+    }
+
+    .hero-stats .stat-label {
+        font-size: clamp(0.58rem, 2.7vw, 0.72rem);
+        letter-spacing: 0.02em;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+    }
 }
