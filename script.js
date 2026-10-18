@@ -3525,9 +3525,12 @@ function renderAds() {
                 </div>`;
         } else {
             let titleHtml = ad.subtitle ? `<span>${ad.title}</span><br>${ad.subtitle}` : ad.title;
-            let badgeHtml = ad.badgeText ? `
+            // Ignore the retired badge even when an older API record still contains it.
+            const badgeText = String(ad.badgeText || '').trim();
+            const visibleBadgeText = badgeText.toLowerCase() === 'informasi penting' ? '' : badgeText;
+            let badgeHtml = visibleBadgeText ? `
                 <div class="ad-badge">
-                    <i class="${ad.badgeIcon || 'fas fa-info-circle'}" style="margin-right: 5px;"></i> ${ad.badgeText}
+                    <i class="${ad.badgeIcon || 'fas fa-info-circle'}" style="margin-right: 5px;"></i> ${visibleBadgeText}
                 </div>` : '';
             slide.innerHTML = `
                 <div class="ad-banner-custom">
