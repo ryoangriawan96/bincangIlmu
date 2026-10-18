@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Bincang Ilmu</title>
+    <script>
+        document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=249">
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="style.css?v=253">
+    <link rel="stylesheet" href="admin.css?v=3">
     <link rel="stylesheet" href="responsive.css?v=1">
 </head>
 <body class="admin-body">
@@ -250,7 +253,7 @@
                 .switch input:checked + .slider { background-color: var(--primary-color); }
                 .switch input:checked + .slider:before { transform: translateX(26px); }
                 </style>
-                <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 2rem; margin-top: 1.5rem; margin-bottom: 2rem;">
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; margin-top: 1.5rem; margin-bottom: 2rem;">
                     <h3 style="color: var(--primary-dark); margin-bottom: 1rem;"><i class="fas fa-bullhorn"></i> Pengaturan Iklan Banner Atas (Top Bar)</h3>
                     <form id="topAdForm" onsubmit="saveTopAd(event)">
                         <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
@@ -321,7 +324,7 @@
                 .switch input:checked + .slider:before { transform: translateX(26px); }
                 </style>
                 
-                <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 2rem; margin-top: 1.5rem;">
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; margin-top: 1.5rem;">
                     <h3 style="color: var(--danger-color); margin-bottom: 0.5rem;"><i class="fas fa-exclamation-triangle"></i> Zona Berbahaya (Zona Merah)</h3>
                     <p style="color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.6;">
                         Tindakan di bawah ini bersifat permanen dan tidak dapat dibatalkan. Jika Anda mereset data, semua modifikasi, kursus, kitab, dan artikel tambahan yang Anda buat akan dihapus seluruhnya dari memori <i>browser</i> ini, dan <i>website</i> akan kembali ke versi data bawaan awal.

@@ -323,6 +323,49 @@
     background: #fca5a5;
 }
 
+/* Keep the admin builder aligned with the shared dark theme. */
+[data-theme="dark"] .admin-badge {
+    background: var(--gradient-primary);
+}
+
+[data-theme="dark"] .admin-nav-link:hover,
+[data-theme="dark"] .admin-nav-link.active,
+[data-theme="dark"] .admin-stat-card .icon {
+    background: var(--primary-light);
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .module-box,
+[data-theme="dark"] .video-box {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .admin-table th,
+[data-theme="dark"] .admin-table td,
+[data-theme="dark"] .admin-modal-header {
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group select,
+[data-theme="dark"] .form-group textarea {
+    background: var(--bg-dark);
+    border-color: var(--border-color);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .form-group input::placeholder,
+[data-theme="dark"] .form-group textarea::placeholder {
+    color: var(--text-light);
+    opacity: 1;
+}
+
+[data-theme="dark"] .builder-remove-btn {
+    background: rgba(248, 113, 113, 0.16);
+    color: #FCA5A5;
+}
+
 /* Keep the dashboard usable on phones and small tablets. */
 @media (max-width: 900px) {
     .admin-body {

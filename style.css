@@ -59,41 +59,37 @@
 
 /* Dark Theme Variables */
 [data-theme="dark"] {
-    /* Primary Colors: Solid Maroon */
-    --primary-color: #6B2D3E;
-    /* Deep Maroon */
-    --primary-dark: #4A1D2B;
-    --primary-light: rgba(107, 45, 62, 0.25);
+    /* Shared dark palette: warm near-black surfaces with a readable rose accent. */
+    --primary-color: #C98295;
+    --primary-dark: #A85F73;
+    --primary-surface: #6B2D3E;
+    --primary-light: rgba(201, 130, 149, 0.18);
     --secondary-color: #A89F9E;
-    /* Muted Cream for contrast */
 
     /* Text Colors */
-    --text-dark: #FDF8F4;
-    /* Warm Cream for text on dark bg */
-    --text-light: #A89F9E;
+    --text-dark: #F8F0F1;
+    --text-light: #C4B5B9;
 
     /* Background Colors */
-    --bg-white: #1A0F11;
-    /* Deep Maroon-Black */
+    --bg-white: #140C0F;
 
     /* Glassmorphism Variables (Dark Mode) */
-    --glass-bg: rgba(42, 26, 30, 0.95);
-    --glass-border: 1px solid rgba(196, 168, 130, 0.15);
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    --glass-bg: rgba(34, 21, 25, 0.98);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 12px 32px 0 rgba(0, 0, 0, 0.38);
 
-    --bg-light: #2A1A1E;
-    /* Dark Maroon */
-    --bg-card: #2A1A1E;
-    --border-color: #3D2A2E;
-    --bg-dark: #0D0608;
+    --bg-light: #26191D;
+    --bg-card: #211519;
+    --bg-card-dark: #2B1D21;
+    --border-color: #49363C;
+    --bg-dark: #10090C;
 
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
 
     /* Gradients */
-    --gradient-text: linear-gradient(to right, #FDF8F4, #A89F9E);
-    /* Cream to Tan */
+    --gradient-text: linear-gradient(to right, #F8F0F1, #C4B5B9);
     --gradient-primary: linear-gradient(135deg, #6B2D3E 0%, #4A1D2B 100%);
     /* Solid Maroon gradient */
 }
@@ -611,7 +607,7 @@ img {
 
 
 [data-theme="dark"] .search-field-container {
-    background: var(--primary-color);
+    background: var(--bg-card);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -1167,7 +1163,7 @@ img {
 
 
 [data-theme="dark"] .profile-dropdown {
-    background: var(--primary-color);
+    background: var(--bg-card);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -4358,7 +4354,6 @@ justify-content: flex-start;
     color: var(--text-dark) !important;
 }
 
-
 .featured-carousel-dots .dot {
     width: 10px;
     height: 10px;
@@ -6131,7 +6126,7 @@ justify-content: flex-start;
 
 
 [data-theme="dark"] .book-card {
-    background: var(--primary-color);
+    background: var(--bg-card);
     border-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -6600,8 +6595,8 @@ justify-content: flex-start;
 
 
 [data-theme="dark"] .btn-read-more:hover {
-    background: #FFFFFF;
-    color: black;
+    background: var(--primary-color);
+    color: var(--bg-dark);
 }
 
 
@@ -7441,7 +7436,7 @@ justify-content: flex-start;
 
 [data-theme="dark"] .c-item-2,
 [data-theme="dark"] .c-item-3 {
-    background: var(--primary-color);
+    background: var(--primary-surface);
     /* Slightly lighter opaque dark */
 }
 
@@ -9340,7 +9335,7 @@ body.menu-open {
 
 
 [data-theme="dark"] .fatwa-chip.active {
-    color: #FFFFFF;
+    color: var(--bg-dark);
 }
 
 
@@ -12408,4 +12403,109 @@ img {
         letter-spacing: 0.02em;
         overflow-wrap: anywhere;
     }
+}
+
+
+/* Shared dark theme surfaces and controls across site pages. */
+[data-theme="dark"] .page-header,
+[data-theme="dark"] .section.bg-light,
+[data-theme="dark"] .breadcrumb-area,
+[data-theme="dark"] .kitab-dashboard-section {
+    background-color: var(--bg-light);
+}
+
+[data-theme="dark"] .course-card,
+[data-theme="dark"] .blog-card,
+[data-theme="dark"] .blog-card-standard,
+[data-theme="dark"] .kitab-card,
+[data-theme="dark"] .fatwa-card,
+[data-theme="dark"] .sidebar-card,
+[data-theme="dark"] .sidebar-widget,
+[data-theme="dark"] .modal-box,
+[data-theme="dark"] .mv-card,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .value-card,
+[data-theme="dark"] .benefit-card,
+[data-theme="dark"] .book-card-horizontal {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] input:not([type="checkbox"]):not([type="radio"]),
+[data-theme="dark"] textarea,
+[data-theme="dark"] select,
+[data-theme="dark"] .form-input {
+    background-color: var(--bg-dark);
+    border-color: var(--border-color);
+    color: var(--text-dark);
+    caret-color: var(--text-dark);
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder,
+[data-theme="dark"] .form-input::placeholder {
+    color: var(--text-light);
+    opacity: 1;
+}
+
+[data-theme="dark"] .form-input:focus,
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus,
+[data-theme="dark"] select:focus {
+    border-color: var(--primary-color);
+}
+
+[data-theme="dark"] .text-primary,
+[data-theme="dark"] .horizontal-author,
+[data-theme="dark"] .book-author {
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .sidebar-link:hover,
+[data-theme="dark"] .sidebar-link.active {
+    background: var(--primary-light);
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .sidebar-link.active i {
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .fatwa-chip.active {
+    color: var(--bg-dark);
+}
+
+[data-theme="dark"] .btn-read-more:hover {
+    background: var(--primary-color);
+    color: var(--bg-dark);
+}
+
+[data-theme="dark"] .course-title a:hover,
+[data-theme="dark"] .blog-title a:hover,
+[data-theme="dark"] .about-redesign-content h2 .highlight-text {
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .ad-action .btn {
+    background: var(--gradient-primary);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .global-top-ad-bar {
+    background: var(--gradient-primary);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .horizontal-title,
+[data-theme="dark"] .book-title {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .blog-card-meta,
+[data-theme="dark"] .blog-date-text,
+[data-theme="dark"] .course-meta,
+[data-theme="dark"] .muted,
+[data-theme="dark"] small {
+    color: var(--text-light);
 }
