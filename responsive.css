@@ -1338,21 +1338,33 @@ table {
 
 /* Center and wrap library/course filter chips on tablet and mobile widths. */
 @media (max-width: 900px) {
+    .kitab-sidebar .sidebar-section {
+        width: 100%;
+        text-align: center;
+    }
+
+    .kitab-sidebar .sidebar-title {
+        width: 100%;
+        text-align: center;
+    }
+
     .kitab-sidebar .sidebar-list {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         width: 100%;
         max-width: 100%;
+        margin-inline: auto;
         overflow: visible;
     }
 
     .kitab-sidebar .sidebar-list li {
-        flex: 0 1 auto;
+        flex: 0 0 auto;
     }
 
     .kitab-sidebar .sidebar-link {
         justify-content: center;
+        text-align: center;
     }
 
     /* The dark-theme active chip uses a rose background, so its label and icon
