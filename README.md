@@ -8,7 +8,6 @@ Platform pembelajaran Islam digital yang menyediakan kursus, kitab, artikel, dan
 - 📖 **Perpustakaan Kitab** — Koleksi kitab digital lengkap
 - ✍️ **Artikel & Blog** — Artikel ilmiah dengan kategori
 - ⚖️ **Bank Fatwa** — Kumpulan fatwa dengan pencarian
-- 🎙️ **Radio Islami** — Streaming radio 24/7
 - 🌙 **Dark Mode** — Tema gelap/terang
 - 👨‍💼 **Admin Dashboard** — Kelola semua konten
 - 🤖 **AI Chatbot** — Endpoint antarmuka tersedia; layanan AI belum dikonfigurasi
