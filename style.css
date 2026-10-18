@@ -4327,35 +4327,35 @@ justify-content: flex-start;
 
 /* Kitab page contrast fixes for dark mode. */
 [data-theme="dark"] .kitab-content .horizontal-title {
-    color: #FDF8F4;
+    color: var(--text-dark);
 }
 
 [data-theme="dark"] .kitab-content .horizontal-author {
-    color: #F0B5C0;
+    color: var(--text-light);
 }
 
 [data-theme="dark"] .kitab-content .horizontal-desc {
-    color: #D1D5DB;
+    color: var(--text-light);
 }
 
 [data-theme="dark"] .kitab-search-wrapper input {
-    color: #FDF8F4;
-    background: #2A1A1E;
-    caret-color: #FDF8F4;
+    color: var(--text-dark);
+    background: var(--bg-light);
+    caret-color: var(--text-dark);
 }
 
 [data-theme="dark"] .kitab-search-wrapper input::placeholder {
-    color: #D1C2C5;
+    color: var(--text-light);
     opacity: 1;
 }
 
-[data-theme="dark"] .page-header .badge-outline,
-[data-theme="dark"] .page-header .section-title .text-primary {
-    color: #F0B5C0 !important;
+[data-theme="dark"] .page-header .badge-outline {
+    color: var(--text-light);
+    border-color: var(--border-color);
 }
 
-[data-theme="dark"] .page-header .badge-outline {
-    border-color: #F0B5C0;
+[data-theme="dark"] .page-header .section-title .text-primary {
+    color: var(--text-dark) !important;
 }
 
 
