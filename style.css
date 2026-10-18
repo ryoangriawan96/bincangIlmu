@@ -777,6 +777,17 @@ img {
     /* Keep inline for dot */
 }
 
+.brand-logo-image {
+    display: block;
+    width: 148px;
+    max-width: 100%;
+    height: auto;
+}
+
+[data-theme="dark"] .brand-logo-image {
+    filter: brightness(0) invert(1);
+}
+
 
 /* Footer Logo specific */
 .logo-footer {
@@ -793,6 +804,10 @@ img {
     margin-bottom: 1.5rem;
     font-family: var(--font-logo);
     letter-spacing: -0.5px;
+}
+
+.logo-footer .brand-logo-image {
+    width: 154px;
 }
 
 
