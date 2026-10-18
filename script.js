@@ -3645,16 +3645,32 @@ document.addEventListener('DOMContentLoaded', () => {
         top: 50%;
         right: 3rem;
         transform: translateY(-50%);
-        color: rgba(255, 255, 255, 0.2);
-        font-size: clamp(9rem, 18vw, 12rem);
         line-height: 1;
         pointer-events: none;
         z-index: 0;
     }
+    .ad-slide .cta-decoration i,
+    .ad-slide .ad-decoration-icon {
+        color: rgba(255, 255, 255, 0.2);
+        font-size: clamp(9rem, 18vw, 12rem);
+    }
     .ad-slide .ad-banner-custom::after {
         content: none;
     }
-    .ad-slide .btn-ad-action {
+    .ad-slide .cta-box,
+    .ad-slide .ad-banner-custom {
+        padding: clamp(1.5rem, 3vw, 2.5rem);
+        border-radius: var(--radius-xl, 1.5rem);
+    }
+    .ad-slide .cta-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        max-width: calc(100% - clamp(9rem, 20vw, 14rem));
+    }
+    .ad-slide .btn-ad-action,
+    .ad-slide .btn-white {
         position: relative;
         z-index: 2;
         flex: 0 0 auto;
@@ -3669,30 +3685,33 @@ document.addEventListener('DOMContentLoaded', () => {
         line-height: 1.25;
         box-shadow: 0 4px 14px rgba(28, 15, 19, 0.16);
     }
-    .ad-slide .btn-ad-action:focus-visible {
+    .ad-slide .btn-ad-action:focus-visible,
+    .ad-slide .btn-white:focus-visible {
         outline: 3px solid rgba(255, 255, 255, 0.85);
         outline-offset: 3px;
     }
-    .ad-slide .btn-ad-action:hover {
+    .ad-slide .btn-ad-action:hover,
+    .ad-slide .btn-white:hover {
         background: #FFFFFF;
         color: var(--primary-color, #6B2D3E);
         transform: translateY(-2px);
     }
     .ad-slide .cta-content h2,
     .ad-slide .ad-text h3 {
-        font-size: clamp(1.5rem, 2.5vw, 1.85rem);
+        font-size: clamp(1.25rem, 2.2vw, 1.6rem);
         font-weight: 700;
         line-height: 1.3;
+        margin-bottom: 0;
     }
     .ad-slide .cta-content p,
     .ad-slide .ad-text p {
         font-size: 1.125rem;
         line-height: 1.6;
+        margin-bottom: 0;
     }
     @media (min-width: 769px) {
         .ad-slide .ad-text h3 {
             white-space: nowrap;
-            font-size: clamp(1.25rem, 2.2vw, 1.6rem);
         }
         .ad-slide .ad-content-wrapper {
             width: calc(100% - clamp(10rem, 22vw, 16rem));
@@ -3710,6 +3729,17 @@ document.addEventListener('DOMContentLoaded', () => {
         .ad-slide .cta-decoration {
             display: none;
         }
+        .ad-slide .cta-box,
+        .ad-slide .ad-banner-custom {
+            padding: 1.25rem;
+        }
+        .ad-slide .cta-content {
+            width: 100%;
+            max-width: none;
+            align-items: center;
+            text-align: center;
+            gap: 0.75rem;
+        }
         .ad-slide .cta-content h2,
         .ad-slide .ad-text h3 {
             font-size: clamp(1.2rem, 5vw, 1.5rem);
@@ -3722,8 +3752,11 @@ document.addEventListener('DOMContentLoaded', () => {
             font-size: 0.95rem;
             line-height: 1.45;
         }
-        .ad-slide .btn-ad-action {
+        .ad-slide .btn-ad-action,
+        .ad-slide .btn-white {
             width: 100%;
+            max-width: 24rem;
+            justify-content: center;
         }
     }
     `;
