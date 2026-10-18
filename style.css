@@ -395,15 +395,17 @@ img {
 
 
 [data-theme="dark"] .header.scrolled {
-    background: var(--glass-bg) !important;
+    background: var(--bg-white) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 
 [data-theme="dark"] .header {
-    background: var(--glass-bg) !important;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--bg-white) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
 }
@@ -11904,7 +11906,9 @@ button, .btn, .nav-link, input, select, textarea {
 }
 
 .header {
-    background: var(--glass-bg);
+    background: var(--bg-white);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     border-bottom-color: color-mix(in srgb, var(--border-color) 82%, transparent);
     box-shadow: 0 5px 24px rgba(45, 27, 30, 0.055);
 }
