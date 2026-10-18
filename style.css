@@ -12205,20 +12205,29 @@ img {
         line-height: 1.45;
     }
 
-    .ad-carousel-dots .dot {
+}
+
+/* Uniform, touch-friendly carousel indicators on phones and tablets. */
+@media (max-width: 1024px) {
+    .ad-carousel-dots .dot,
+    .featured-carousel-dots .dot {
         position: relative;
         display: grid;
         flex: 0 0 44px;
         place-items: center;
         width: 44px;
         height: 44px;
+        min-width: 44px;
         min-height: 44px !important;
         padding: 0;
+        border: 0;
         border-radius: 50%;
         background: transparent;
+        opacity: 1;
     }
 
-    .ad-carousel-dots .dot::before {
+    .ad-carousel-dots .dot::before,
+    .featured-carousel-dots .dot::before {
         content: "";
         display: block;
         width: 10px;
@@ -12228,21 +12237,32 @@ img {
         transition: background-color 0.2s ease, transform 0.2s ease;
     }
 
-    .ad-carousel-dots .dot.active {
+    .ad-carousel-dots .dot.active,
+    .featured-carousel-dots .dot.active {
         flex-basis: 44px;
         width: 44px;
         height: 44px;
         background: transparent;
     }
 
-    .ad-carousel-dots .dot.active::before {
+    .ad-carousel-dots .dot.active::before,
+    .featured-carousel-dots .dot.active::before {
         width: 12px;
         height: 12px;
         background: var(--primary-color);
     }
 
-    .ad-carousel-dots .dot:hover {
+    .ad-carousel-dots .dot:hover,
+    .featured-carousel-dots .dot:hover {
         background: transparent;
         opacity: 1;
+    }
+
+    .featured-carousel-dots {
+        right: auto;
+        bottom: 0.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        gap: 2px;
     }
 }
