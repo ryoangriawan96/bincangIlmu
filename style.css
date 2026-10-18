@@ -13092,6 +13092,40 @@ img {
     padding: clamp(2rem, 4vw, 3.5rem) 0 5rem;
 }
 
+/* Keep the About intro and course catalog aligned with the shared page surfaces. */
+.native-zz-hero {
+    background: var(--bg-light);
+    padding-top: 120px;
+}
+
+.courses-section {
+    background: var(--bg-light);
+}
+
+@media (max-width: 900px) {
+    /* Preserve a visible theme control beside the menu button on touch layouts. */
+    .header-actions {
+        display: flex !important;
+        flex: 0 0 auto;
+        gap: 0.35rem;
+        margin-left: auto;
+    }
+
+    .header-actions > :not(.theme-toggle) {
+        display: none !important;
+    }
+
+    .header-actions > .theme-toggle {
+        display: flex !important;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-white);
+        color: var(--text-dark);
+        font-size: 1.05rem;
+    }
+}
+
 .kitab-dashboard {
     grid-template-columns: minmax(210px, 235px) minmax(0, 1fr);
     gap: clamp(1.25rem, 2.5vw, 2rem);

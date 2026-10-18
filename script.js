@@ -2641,17 +2641,12 @@ document.addEventListener('DOMContentLoaded', () => {
         utilityArea.className = 'mobile-utility-area';
         utilityArea.innerHTML = `
             <button type="button" class="mobile-search-button"><i class="fas fa-search" aria-hidden="true"></i> Cari</button>
-            <button type="button" class="mobile-theme-button"><i class="fas fa-moon" aria-hidden="true"></i> Tema</button>
         `;
         navMenu.appendChild(utilityArea);
         utilityArea.querySelector('.mobile-search-button').addEventListener('click', () => {
             setMenuOpen(false);
             if (typeof openSearch === 'function') openSearch();
         });
-        utilityArea.querySelector('.mobile-theme-button').addEventListener('click', () => {
-            if (typeof toggleTheme === 'function') toggleTheme();
-        });
-        
         const isLoggedIn = Boolean(sessionStorage.getItem('authToken'));
         const currentUser = sessionUser();
         

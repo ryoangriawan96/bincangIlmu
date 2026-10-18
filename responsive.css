@@ -1236,7 +1236,39 @@ table {
     }
 
     .featured-carousel-dots {
-        right: 1.25rem;
-        bottom: 1rem;
+        right: auto;
+        bottom: 0.75rem;
+        left: 50%;
+        justify-content: center;
+        transform: translateX(-50%);
+    }
+}
+
+/* Keep the About page intro aligned with the shared page-header spacing and color. */
+@media (min-width: 641px) and (max-width: 1200px) {
+    .native-zz-hero.section {
+        padding: 120px 0 0;
+        background: var(--bg-light);
+    }
+
+    .native-zz-title {
+        font-size: 2.5rem;
+        line-height: 1.15;
+    }
+}
+
+@media (max-width: 1200px) {
+    .featured-carousel-dots {
+        right: auto;
+        left: 50%;
+        justify-content: center;
+        transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 640px) {
+    .native-zz-hero.section {
+        padding-top: 100px;
+        background: var(--bg-light);
     }
 }
