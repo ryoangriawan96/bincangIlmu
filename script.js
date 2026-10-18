@@ -3531,9 +3531,9 @@ function renderAds() {
                 </div>` : '';
             slide.innerHTML = `
                 <div class="ad-banner-custom">
-                    ${badgeHtml}
                     <div class="ad-content-wrapper">
                         <div class="ad-text">
+                            ${badgeHtml}
                             <h3>${titleHtml}</h3>
                             <p>${ad.desc}</p>
                         </div>

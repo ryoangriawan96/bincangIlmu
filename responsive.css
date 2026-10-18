@@ -125,6 +125,18 @@ section,
     }
 }
 
+.ad-slide .ad-text .ad-badge {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 0 0.75rem;
+}
+
+@media (max-width: 768px) {
+    .ad-slide .ad-text .ad-badge {
+        margin-inline: auto;
+    }
+}
+
 /* Keep the Kitab catalog at two cards per desktop row. */
 #kitabGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
