@@ -4323,6 +4323,62 @@ justify-content: flex-start;
     }
 }
 
+
+.featured-carousel-dots .dot {
+    position: relative;
+    display: grid;
+    flex: 0 0 44px;
+    place-items: center;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px;
+    min-height: 44px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    box-shadow: none;
+    opacity: 1;
+}
+
+.ad-carousel-dots .dot::before,
+.featured-carousel-dots .dot::before {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d1d5db;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.ad-carousel-dots .dot.active,
+.featured-carousel-dots .dot.active {
+    flex-basis: 44px;
+    width: 44px !important;
+    height: 44px !important;
+    background: transparent !important;
+}
+
+.ad-carousel-dots .dot.active::before,
+.featured-carousel-dots .dot.active::before {
+    width: 12px;
+    height: 12px;
+    background: var(--primary-color);
+}
+
+.ad-carousel-dots .dot:hover,
+.featured-carousel-dots .dot:hover {
+    background: transparent !important;
+    opacity: 1;
+}
+
+.ad-carousel-dots .dot:focus-visible,
+.featured-carousel-dots .dot:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 1px;
+}
+
 .featured-carousel-dots .dot {
     width: 10px;
     height: 10px;
@@ -12270,3 +12326,7 @@ img {
         gap: 2px;
     }
 }
+
+/* Keep the visible indicators circular even when the global 44px button
+   target is active; the pseudo-element is the visual dot, not the button. */
+.ad-carousel-dots .dot,
