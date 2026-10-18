@@ -3678,6 +3678,17 @@ document.addEventListener('DOMContentLoaded', () => {
         color: var(--primary-color, #6B2D3E);
         transform: translateY(-2px);
     }
+    .ad-slide .cta-content h2,
+    .ad-slide .ad-text h3 {
+        font-size: clamp(1.5rem, 2.5vw, 1.85rem);
+        font-weight: 700;
+        line-height: 1.3;
+    }
+    .ad-slide .cta-content p,
+    .ad-slide .ad-text p {
+        font-size: 1.125rem;
+        line-height: 1.6;
+    }
     @media (min-width: 769px) {
         .ad-slide .ad-content-wrapper {
             width: calc(100% - clamp(10rem, 22vw, 16rem));
@@ -3694,6 +3705,15 @@ document.addEventListener('DOMContentLoaded', () => {
         .ad-slide .ad-decoration-icon,
         .ad-slide .cta-decoration {
             display: none;
+        }
+        .ad-slide .cta-content h2,
+        .ad-slide .ad-text h3 {
+            font-size: clamp(1.2rem, 5vw, 1.5rem);
+        }
+        .ad-slide .cta-content p,
+        .ad-slide .ad-text p {
+            font-size: 0.95rem;
+            line-height: 1.45;
         }
         .ad-slide .btn-ad-action {
             width: 100%;
