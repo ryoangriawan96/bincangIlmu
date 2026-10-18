@@ -9338,24 +9338,6 @@ body.menu-open {
     color: var(--bg-dark);
 }
 
-/* Use the same selected state for category filters on every page. */
-[data-theme="dark"] .fatwa-chip.active,
-[data-theme="dark"] .filter-pill.active,
-[data-theme="dark"] .filter-chip.active {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
-    color: var(--bg-dark);
-}
-
-[data-theme="dark"] .fatwa-chip:hover,
-[data-theme="dark"] .filter-pill:hover,
-[data-theme="dark"] .filter-chip:hover {
-    background: var(--primary-light);
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-}
-
-
 /* Fatwa Q&A Card UI (Clean & Minimalist) */
 .fatwa-qa-card {
     background: transparent;
@@ -12534,4 +12516,21 @@ img {
 [data-theme="dark"] .muted,
 [data-theme="dark"] small {
     color: var(--text-light);
+}
+
+/* Use the same selected state for category filters on every page. */
+[data-theme="dark"] .fatwa-chip.active,
+[data-theme="dark"] .filter-pill.active,
+[data-theme="dark"] .filter-chip.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--bg-dark);
+}
+
+[data-theme="dark"] .fatwa-chip:hover,
+[data-theme="dark"] .filter-pill:hover,
+[data-theme="dark"] .filter-chip:hover {
+    background: var(--primary-light);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
 }
