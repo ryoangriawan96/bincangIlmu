@@ -3747,7 +3747,7 @@ justify-content: flex-start;
 
 [data-theme="dark"] .btn-see-all:hover {
     background: var(--gradient-primary);
-    color: #000000;
+    color: #FDF8F4;
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
@@ -9307,7 +9307,7 @@ body.menu-open {
 
 
 [data-theme="dark"] .fatwa-chip.active {
-    color: #000000;
+    color: #FFFFFF;
 }
 
 
@@ -11292,9 +11292,9 @@ body.menu-open {
 
 [data-theme="dark"] .popular-number { opacity: 0.8; }
 
-[data-theme="dark"] .btn-see-all.btn-outline { color: #000000 !important; }
+[data-theme="dark"] .btn-see-all.btn-outline { color: #FDF8F4 !important; }
 
-[data-theme="dark"] .btn-see-all.btn-outline:hover { color: #000000 !important; }
+[data-theme="dark"] .btn-see-all.btn-outline:hover { color: #FDF8F4 !important; }
 
 [data-theme="dark"] .filter-pill.active {
     background: #FFFFFF;
