@@ -9874,7 +9874,8 @@ body.menu-open {
 /* AI Search Box */
 .ai-search-container {
     margin: 2.5rem 0;
-    max-width: 600px;
+    width: min(100%, 780px);
+    max-width: 780px;
 }
 
 .ai-search-box {
@@ -11083,8 +11084,15 @@ img {
     .page-title { font-size: clamp(1.8rem, 8vw, 2.5rem); }
     .section-title { font-size: clamp(1.5rem, 7vw, 2rem); }
     .floating-card { display: none; }
-    .ai-chat-window { width: min(100vw - 1.5rem, 390px); right: 0.75rem; bottom: 5.5rem; }
-    .ai-chat-toggle { right: 1rem; bottom: 1rem; }
+    .ai-chat-window {
+        width: min(calc(100vw - 1.5rem), 390px);
+        height: min(70dvh, 640px);
+        max-height: calc(100dvh - 7rem - env(safe-area-inset-bottom));
+        right: 0.75rem;
+        bottom: calc(5.5rem + env(safe-area-inset-bottom));
+        border-radius: var(--radius-lg);
+    }
+    .ai-chat-toggle { right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom)); }
 }
 
 @keyframes menuBackdropIn { from { opacity: 0; } to { opacity: 1; } }
@@ -12370,4 +12378,16 @@ img {
     .featured-carousel-container {
         margin-bottom: 1.5rem;
     }
+}
+
+/* Keep the hero topic field visually integrated with its search shell in dark mode. */
+.ai-search-box input {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+[data-theme="dark"] .ai-search-box input {
+    background-color: transparent !important;
+    border-color: transparent;
 }

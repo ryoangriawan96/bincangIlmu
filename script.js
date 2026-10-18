@@ -39,6 +39,7 @@ async function loadPublicContent() {
             }
         } catch (_) { /* Keep bundled read-only content when the API is unavailable. */ }
     }));
+    rebuildSearchData();
     if (document.getElementById('allCoursesGrid')) filterCourseList();
     if (document.getElementById('kitabGrid')) filterKitabList();
     if (document.getElementById('allBlogsGrid')) applyBlogFilters();
@@ -709,6 +710,13 @@ function updateThemeIcon(theme) {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadPublicContent();
+    const aiSearchInput = document.getElementById('aiSearchInput');
+    aiSearchInput?.addEventListener('keydown', event => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            handleAISearch();
+        }
+    });
     verifySession().then(checkAuthState);
     // Initialize Theme
     const savedTheme = localStorage.getItem('theme') || 'light';
@@ -2441,21 +2449,32 @@ function loadFatwaDetail() {
 // Smart Search System Logic
 // =========================================
 const searchData = [];
-// Dynamically populate searchData from databases
-if (typeof coursesData !== 'undefined') {
-    for (const [id, course] of Object.entries(coursesData)) {
-        searchData.push({ title: course.title, type: "Kursus", icon: "fas fa-book-open", link: "course-detail.html?id=" + id });
+function rebuildSearchData() {
+    searchData.length = 0;
+    for (const [id, course] of Object.entries(coursesData || {})) {
+        searchData.push({ title: course.title, type: "Kursus", keywords: `${course.category || ''} ${course.instructor || ''} ${course.desc || ''}`, icon: "fas fa-book-open", link: `course-detail.html?id=${encodeURIComponent(id)}` });
+    }
+    for (const [id, kitab] of Object.entries(kitabData || {})) {
+        searchData.push({ title: kitab.title, type: "Kitab", keywords: `${kitab.category || ''} ${kitab.author || ''} ${kitab.desc || ''}`, icon: "fas fa-book", link: "kitab.html" });
+    }
+    for (const [id, fatwa] of Object.entries(fatwasData || {})) {
+        searchData.push({ title: fatwa.question || fatwa.title, type: "Fatwa", keywords: `${fatwa.category || ''} ${fatwa.answer || ''}`, icon: "fas fa-gavel", link: `fatwa-detail.html?id=${encodeURIComponent(id)}` });
+    }
+    for (const [id, blog] of Object.entries(blogsData || {})) {
+        searchData.push({ title: blog.title, type: "Artikel", keywords: `${blog.excerpt || ''} ${(blog.tags || []).join(' ')}`, icon: "fas fa-newspaper", link: `blog-detail.html?id=${encodeURIComponent(id)}` });
     }
 }
-if (typeof fatwasData !== 'undefined') {
-    for (const [id, fatwa] of Object.entries(fatwasData)) {
-        searchData.push({ title: fatwa.question || fatwa.title, type: "Fatwa", icon: "fas fa-gavel", link: "fatwa-detail.html?id=" + id });
-    }
-}
-if (typeof blogsData !== 'undefined') {
-    for (const [id, blog] of Object.entries(blogsData)) {
-        searchData.push({ title: blog.title, type: "Blog", icon: "fas fa-newspaper", link: "blog-detail.html?id=" + id });
-    }
+rebuildSearchData();
+
+function findRelevantSearchItems(query, limit = 3) {
+    const terms = query.toLowerCase().split(/\s+/).filter(term => term.length > 1);
+    if (!terms.length) return [];
+    return searchData.map(item => {
+        const title = String(item.title || '');
+        const text = `${title} ${item.type || ''} ${item.keywords || ''}`.toLowerCase();
+        const score = terms.reduce((total, term) => total + (text.includes(term) ? (title.toLowerCase().includes(term) ? 3 : 1) : 0), 0);
+        return { ...item, score };
+    }).filter(item => item.score > 0).sort((a, b) => b.score - a.score).slice(0, limit);
 }
 
 
@@ -3303,35 +3322,21 @@ function populateSearch(query) {
 function handleAISearch() {
     const input = document.getElementById('aiSearchInput');
     const query = input ? input.value.trim() : '';
-    if(!query) return;
-    
-    // Simulate AI Search loading state
+    if (!query) {
+        input?.focus();
+        showToast('Cari Materi', 'Masukkan topik yang ingin Anda pelajari.', 'info');
+        return;
+    }
+
     const btn = document.querySelector('.btn-ai-search');
     const originalText = btn ? btn.innerHTML : '';
     if (btn) {
-        btn.innerHTML = '<i class="fas fa-robot fa-spin"></i> Menganalisis...';
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Mencari...';
         btn.disabled = true;
     }
-    
-    setTimeout(() => {
-        // Smart AI Search: try to find exact or partial match across all data
-        if (typeof searchData !== 'undefined' && searchData.length > 0) {
-            const qLower = query.toLowerCase();
-            const match = searchData.find(item => item.title.toLowerCase().includes(qLower));
-            if (match) {
-                window.location.href = match.link;
-                return;
-            }
-        }
-        // Fallback: Redirect to courses page with query
-        window.location.href = `courses.html?q=${encodeURIComponent(query)}`;
-        
-        // Reset button state just in case
-        if (btn) {
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }
-    }, 1000); // reduced loading time slightly for better UX
+    const match = findRelevantSearchItems(query, 1)[0];
+    window.location.href = match ? match.link : `courses.html?q=${encodeURIComponent(query)}`;
+    if (btn) { btn.innerHTML = originalText; btn.disabled = false; }
 }
 
 function searchCourses(query) {
@@ -3361,20 +3366,25 @@ function searchKitab(query) {
 function toggleAIChat() {
     const chatWindow = document.getElementById('aiChatWindow');
     const overlay = document.getElementById('aiChatOverlay');
-    
-    if (chatWindow.classList.contains('active')) {
+    const toggle = document.getElementById('aiChatToggle');
+    if (!chatWindow || !overlay) return;
+    const willOpen = !chatWindow.classList.contains('active');
+
+    if (!willOpen) {
         chatWindow.classList.remove('active');
         overlay.classList.remove('active');
     } else {
         chatWindow.classList.add('active');
         overlay.classList.add('active');
-        document.getElementById('aiChatInput').focus();
+        document.getElementById('aiChatInput')?.focus();
     }
+    toggle?.setAttribute('aria-expanded', String(willOpen));
 }
 
 function handleAIChatKeyPress(e) {
     if (e.key === 'Enter') {
-        sendAIChat();
+        e.preventDefault();
+        sendAIChatEnhanced();
     }
 }
 
@@ -3384,57 +3394,7 @@ function sendQuickPrompt(prompt) {
 }
 
 function sendAIChat() {
-    const input = document.getElementById('aiChatInput');
-    const message = input.value.trim();
-    if (!message) return;
-    
-    const messagesContainer = document.getElementById('aiChatMessages');
-    
-    // Add user message
-    messagesContainer.innerHTML += `
-        <div class="ai-message user-message">
-            <div class="message-content">${message}</div>
-        </div>
-    `;
-    input.value = '';
-    scrollToBottom(messagesContainer);
-    
-    // Add typing indicator
-    const typingId = 'typing-' + Date.now();
-    messagesContainer.innerHTML += `
-        <div class="ai-message system-message" id="${typingId}">
-            <div class="message-content">
-                <i class="fas fa-ellipsis-h fa-fade"></i> Mengetik...
-            </div>
-        </div>
-    `;
-    scrollToBottom(messagesContainer);
-    
-    // Simulate AI response
-    setTimeout(() => {
-        const typingEl = document.getElementById(typingId);
-        if (typingEl) typingEl.remove();
-        
-        let response = '';
-        const lowerMsg = message.toLowerCase();
-        
-        if (lowerMsg.includes('aqidah') || lowerMsg.includes('akidah')) {
-            response = 'Untuk pelajaran Aqidah, kami merekomendasikan kitab <strong>Kitab Tauhid</strong> atau <strong>Al-Ushul Ats-Tsalatsah</strong> yang diajarkan oleh Dr. Firanda Andirja. <br><br><a href="courses.html" class="btn btn-outline" style="margin-top: 10px; display: inline-block; padding: 5px 10px; font-size: 0.8rem;">Lihat Kelas Aqidah</a>';
-        } else if (lowerMsg.includes('daftar') || lowerMsg.includes('cara')) {
-            response = 'Untuk mendaftar, Anda cukup mengklik tombol "Mulai Belajar" di halaman ini, lalu buat akun menggunakan email Anda secara gratis. Seluruh materi bebas diakses!';
-        } else if (lowerMsg.includes('ustadz') || lowerMsg.includes('siapa')) {
-            response = 'Platform ini dibimbing oleh asatidzah berkompeten, antara lain Dr. Syafiq Riza Basalamah, Dr. Firanda Andirja, Ust. M. Nuzul Dzikri, dan Ust. Ami Nur Baits.';
-        } else {
-            response = 'Pertanyaan yang menarik! Saya adalah asisten virtual berbasis simulasi. Untuk saat ini, saya sarankan Anda mengeksplorasi halaman <a href="courses.html" style="color: var(--primary-color);">Daftar Kelas</a> untuk menemukan kajian yang Anda butuhkan.';
-        }
-        
-        messagesContainer.innerHTML += `
-            <div class="ai-message system-message">
-                <div class="message-content">${response}</div>
-            </div>
-        `;
-        scrollToBottom(messagesContainer);
-    }, 1500);
+    sendAIChatEnhanced();
 }
 
 function scrollToBottom(el) {
@@ -3874,11 +3834,25 @@ async function sendAIChatEnhanced() {
     addMessage(message, 'user');
     input.value = '';
     scrollToBottom(messagesContainer);
-    try {
-        const result = await apiRequest('/ai', { method: 'POST', body: JSON.stringify({ prompt: message }) });
-        addMessage(result.reply || 'Belum ada jawaban dari layanan AI.', 'system');
-    } catch (error) {
-        addMessage(error.message, 'system');
-    }
+    addMessage(getLocalAssistantReply(message), 'system');
     scrollToBottom(messagesContainer);
+}
+
+function getLocalAssistantReply(message) {
+    const query = message.toLowerCase();
+    if (/^(assalamu|halo|hai|hello|hi|permisi)/.test(query)) {
+        return 'Waalaikumsalam. Saya bisa membantu mencari kursus, kitab, artikel, atau fatwa di Bincang Ilmu.';
+    }
+    if (query.includes('daftar') || query.includes('registrasi')) {
+        return 'Untuk membuat akun, pilih Masuk lalu buka tab Daftar. Isi nama, email, dan password. Akun baru dapat langsung digunakan untuk menjelajahi materi.';
+    }
+    if (query.includes('admin')) {
+        return 'Dashboard hanya bisa dibuka dengan akun berperan Admin. Masuk dengan email dan password Admin; setelah berhasil, Anda akan diarahkan ke dashboard.';
+    }
+    const matches = findRelevantSearchItems(message, 3);
+    if (matches.length) {
+        const suggestions = matches.map((item, index) => `${index + 1}. ${item.title} (${item.type})`).join('\n');
+        return `Saya menemukan materi yang mungkin sesuai:\n${suggestions}\n\nGunakan pencarian materi di halaman terkait untuk membuka hasilnya.`;
+    }
+    return 'Saya belum menemukan materi yang cocok. Coba kata kunci yang lebih singkat, seperti “fiqih”, “aqidah”, “bahasa Arab”, atau “shalat”.';
 }

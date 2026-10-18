@@ -9,7 +9,7 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=265">
+    <link rel="stylesheet" href="style.css?v=270">
     <script>
         // Immediate theme application to prevent flash
         (function () {
@@ -112,13 +112,13 @@
                 <div class="ai-search-container">
                     <div class="ai-search-box">
                         <i class="fas fa-search ai-sparkle-icon"></i>
-                        <input type="text" id="aiSearchInput" placeholder="Ketik topik yang ingin dipelajari...">
+                        <input type="text" id="aiSearchInput" placeholder="Ketik topik yang ingin dipelajari..." aria-label="Cari materi berdasarkan topik">
                         <button class="btn btn-primary btn-ai-search" onclick="handleAISearch()">
-                            Mulai Belajar
+                            Cari Materi
                         </button>
                     </div>
                     <div class="ai-search-tags">
-                        <span>Topik Rekomendasi AI:</span>
+                        <span>Topik Rekomendasi:</span>
                         <a href="#" onclick="populateSearch('Tata Cara Shalat Musafir'); return false;">Tata Cara Shalat Musafir</a>
                         <a href="#" onclick="populateSearch('Tazkiyatun Nafs'); return false;">Tazkiyatun Nafs</a>
                         <a href="#" onclick="populateSearch('Bahasa Arab Dasar'); return false;">Bahasa Arab Dasar</a>
@@ -805,11 +805,11 @@
 
     <!-- Main Script -->
     <!-- AI Chat Assistant Widget -->
-    <button class="ai-chat-toggle" id="aiChatToggle" onclick="toggleAIChat()">
+    <button class="ai-chat-toggle" id="aiChatToggle" type="button" title="Buka Asisten Bincang Ilmu" aria-label="Buka Asisten Bincang Ilmu" aria-expanded="false" aria-controls="aiChatWindow" onclick="toggleAIChat()">
         <i class="fas fa-robot"></i>
     </button>
 
-    <div class="ai-chat-window" id="aiChatWindow">
+    <div class="ai-chat-window" id="aiChatWindow" role="dialog" aria-label="Asisten Bincang Ilmu" aria-modal="false">
         <div class="ai-chat-header">
             <div class="ai-chat-header-info">
                 <div class="ai-avatar">
@@ -817,17 +817,17 @@
                 </div>
                 <div>
                     <h4>Asisten Bincang Ilmu</h4>
-                    <span class="online-status">Aktif</span>
+                    <span class="online-status">Panduan otomatis</span>
                 </div>
             </div>
-            <button class="ai-chat-close" onclick="toggleAIChat()">
+            <button class="ai-chat-close" type="button" aria-label="Tutup asisten" onclick="toggleAIChat()">
                 <i class="fas fa-times"></i>
             </button>
         </div>
         <div class="ai-chat-messages" id="aiChatMessages">
             <div class="ai-message system-message">
                 <div class="message-content">
-                    Assalamu'alaikum! 👋 Saya Asisten AI Bincang Ilmu. Ada yang bisa saya bantu terkait jadwal kajian, pencarian kitab, atau rekomendasi kursus?
+                    Assalamu'alaikum! 👋 Saya bisa membantu menemukan kursus, kitab, artikel, dan fatwa yang tersedia di Bincang Ilmu.
                 </div>
             </div>
             <!-- Dynamic Messages Go Here -->
@@ -848,7 +848,7 @@
     <div class="ai-chat-overlay" id="aiChatOverlay" onclick="toggleAIChat()"></div>
 
     <script src="api-config.js"></script>
-    <script src="script.js?v=237"></script>
+    <script src="script.js?v=239"></script>
 </body>
 
 </html>
