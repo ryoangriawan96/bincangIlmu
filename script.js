@@ -3524,7 +3524,7 @@ function renderAds() {
                     </div>
                 </div>`;
         } else {
-            let titleHtml = ad.subtitle ? `<span>${ad.title}</span><br>${ad.subtitle}` : ad.title;
+            let titleHtml = ad.subtitle ? `<span>${ad.title}</span> ${ad.subtitle}` : ad.title;
             // Ignore the retired badge even when an older API record still contains it.
             const badgeText = String(ad.badgeText || '').trim();
             const visibleBadgeText = badgeText.toLowerCase() === 'informasi penting' ? '' : badgeText;
@@ -3690,6 +3690,10 @@ document.addEventListener('DOMContentLoaded', () => {
         line-height: 1.6;
     }
     @media (min-width: 769px) {
+        .ad-slide .ad-text h3 {
+            white-space: nowrap;
+            font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+        }
         .ad-slide .ad-content-wrapper {
             width: calc(100% - clamp(10rem, 22vw, 16rem));
             flex-direction: column;
@@ -3709,6 +3713,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .ad-slide .cta-content h2,
         .ad-slide .ad-text h3 {
             font-size: clamp(1.2rem, 5vw, 1.5rem);
+        }
+        .ad-slide .ad-text h3 {
+            white-space: normal;
         }
         .ad-slide .cta-content p,
         .ad-slide .ad-text p {
