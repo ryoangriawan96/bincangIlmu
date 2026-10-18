@@ -1,0 +1,608 @@
+/* Shared layout rules for desktop, iPad/tablet, and mobile screens. */
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+body {
+    min-width: 320px;
+}
+
+img,
+video,
+iframe,
+svg {
+    max-width: 100%;
+}
+
+.container {
+    width: min(100%, var(--container-width, 1200px));
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 3.5vw, 2rem);
+}
+
+main,
+section,
+.container,
+.course-main,
+.course-sidebar,
+.blog-main,
+.blog-sidebar,
+.kitab-content,
+.fatwa-list-container,
+.admin-main,
+.player-main {
+    min-width: 0;
+}
+
+.hero-title,
+.page-title,
+.page-header h1,
+.course-main-title,
+.blog-title,
+.magazine-title {
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+}
+
+.course-grid,
+#allCoursesGrid,
+#allBlogsGrid,
+#allFatwasGrid,
+#kitabGrid,
+.features-grid,
+.benefits-grid,
+.values-grid,
+.native-team-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+}
+
+.course-card,
+.blog-card,
+.kitab-card,
+.fatwa-card,
+.benefit-card,
+.admin-stat-card {
+    min-width: 0;
+}
+
+table {
+    max-width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .container {
+        padding-inline: clamp(1rem, 3vw, 1.75rem);
+    }
+
+    .course-layout {
+        grid-template-columns: minmax(0, 1.5fr) minmax(250px, 0.9fr);
+        gap: 1.5rem;
+    }
+
+    .blog-layout,
+    .magazine-layout,
+    .fatwa-main-layout,
+    .fatwa-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.5rem;
+    }
+
+    .blog-sidebar,
+    .fatwa-sidebar {
+        position: static;
+        order: 1;
+        margin: 0;
+    }
+
+    .course-main,
+    .course-sidebar {
+        min-width: 0;
+    }
+
+    .course-detail-section,
+    .kitab-dashboard-section {
+        padding-block: 2rem 3.5rem;
+    }
+
+    .about-redesign-grid,
+    .about-grid-hero,
+    .about-grid-reverse,
+    .overlap-container,
+    .community-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2rem;
+    }
+
+    .native-zz-row,
+    .native-zz-row.reverse {
+        gap: 2rem;
+    }
+
+    .values-grid,
+    .native-team-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.25rem;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.75rem;
+    }
+
+    .player-body {
+        height: auto;
+        min-height: 100dvh;
+        overflow-y: auto;
+    }
+
+    .player-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.25rem;
+        padding: clamp(1rem, 3vw, 1.75rem);
+        overflow: visible;
+    }
+
+    .player-main {
+        overflow: visible;
+    }
+
+    .player-sidebar {
+        height: auto;
+        max-height: 70vh;
+        min-height: 18rem;
+    }
+
+    .player-header {
+        min-height: 60px;
+        height: auto;
+        gap: 0.75rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .player-header-left,
+    .player-header-right {
+        min-width: 0;
+        gap: 0.75rem;
+    }
+
+    .progress-bar-bg {
+        width: clamp(72px, 14vw, 150px);
+    }
+
+    .book-card-horizontal {
+        height: auto !important;
+        min-height: 0;
+    }
+
+    .admin-main {
+        min-width: 0;
+    }
+}
+
+@media (max-width: 900px) {
+    .course-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.5rem;
+    }
+
+    .course-sidebar {
+        order: 1;
+    }
+
+    .blog-layout,
+    .magazine-layout,
+    .fatwa-main-layout,
+    .fatwa-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* Keep category filters available as a swipeable row instead of hiding them. */
+    .kitab-dashboard {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.25rem;
+    }
+
+    .kitab-sidebar {
+        position: static;
+        display: flex !important;
+        gap: 1rem;
+        width: 100%;
+        margin: 0;
+        padding: 0.75rem;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        background: var(--bg-card);
+        scrollbar-width: thin;
+    }
+
+    .sidebar-section {
+        flex: 0 0 auto;
+        margin: 0;
+    }
+
+    .sidebar-title {
+        display: none;
+    }
+
+    .sidebar-list {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        width: max-content;
+    }
+
+    .sidebar-list li {
+        flex: 0 0 auto;
+    }
+
+    .sidebar-link {
+        min-height: 40px;
+        padding: 0.55rem 0.75rem;
+        white-space: nowrap;
+        background: var(--bg-light);
+    }
+
+    .kitab-content-header {
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .kitab-search-wrapper {
+        width: min(100%, 24rem);
+        max-width: 100%;
+    }
+
+    .book-grid-horizontal {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .book-card-horizontal {
+        gap: 0.9rem;
+        padding: 1rem;
+    }
+
+    .horizontal-cover {
+        width: 82px;
+    }
+
+    .horizontal-info {
+        min-width: 0;
+    }
+
+    .horizontal-title,
+    .horizontal-desc {
+        overflow-wrap: anywhere;
+    }
+
+    .course-meta-large {
+        gap: 1rem;
+    }
+
+    .fatwa-premium-row {
+        min-width: 0;
+        gap: 1rem;
+        padding: 1.25rem;
+    }
+
+    .pr-content,
+    .pr-title {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .native-zz-row,
+    .native-zz-row.reverse {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .native-zz-image-col,
+    .native-zz-text-col {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .native-zz-img {
+        max-height: 28rem;
+    }
+
+    .player-header {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .player-header-right {
+        margin-left: auto;
+    }
+
+    .course-tabs,
+    .player-content-tabs {
+        min-width: 0;
+        overflow-x: auto;
+    }
+
+    .scrolling-grid {
+        grid-auto-columns: minmax(0, 82vw);
+    }
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding-inline: 1rem;
+    }
+
+    .section,
+    .native-zz-section,
+    .about-redesign-section {
+        padding-block: 3rem;
+    }
+
+    .page-header {
+        padding-block: 6rem 2.5rem;
+    }
+
+    .page-header h1,
+    .hero-title,
+    .course-main-title {
+        font-size: clamp(1.65rem, 7.5vw, 2.35rem);
+        line-height: 1.2;
+    }
+
+    .section-title {
+        font-size: clamp(1.4rem, 6.5vw, 1.9rem);
+    }
+
+    .section-subtitle,
+    .hero-description {
+        font-size: 0.98rem;
+        line-height: 1.65;
+    }
+
+    .course-grid,
+    #allCoursesGrid,
+    #allBlogsGrid,
+    #allFatwasGrid,
+    #kitabGrid,
+    .features-grid,
+    .benefits-grid,
+    .values-grid,
+    .native-team-grid,
+    .book-grid-horizontal {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+    }
+
+    .course-card,
+    .blog-card {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .course-content,
+    .blog-content {
+        padding: 1rem;
+    }
+
+    .featured-carousel-container {
+        margin-bottom: 2rem;
+    }
+
+    .featured-blog-content {
+        padding: 1.15rem;
+    }
+
+    .featured-blog-content .blog-title.is-large {
+        font-size: clamp(1.35rem, 6vw, 1.75rem) !important;
+        line-height: 1.25 !important;
+    }
+
+    .blog-smart-bar,
+    .blog-filters,
+    .fatwa-categories,
+    .kitab-filter-wrapper {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        max-width: 100%;
+        overflow-x: auto;
+        padding: 0.25rem 0 0.75rem;
+        overscroll-behavior-x: contain;
+        scrollbar-width: thin;
+    }
+
+    .blog-filters > *,
+    .fatwa-categories > *,
+    .kitab-filter-wrapper > * {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    .search-field-container,
+    .blog-search-wrapper,
+    .fatwa-search-box,
+    .kitab-search-wrapper {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .book-card-horizontal {
+        align-items: flex-start;
+        gap: 0.85rem;
+        padding: 0.9rem;
+    }
+
+    .horizontal-cover {
+        width: 74px;
+    }
+
+    .horizontal-title {
+        font-size: 0.98rem;
+    }
+
+    .horizontal-actions,
+    .pr-right,
+    .native-zz-actions,
+    .hero-buttons {
+        flex-wrap: wrap;
+        gap: 0.65rem;
+    }
+
+    .horizontal-actions .btn,
+    .pr-right .btn {
+        max-width: 100%;
+    }
+
+    .fatwa-premium-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .pr-right {
+        width: 100%;
+        justify-content: space-between;
+        border-top: 1px solid var(--border-color);
+        padding-top: 0.75rem;
+    }
+
+    .meta-item {
+        gap: 0.65rem;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.25rem 0.75rem;
+    }
+
+    .footer-brand,
+    .footer-links:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .footer-legal,
+    .footer-bottom {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+        text-align: center;
+    }
+
+    .footer-links a,
+    .footer-brand p {
+        overflow-wrap: anywhere;
+    }
+
+    .modal-overlay,
+    .bismillah-modal {
+        padding: 0.75rem;
+    }
+
+    .modal-box,
+    .bismillah-modal-content,
+    .profile-modal-container {
+        width: min(100%, 32rem);
+        max-width: 100%;
+        max-height: calc(100dvh - 1.5rem);
+        overflow-y: auto;
+        margin: 0;
+    }
+
+    .modal-box form,
+    .form-group,
+    .form-input,
+    .form-control {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .course-tabs {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 0.5rem;
+        overflow-x: auto;
+    }
+
+    .course-tabs > *,
+    .tab-btn {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    .player-header {
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .player-header-left,
+    .player-header-right {
+        gap: 0.5rem;
+    }
+
+    .player-header-right .progress-wrapper {
+        display: none;
+    }
+
+    .player-layout {
+        padding: 0.75rem;
+        gap: 0.85rem;
+    }
+
+    .player-sidebar {
+        max-height: 55vh;
+        min-height: 15rem;
+    }
+
+    .ai-chat-window {
+        width: min(calc(100vw - 1rem), 24rem);
+        max-width: calc(100vw - 1rem);
+        right: 0.5rem;
+        bottom: calc(5rem + env(safe-area-inset-bottom));
+    }
+
+    .ai-chat-toggle {
+        right: 0.75rem;
+        bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    }
+
+    .admin-main {
+        padding: 0.85rem;
+    }
+
+    .admin-table-container {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 380px) {
+    .container {
+        padding-inline: 0.75rem;
+    }
+
+    .footer-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .course-meta-large {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .book-card-horizontal {
+        gap: 0.65rem;
+        padding: 0.75rem;
+    }
+
+    .horizontal-cover {
+        width: 62px;
+    }
+}
