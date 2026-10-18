@@ -6,14 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Blog - Bincang Ilmu</title>
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=231">
+    <link rel="stylesheet" href="style.css?v=232">
     <script>
         (function () {
             const savedTheme = localStorage.getItem('theme') || 'light';
@@ -79,7 +75,7 @@
                 <span>bincang</span>
                 <span><span class="highlight">ilmu</span>.</span>
             </a>
-            <nav class="nav-menu">
+            <nav class="nav-menu" id="primary-navigation" aria-label="Navigasi utama">
                 <ul class="nav-list">
                     <li><a href="index.html" class="nav-link">Beranda</a></li>
                     <li><a href="courses.html" class="nav-link">Kursus</a></li>
@@ -133,7 +129,7 @@
                     </div>
                 </div>
             </div>
-            <button class="mobile-toggle">
+            <button type="button" class="mobile-toggle" aria-label="Buka menu" aria-controls="primary-navigation" aria-expanded="false">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -164,7 +160,7 @@
     <!-- Blog Content -->
     <section class="blog-content-section">
         <div class="container">
-            <img src="" alt="Blog Featured" class="blog-featured-image" id="blogImage">
+            <img src="" alt="Blog Featured" class="blog-featured-image" id="blogImage" decoding="async" loading="eager" fetchpriority="high">
             <div class="blog-body" id="blogContent">
                 <p>Sedang memuat konten artikel...</p>
             </div>
@@ -340,7 +336,7 @@
                 <div class="divider"><span>Atau masuk dengan</span></div>
 
                 <button class="btn-google">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" decoding="async" loading="lazy">
                     Masuk dengan Google
                 </button>
 
@@ -377,7 +373,7 @@
                 <div class="divider"><span>Atau daftar dengan</span></div>
 
                 <button class="btn-google">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" decoding="async" loading="lazy">
                     Daftar dengan Google
                 </button>
                 <p class="text-center mt-3" style="font-size: 0.9rem; color: var(--text-light); margin-top: 1.5rem">
@@ -537,7 +533,7 @@
 
     <!-- Main Script -->
     <script src="api-config.js"></script>
-    <script src="script.js?v=231"></script>
+    <script src="script.js?v=232"></script>
 </body>
 
 </html>

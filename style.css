@@ -43,7 +43,7 @@
     --shadow-xl: 0 20px 25px -5px rgba(107, 45, 62, 0.1), 0 10px 10px -5px rgba(107, 45, 62, 0.04);
 
     /* Typography */
-    --font-logo: 'Gilroy-ExtraBold', 'Plus Jakarta Sans', sans-serif;
+    --font-logo: var(--font-main);
     --font-main: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
     /* Spacing & Radius */
@@ -1412,6 +1412,7 @@ img {
 
 
 }
+
 /* Hero Image & Slider */
 /* Hero Image & Slider */
 .hero-image {
@@ -11819,4 +11820,197 @@ body > section {
     .hero-ornament .orbiter {
         animation: none !important;
     }
+}
+
+/* =========================================
+   Modern responsive refinements
+   ========================================= */
+:root {
+    --container-width: 1280px;
+    --radius-lg: 1.25rem;
+    --shadow-card: 0 12px 36px rgba(45, 27, 30, 0.08);
+    --focus-ring: 0 0 0 3px rgba(107, 45, 62, 0.22);
+}
+
+html {
+    scroll-padding-top: 5.5rem;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    background-attachment: scroll;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+.container {
+    width: min(100%, var(--container-width));
+    padding-inline: clamp(1rem, 3.5vw, 2rem);
+}
+
+:where(button, a, input, select, textarea):focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
+button, .btn, .nav-link, input, select, textarea {
+    min-height: 44px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-full);
+    padding-inline: 1.25rem;
+    font-weight: 700;
+}
+
+.header {
+    background: var(--glass-bg);
+    border-bottom-color: color-mix(in srgb, var(--border-color) 82%, transparent);
+    box-shadow: 0 5px 24px rgba(45, 27, 30, 0.055);
+}
+
+.header.scrolled {
+    box-shadow: 0 8px 28px rgba(45, 27, 30, 0.09);
+}
+
+.course-card, .blog-card, .kitab-card, .fatwa-card, .benefit-card {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.course-card:hover, .blog-card:hover, .kitab-card:hover, .fatwa-card:hover, .benefit-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+}
+
+.course-grid, #allCoursesGrid, #allBlogsGrid, #allFatwasGrid, #kitabGrid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: clamp(1rem, 2.2vw, 1.5rem);
+}
+
+img {
+    height: auto;
+}
+
+.hero-title, .page-title, .section-title {
+    text-wrap: balance;
+}
+
+.hero-description, .section-subtitle {
+    text-wrap: pretty;
+}
+
+@media (min-width: 901px) and (max-width: 1120px) {
+    .header-container { gap: 1rem; }
+    .nav-list { gap: clamp(0.8rem, 1.6vw, 1.4rem); }
+    .header-actions { gap: 0.55rem; }
+    .header-actions .btn { padding-inline: 0.9rem; font-size: 0.9rem; }
+    .logo { font-size: 1.5rem; }
+}
+
+@media (max-width: 900px) {
+    .header { height: 70px; padding: 0.5rem 0; }
+    .header-container { gap: 0.75rem; }
+    .logo { font-size: 1.45rem; }
+    .nav-menu {
+        top: 70px;
+        left: auto;
+        right: 0;
+        width: min(100vw, 420px);
+        height: calc(100dvh - 70px);
+        max-height: calc(100vh - 70px);
+        padding: 1.25rem clamp(1.25rem, 6vw, 2rem) max(1.5rem, env(safe-area-inset-bottom));
+        border: 1px solid var(--border-color);
+        border-top: 0;
+        border-radius: 0 0 0 1.25rem;
+        background: var(--bg-card);
+        box-shadow: -16px 20px 44px rgba(45, 27, 30, 0.16);
+        transform: translateX(105%);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: transform 240ms ease, opacity 180ms ease, visibility 180ms ease;
+        z-index: 100000;
+    }
+    .nav-menu.active {
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+    body.menu-open { overflow: hidden; }
+    body.menu-open::before {
+        content: "";
+        position: fixed;
+        inset: 70px 0 0;
+        z-index: 99998;
+        background: rgba(21, 12, 14, 0.42);
+        animation: menuBackdropIn 180ms ease both;
+    }
+    .nav-list { gap: 0; }
+    .nav-list li { width: 100%; }
+    .nav-link {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .nav-link::after { display: none; }
+    .mobile-toggle { width: 44px; height: 44px; border: 1px solid var(--border-color); border-radius: 0.75rem; }
+    .mobile-utility-area { display: flex; gap: 0.75rem; margin-top: 1rem; }
+    .mobile-utility-area button {
+        flex: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
+        padding: 0.65rem;
+        color: var(--text-dark);
+        background: var(--bg-light);
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        font: inherit;
+    }
+    .hero-container { gap: 1rem; }
+    .hero-title { font-size: clamp(2rem, 6vw, 3rem); }
+    .section { padding-block: clamp(3rem, 8vw, 5rem); }
+}
+
+@media (max-width: 600px) {
+    .container { padding-inline: 1rem; }
+    .hero-container { padding-top: 1rem; }
+    .hero-content { margin-top: 0.75rem; }
+    .hero-title { font-size: clamp(1.85rem, 9vw, 2.5rem); line-height: 1.18; }
+    .hero-description { font-size: 0.98rem; }
+    .ai-search-box { flex-wrap: wrap; gap: 0.5rem; padding: 0.55rem; }
+    .ai-search-box input { flex: 1 1 100%; min-width: 0; }
+    .ai-search-box .btn { width: 100%; }
+    .ai-search-tags { justify-content: center; flex-wrap: wrap; }
+    .hero-stats { gap: 0.75rem; }
+    .stat-item { min-width: 84px; }
+    .scrolling-grid { margin-inline: -1rem; padding-inline: 1rem; scroll-padding-inline: 1rem; }
+    .scrolling-grid .course-card, .scrolling-grid .blog-card { flex-basis: min(82vw, 340px); width: min(82vw, 340px); }
+    .page-header { padding: 100px 0 42px; }
+    .page-title { font-size: clamp(1.8rem, 8vw, 2.5rem); }
+    .section-title { font-size: clamp(1.5rem, 7vw, 2rem); }
+    .floating-card { display: none; }
+    .ai-chat-window { width: min(100vw - 1.5rem, 390px); right: 0.75rem; bottom: 5.5rem; }
+    .ai-chat-toggle { right: 1rem; bottom: 1rem; }
+}
+
+@keyframes menuBackdropIn { from { opacity: 0; } to { opacity: 1; } }
+
+@media (hover: none) {
+    .course-card:hover, .blog-card:hover, .kitab-card:hover, .fatwa-card:hover, .benefit-card:hover { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .nav-menu, .course-card, .blog-card, .kitab-card, .fatwa-card, .benefit-card { transition: none; }
 }

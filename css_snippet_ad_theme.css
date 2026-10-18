@@ -9,7 +9,7 @@
     height: 100%;
     /* Or auto/300px min-height */
     /* Light Mode Default Background: Bright/Light */
-    background: linear-gradient(rgba(240, 240, 240, 0.9), rgba(255, 255, 255, 0.95)), url('images/hero_stack_books.png');
+    background: linear-gradient(rgba(240, 240, 240, 0.9), rgba(255, 255, 255, 0.95)), url('images/hero_stack_books.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -104,7 +104,7 @@
 
 /* Dark Mode Overrides */
 [data-theme="dark"] .ad-banner-custom {
-    background: linear-gradient(rgba(30, 41, 59, 0.85), rgba(17, 24, 39, 0.95)), url('images/hero_stack_books.png');
+    background: linear-gradient(rgba(30, 41, 59, 0.85), rgba(17, 24, 39, 0.95)), url('images/hero_stack_books.webp');
     background-size: cover;
     background-position: center;
     color: white;

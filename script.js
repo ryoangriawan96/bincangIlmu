@@ -13,7 +13,14 @@ async function apiRequest(path, options = {}) {
     const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
     const token = sessionStorage.getItem('authToken');
     if (token) headers.Authorization = `Bearer ${token}`;
-    const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 7000);
+    let response;
+    try {
+        response = await fetch(`${API_BASE}${path}`, { ...options, headers, signal: options.signal || controller.signal });
+    } finally {
+        window.clearTimeout(timeout);
+    }
     const body = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(body.error || 'Permintaan gagal. Coba lagi.');
     return body;
@@ -23,7 +30,7 @@ async function loadPublicContent() {
         ['courses', coursesData], ['kitab', kitabData], ['blogs', blogsData],
         ['fatwas', fatwasData], ['ads', adsData]
     ];
-    for (const [endpoint, map] of collections) {
+    await Promise.all(collections.map(async ([endpoint, map]) => {
         try {
             const items = await apiRequest(`/${endpoint}`);
             if (Array.isArray(items) && items.length) {
@@ -31,7 +38,7 @@ async function loadPublicContent() {
                 Object.assign(map, Object.fromEntries(items.map(item => [item.id, item])));
             }
         } catch (_) { /* Keep bundled read-only content when the API is unavailable. */ }
-    }
+    }));
     if (document.getElementById('allCoursesGrid')) filterCourseList();
     if (document.getElementById('kitabGrid')) filterKitabList();
     if (document.getElementById('allBlogsGrid')) applyBlogFilters();
@@ -2577,67 +2584,67 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileToggle = document.querySelector('.mobile-toggle');
     const navMenu = document.querySelector('.nav-menu');
     const body = document.body;
+    const setMenuOpen = open => {
+        if (!navMenu || !mobileToggle) return;
+        navMenu.classList.toggle('active', open);
+        body.classList.toggle('menu-open', open);
+        mobileToggle.setAttribute('aria-expanded', String(open));
+        const icon = mobileToggle.querySelector('i');
+        if (icon) {
+            icon.classList.toggle('fa-bars', !open);
+            icon.classList.toggle('fa-times', open);
+        }
+        mobileToggle.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
+    };
 
     if (mobileToggle && navMenu) {
         mobileToggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            navMenu.classList.toggle('active');
-            body.classList.toggle('menu-open');
-
-            // Toggle Icon
-            const icon = mobileToggle.querySelector('i');
-            if (icon) {
-                if (navMenu.classList.contains('active')) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-times');
-                } else {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            }
+            setMenuOpen(!navMenu.classList.contains('active'));
         });
 
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
             if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !mobileToggle.contains(e.target)) {
-                navMenu.classList.remove('active');
-                body.classList.remove('menu-open');
-                const icon = mobileToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
+                setMenuOpen(false);
             }
         });
 
-        // Close menu when clicking a link
-        const navLinks = navMenu.querySelectorAll('a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                body.classList.remove('menu-open');
-                const icon = mobileToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && navMenu.classList.contains('active')) {
+                setMenuOpen(false);
+                mobileToggle.focus();
+            }
+        });
+
+        // Delegate so links added later for authentication also close the menu.
+        navMenu.addEventListener('click', event => {
+            if (event.target.closest('a')) setMenuOpen(false);
         });
     }
     
     // Inject auth/profile into mobile nav menu
     function updateMobileNav() {
-        if (window.innerWidth > 900) return;
         const navMenu = document.querySelector('.nav-menu');
         if (!navMenu) return;
         
-        // Remove old mobile area if exists
-        const oldArea = navMenu.querySelector('.mobile-auth-area, .mobile-profile-area, .mobile-nav-links');
-        if (oldArea) oldArea.remove();
-        const oldArea2 = navMenu.querySelector('.mobile-auth-area, .mobile-profile-area, .mobile-nav-links');
-        if (oldArea2) oldArea2.remove();
-        const oldArea3 = navMenu.querySelector('.mobile-auth-area, .mobile-profile-area, .mobile-nav-links');
-        if (oldArea3) oldArea3.remove();
+        navMenu.querySelectorAll('.mobile-auth-area, .mobile-profile-area, .mobile-nav-links, .mobile-utility-area').forEach(area => area.remove());
+        if (!mobileBreakpoint.matches) return;
+
+        const utilityArea = document.createElement('div');
+        utilityArea.className = 'mobile-utility-area';
+        utilityArea.innerHTML = `
+            <button type="button" class="mobile-search-button"><i class="fas fa-search" aria-hidden="true"></i> Cari</button>
+            <button type="button" class="mobile-theme-button"><i class="fas fa-moon" aria-hidden="true"></i> Tema</button>
+        `;
+        navMenu.appendChild(utilityArea);
+        utilityArea.querySelector('.mobile-search-button').addEventListener('click', () => {
+            setMenuOpen(false);
+            if (typeof openSearch === 'function') openSearch();
+        });
+        utilityArea.querySelector('.mobile-theme-button').addEventListener('click', () => {
+            if (typeof toggleTheme === 'function') toggleTheme();
+        });
         
         const isLoggedIn = Boolean(sessionStorage.getItem('authToken'));
         const currentUser = sessionUser();
@@ -2682,7 +2689,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     updateMobileNav();
-    window.addEventListener('resize', updateMobileNav);
+    const mobileBreakpoint = window.matchMedia('(max-width: 900px)');
+    if (mobileBreakpoint.addEventListener) mobileBreakpoint.addEventListener('change', updateMobileNav);
+    else mobileBreakpoint.addListener(updateMobileNav);
 });
 
 // =========================================

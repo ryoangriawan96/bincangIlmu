@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruang Kelas - Bincang Ilmu</title>
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=231">
+    <link rel="stylesheet" href="style.css?v=232">
     <script>
         (function () {
             const savedTheme = localStorage.getItem('theme') || 'dark'; // Default dark for player
@@ -65,7 +62,7 @@
                         </div>
                         
                         <div class="instructor-mini-profile" style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg-light); border-radius: var(--radius-md); margin-bottom: 2rem;">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Instruktur" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Instruktur" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" decoding="async" loading="eager" fetchpriority="high">
                             <div>
                                 <h4 style="margin-bottom: 0.2rem; color: var(--text-dark);">Ustadz Abu Hanifah, Lc.</h4>
                                 <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;">Instruktur Bahasa Arab</p>
@@ -200,7 +197,7 @@
     </div>
 
     <script src="api-config.js"></script>
-    <script src="script.js?v=231"></script>
+    <script src="script.js?v=232"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if(typeof initCoursePlayer === 'function') {

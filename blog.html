@@ -6,14 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog & Faedah - Bincang Ilmu</title>
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=231">
+    <link rel="stylesheet" href="style.css?v=232">
     <script>
         (function () {
             const savedTheme = localStorage.getItem('theme') || 'light';
@@ -45,7 +41,7 @@
                 <span>bincang</span>
                 <span><span class="highlight">ilmu</span>.</span>
             </a>
-            <nav class="nav-menu">
+            <nav class="nav-menu" id="primary-navigation" aria-label="Navigasi utama">
                 <ul class="nav-list">
                     <li><a href="index.html" class="nav-link">Beranda</a></li>
                     <li><a href="courses.html" class="nav-link">Kursus</a></li>
@@ -99,7 +95,7 @@
                     </div>
                 </div>
             </div>
-            <button class="mobile-toggle">
+            <button type="button" class="mobile-toggle" aria-label="Buka menu" aria-controls="primary-navigation" aria-expanded="false">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -155,7 +151,7 @@
                             <article class="featured-blog-card featured-slide">
                                 <div class="featured-blog-img-wrapper">
                                     <div class="blog-badge-category">Adab & Ilmu</div>
-                                    <img src="https://images.unsplash.com/photo-1576085898323-218337e3e43c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Featured Blog 1" class="featured-blog-img">
+                                    <img src="https://images.unsplash.com/photo-1576085898323-218337e3e43c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Featured Blog 1" class="featured-blog-img" decoding="async" loading="eager" fetchpriority="high">
                                 </div>
                                 <div class="featured-blog-content">
                                     <h2 class="blog-title is-large" style="font-size: 2rem; margin-bottom: 1rem; line-height: 1.3;">
@@ -163,7 +159,7 @@
                                     </h2>
                                     <p style="color: var(--text-light); margin-bottom: 2rem; line-height: 1.6;">Menuntut ilmu bukan sekadar hobi, melainkan kewajiban setiap muslim untuk membentengi diri dari syubhat dan syahwat...</p>
                                     <div class="blog-author" style="margin-bottom: 1.5rem;">
-                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Author" style="width: 48px; height: 48px;">
+                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Author" style="width: 48px; height: 48px;" decoding="async" loading="lazy">
                                         <div class="blog-author-info">
                                             <span class="author-name" style="font-size: 1rem;">Ustadz Abu Hanifah</span>
                                             <span class="blog-date-text">18 Des 2025</span>
@@ -176,7 +172,7 @@
                             <article class="featured-blog-card featured-slide">
                                 <div class="featured-blog-img-wrapper">
                                     <div class="blog-badge-category">Aqidah</div>
-                                    <img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Featured Blog 2" class="featured-blog-img">
+                                    <img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Featured Blog 2" class="featured-blog-img" decoding="async" loading="lazy">
                                 </div>
                                 <div class="featured-blog-content">
                                     <h2 class="blog-title is-large" style="font-size: 2rem; margin-bottom: 1rem; line-height: 1.3;">
@@ -184,7 +180,7 @@
                                     </h2>
                                     <p style="color: var(--text-light); margin-bottom: 2rem; line-height: 1.6;">Tauhid adalah inti dari dakwah para Rasul. Tanpa tauhid yang benar, semua amal ibadah tidak akan diterima di sisi Allah...</p>
                                     <div class="blog-author" style="margin-bottom: 1.5rem;">
-                                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Author" style="width: 48px; height: 48px;">
+                                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Author" style="width: 48px; height: 48px;" decoding="async" loading="lazy">
                                         <div class="blog-author-info">
                                             <span class="author-name" style="font-size: 1rem;">Ustadz Ahmad Faris</span>
                                             <span class="blog-date-text">15 Des 2025</span>
@@ -197,7 +193,7 @@
                             <article class="featured-blog-card featured-slide">
                                 <div class="featured-blog-img-wrapper">
                                     <div class="blog-badge-category">Fiqih</div>
-                                    <img src="https://images.unsplash.com/photo-1609599006353-e629aaab31ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Featured Blog 3" class="featured-blog-img">
+                                    <img src="https://images.unsplash.com/photo-1609599006353-e629aaab31ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Featured Blog 3" class="featured-blog-img" decoding="async" loading="lazy">
                                 </div>
                                 <div class="featured-blog-content">
                                     <h2 class="blog-title is-large" style="font-size: 2rem; margin-bottom: 1rem; line-height: 1.3;">
@@ -205,7 +201,7 @@
                                     </h2>
                                     <p style="color: var(--text-light); margin-bottom: 2rem; line-height: 1.6;">Mempelajari tata cara shalat yang benar sangat penting, karena shalat adalah rukun Islam kedua yang kelak akan dihisab pertama kali...</p>
                                     <div class="blog-author" style="margin-bottom: 1.5rem;">
-                                        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Author" style="width: 48px; height: 48px;">
+                                        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Author" style="width: 48px; height: 48px;" decoding="async" loading="lazy">
                                         <div class="blog-author-info">
                                             <span class="author-name" style="font-size: 1rem;">Ustadz Budi Santoso</span>
                                             <span class="blog-date-text">10 Des 2025</span>
@@ -452,7 +448,7 @@
                 <div class="divider"><span>Atau masuk dengan</span></div>
 
                 <button class="btn-google">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" decoding="async" loading="lazy">
                     Masuk dengan Google
                 </button>
 
@@ -489,7 +485,7 @@
                 <div class="divider"><span>Atau daftar dengan</span></div>
 
                 <button class="btn-google">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" decoding="async" loading="lazy">
                     Daftar dengan Google
                 </button>
                 <p class="text-center mt-3" style="font-size: 0.9rem; color: var(--text-light); margin-top: 1.5rem">
@@ -649,7 +645,7 @@
 
     <!-- Main Script -->
     <script src="api-config.js"></script>
-    <script src="script.js?v=231"></script>
+    <script src="script.js?v=232"></script>
 </body>
 
 </html>

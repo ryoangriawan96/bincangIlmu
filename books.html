@@ -6,14 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bincang Ilmu - Platform Belajar Online Kekinian</title>
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=231">
+    <link rel="stylesheet" href="style.css?v=232">
     <script>
         // Immediate theme application to prevent flash
         (function () {
@@ -32,7 +28,7 @@
                 <span>bincang</span>
                 <span><span class="highlight">ilmu</span>.</span>
             </a>
-            <nav class="nav-menu">
+            <nav class="nav-menu" id="primary-navigation" aria-label="Navigasi utama">
                 <ul class="nav-list">
                     <li><a href="index.html" class="nav-link">Beranda</a></li>
                     <li><a href="courses.html" class="nav-link">Kursus</a></li>
@@ -86,7 +82,7 @@
                     </div>
                 </div>
             </div>
-            <button class="mobile-toggle">
+            <button type="button" class="mobile-toggle" aria-label="Buka menu" aria-controls="primary-navigation" aria-expanded="false">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -157,13 +153,13 @@
                 <!-- Slider -->
                 <div class="image-wrapper hero-slider-container">
                     <div class="hero-slide active">
-                        <img src="images/hero_kitab_gundul.png" alt="Kitab Turats" class="main-img isolated-book">
+                        <img src="images/hero_kitab_gundul.webp" alt="Kitab Turats" class="main-img isolated-book" decoding="async" loading="eager" fetchpriority="high">
                     </div>
                     <div class="hero-slide">
-                        <img src="images/hero_stack_books.png" alt="Koleksi Kitab" class="main-img isolated-book">
+                        <img src="images/hero_stack_books.webp" alt="Koleksi Kitab" class="main-img isolated-book" decoding="async" loading="lazy">
                     </div>
                     <div class="hero-slide">
-                        <img src="images/hero_open_quran.png" alt="Al-Quran" class="main-img isolated-book">
+                        <img src="images/hero_open_quran.webp" alt="Al-Quran" class="main-img isolated-book" decoding="async" loading="lazy">
                     </div>
                 </div>
 
@@ -205,20 +201,20 @@
             <div class="marquee-wrapper">
                 <div class="partner-marquee-content" id="partnerMarquee">
                     <!-- Original Logos -->
-                    <img src="images/logo_muhammadiyah.png" alt="Muhammadiyah" class="partner-logo">
-                    <img src="images/logo_hidayatullah.png" alt="Hidayatullah" class="partner-logo">
-                    <img src="images/logo_nu.png" alt="Nahdlatul Ulama" class="partner-logo">
-                    <img src="images/logo_persis.png" alt="Persis" class="partner-logo">
-                    <img src="images/logo_alirsyad_official.png" alt="Al-Irsyad" class="partner-logo">
-                    <img src="images/logo_mui_official.png" alt="MUI" class="partner-logo">
+                    <img src="images/logo_muhammadiyah.webp" alt="Muhammadiyah" class="partner-logo" decoding="async" loading="lazy">
+                    <img src="images/logo_hidayatullah.webp" alt="Hidayatullah" class="partner-logo" decoding="async" loading="lazy">
+                    <img src="images/logo_nu.webp" alt="Nahdlatul Ulama" class="partner-logo" decoding="async" loading="lazy">
+                    <img src="images/logo_persis.webp" alt="Persis" class="partner-logo" decoding="async" loading="lazy">
+                    <img src="images/logo_alirsyad_official.webp" alt="Al-Irsyad" class="partner-logo" decoding="async" loading="lazy">
+                    <img src="images/logo_mui_official.png" alt="MUI" class="partner-logo" decoding="async" loading="lazy">
 
                     <!-- Duplicates for Infinite Scroll -->
-                    <img src="images/logo_muhammadiyah.png" alt="Muhammadiyah" class="partner-logo">
-                    <img src="images/logo_hidayatullah.png" alt="Hidayatullah" class="partner-logo">
-                    <img src="images/logo_nu.png" alt="Nahdlatul Ulama" class="partner-logo">
-                    <img src="images/logo_persis.png" alt="Persis" class="partner-logo">
-                    <img src="images/logo_alirsyad_official.png" alt="Al-Irsyad" class="partner-logo">
-                    <img src="images/logo_mui_official.png" alt="MUI" class="partner-logo">
+                    <img src="images/logo_muhammadiyah.webp" alt="Muhammadiyah" class="partner-logo" decoding="async" loading="lazy">
+                    <img src="images/logo_hidayatullah.webp" alt="Hidayatullah" class="partner-logo" decoding="async" loading="lazy">
+                    <img src="images/logo_nu.webp" alt="Nahdlatul Ulama" class="partner-logo" decoding="async" loading="lazy">
+                    <img src="images/logo_persis.webp" alt="Persis" class="partner-logo" decoding="async" loading="lazy">
+                    <img src="images/logo_alirsyad_official.webp" alt="Al-Irsyad" class="partner-logo" decoding="async" loading="lazy">
+                    <img src="images/logo_mui_official.png" alt="MUI" class="partner-logo" decoding="async" loading="lazy">
                 </div>
             </div>
         </div>
@@ -237,7 +233,7 @@
                 <!-- Course Card 1 -->
                 <div class="course-card">
                     <div class="course-thumb">
-                        <img src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Al-Arabiyyah Baina Yadaik">
+                        <img src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Al-Arabiyyah Baina Yadaik" decoding="async" loading="lazy">
                         <span class="category-tag">Bahasa Arab</span>
                     </div>
                     <div class="course-content">
@@ -249,7 +245,7 @@
                                 Al-Arabiyyah
                                 Baina Yadaik</a></h3>
                         <div class="course-instructor">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Instructor">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Instructor" decoding="async" loading="lazy">
                             <span>Ustadz Abu Hanifah, Lc.</span>
                         </div>
                         <div class="course-footer">
@@ -262,7 +258,7 @@
                 <!-- Course Card 2 -->
                 <div class="course-card">
                     <div class="course-thumb">
-                        <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Fiqih Ibadah Bin Baz">
+                        <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Fiqih Ibadah Bin Baz" decoding="async" loading="lazy">
                         <span class="category-tag">Fiqih</span>
                     </div>
                     <div class="course-content">
@@ -274,7 +270,7 @@
                                 Lengkap
                                 Sesuai Sunnah</a></h3>
                         <div class="course-instructor">
-                            <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="Instructor">
+                            <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="Instructor" decoding="async" loading="lazy">
                             <span>Ustadz Ahmad Zainuddin, Lc.</span>
                         </div>
                         <div class="course-footer">
@@ -287,7 +283,7 @@
                 <!-- Course Card 3 -->
                 <div class="course-card">
                     <div class="course-thumb">
-                        <img src="https://images.unsplash.com/photo-1576085898323-218337e3e43c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Syarh Riyadhus Shalihin">
+                        <img src="https://images.unsplash.com/photo-1576085898323-218337e3e43c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Syarh Riyadhus Shalihin" decoding="async" loading="lazy">
                         <span class="category-tag">Adab & Akhlak</span>
                     </div>
                     <div class="course-content">
@@ -300,7 +296,7 @@
                                 Penuntut Ilmu</a>
                         </h3>
                         <div class="course-instructor">
-                            <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Instructor">
+                            <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Instructor" decoding="async" loading="lazy">
                             <span>Ustadz Dr. Firanda Andirja, M.A.</span>
                         </div>
                         <div class="course-footer">
@@ -352,7 +348,7 @@
                     </ul>
                 </div>
                 <div class="feature-image">
-                    <img src="images/why-us.jpg" alt="Why Choose Us">
+                    <img src="images/why-us.webp" alt="Why Choose Us" decoding="async" loading="lazy">
                     <div class="experience-badge">
                         <span class="count">5+</span>
                         <span class="label">Tahun Pengalaman</span>
@@ -459,7 +455,7 @@
                 <div class="course-card">
                     <div class="course-thumb">
                         <img src="https://images.unsplash.com/photo-1576085898323-218337e3e43c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                            alt="Blog 1">
+                            alt="Blog 1" decoding="async" loading="lazy">
                         <span class="category-tag">Aqidah</span>
                     </div>
                     <div class="course-content">
@@ -481,7 +477,7 @@
                 <div class="course-card">
                     <div class="course-thumb">
                         <img src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                            alt="Blog 2">
+                            alt="Blog 2" decoding="async" loading="lazy">
                         <span class="category-tag">Fiqih</span>
                     </div>
                     <div class="course-content">
@@ -503,7 +499,7 @@
                 <div class="course-card">
                     <div class="course-thumb">
                         <img src="https://images.unsplash.com/photo-1507434965515-61970f2bd7c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                            alt="Blog 3">
+                            alt="Blog 3" decoding="async" loading="lazy">
                         <span class="category-tag">Tazkiyatun Nufus</span>
                     </div>
                     <div class="course-content">
@@ -659,7 +655,7 @@
                 <div class="divider"><span>Atau masuk dengan</span></div>
 
                 <button class="btn-google">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" decoding="async" loading="lazy">
                     Masuk dengan Google
                 </button>
 
@@ -696,7 +692,7 @@
                 <div class="divider"><span>Atau daftar dengan</span></div>
 
                 <button class="btn-google">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" decoding="async" loading="lazy">
                     Daftar dengan Google
                 </button>
                 <p class="text-center mt-3" style="font-size: 0.9rem; color: var(--text-light); margin-top: 1.5rem">
@@ -856,7 +852,7 @@
 
     <!-- Main Script -->
     <script src="api-config.js"></script>
-    <script src="script.js?v=231"></script>
+    <script src="script.js?v=232"></script>
 </body>
 
 </html>
