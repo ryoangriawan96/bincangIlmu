@@ -9,7 +9,7 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=271">
+    <link rel="stylesheet" href="style.css?v=272">
     <script>
         // Immediate theme application to prevent flash
         (function () {
@@ -112,7 +112,7 @@
                 <div class="ai-search-container">
                     <div class="ai-search-box">
                         <i class="fas fa-search ai-sparkle-icon"></i>
-                        <input type="text" id="aiSearchInput" placeholder="Ketik topik yang ingin dipelajari..." aria-label="Cari materi berdasarkan topik">
+                        <input type="text" id="aiSearchInput" placeholder="Ketik topik yang ingin dipelajari..." aria-label="Cari materi berdasarkan topik" autocomplete="off">
                         <button class="btn btn-primary btn-ai-search" onclick="handleAISearch()">
                             Cari Materi
                         </button>
@@ -565,6 +565,11 @@
     <div class="modal-overlay" id="authModal">
         <div class="modal-box">
             <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+
+            <div class="auth-modal-heading">
+                <span class="auth-modal-mark"><i class="fas fa-book-open" aria-hidden="true"></i></span>
+                <div><h2>Belajar bersama Bincang Ilmu</h2><p>Masuk ke akun Anda atau buat akun baru untuk mulai belajar.</p></div>
+            </div>
 
             <div class="auth-tabs">
                 <button class="auth-tab-btn active" id="loginTabBtn" onclick="switchAuthTab('login')">Masuk</button>
