@@ -12036,3 +12036,92 @@ img {
     .header-actions .btn { padding-inline: 0.65rem; font-size: 0.82rem; white-space: nowrap; }
     .theme-toggle, .search-toggle { width: 34px; height: 40px; margin-right: 0 !important; }
 }
+
+/* Mobile home page: put the learning message before the artwork and keep the
+   search action compact enough to fit on one line. */
+@media (max-width: 900px) {
+    .hero { padding-top: 6.25rem; padding-bottom: 2.5rem; }
+    .hero-container {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    .hero-content { order: 0; width: 100%; min-width: 0; margin-top: 0; }
+    .hero-image {
+        order: 1;
+        width: min(100%, 390px);
+        height: clamp(180px, 46vw, 300px);
+        min-height: 0;
+        margin-inline: auto;
+        overflow: hidden;
+    }
+    .hero-bg-animation { display: none; }
+    .hero-slider-container { width: 100%; height: 100%; overflow: hidden; }
+    .hero-slide { inset: 0; }
+    .main-img { max-width: 84%; max-height: 88%; animation: none; }
+    .hero-description { max-width: 38rem; margin-inline: auto; }
+    .ai-search-container { width: 100%; max-width: 38rem; min-width: 0; margin: 1.5rem auto; }
+    .ai-search-box {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        min-width: 0;
+        padding: 0.4rem;
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        overflow: visible;
+    }
+    .ai-sparkle-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        z-index: 1;
+        margin: 0;
+        transform: translateY(-50%);
+        animation: none;
+    }
+    .ai-search-box input {
+        grid-column: 1;
+        grid-row: 1;
+        width: 100%;
+        min-width: 0;
+        padding: 0.75rem 0.25rem 0.75rem 2.25rem;
+        font-size: 0.95rem;
+    }
+    .ai-search-box .btn-ai-search {
+        grid-column: 2;
+        grid-row: 1;
+        width: auto;
+        min-width: 7.5rem;
+        min-height: 46px;
+        margin: 0;
+        padding-inline: 1rem;
+        font-size: 0.9rem;
+    }
+    .ai-search-tags { justify-content: center; gap: 0.45rem; }
+    .ai-search-tags > span { flex-basis: 100%; text-align: center; }
+    .ai-search-tags a { min-height: 36px; display: inline-flex; align-items: center; }
+}
+
+/* Use two small footer columns instead of making mobile users scroll through
+   each link group one at a time. Reserve room for the fixed chat button. */
+@media (max-width: 600px) {
+    .footer { padding-top: 2.5rem; padding-bottom: calc(5.75rem + env(safe-area-inset-bottom)); }
+    .footer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem 1rem;
+        margin-bottom: 1.5rem;
+    }
+    .footer-grid > .footer-brand,
+    .footer-grid > .footer-links:last-child { grid-column: 1 / -1; }
+    .footer-brand p { max-width: 34rem; margin-bottom: 1rem; }
+    .footer-links h4 { margin-bottom: 0.65rem; font-size: 1rem; }
+    .footer-links ul { gap: 0.35rem; }
+    .footer-links li, .footer-links a { line-height: 1.45; overflow-wrap: anywhere; }
+    .footer-bottom { justify-content: center; padding-top: 1.25rem; text-align: center; }
+    .footer-bottom p { font-size: 0.85rem; }
+    .hero-stats { margin-top: 1.25rem; }
+}
