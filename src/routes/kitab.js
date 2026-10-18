@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { getDB } = require('../utils/db');
-const { authenticateToken } = require('../middleware/auth');
+const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
 const db = getDB('kitab');
 
@@ -26,7 +26,7 @@ router.get('/:id', (req, res) => {
 });
 
 // POST /api/kitab – buat baru
-router.post('/', authenticateToken, (req, res) => {
+router.post('/', authenticateToken, requireAdmin, (req, res) => {
   try {
     const newItem = {
       id: require('uuid').v4(),
@@ -43,7 +43,7 @@ router.post('/', authenticateToken, (req, res) => {
 });
 
 // PUT /api/kitab/:id – update
-router.put('/:id', authenticateToken, (req, res) => {
+router.put('/:id', authenticateToken, requireAdmin, (req, res) => {
   try {
     const item = db.find(req.params.id);
     if (!item) return res.status(404).json({ error: 'Not found' });
@@ -59,7 +59,7 @@ router.put('/:id', authenticateToken, (req, res) => {
 });
 
 // DELETE /api/kitab/:id – hapus
-router.delete('/:id', authenticateToken, (req, res) => {
+router.delete('/:id', authenticateToken, requireAdmin, (req, res) => {
   try {
     const removed = db.remove(req.params.id);
     if (removed.length === 0) return res.status(404).json({ error: 'Not found' });

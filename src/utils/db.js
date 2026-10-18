@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const stores = new Map();
 
 /**
  * Buat (atau load) database JSON untuk nama koleksi yang diberikan.
@@ -10,20 +11,21 @@ function getDB(collectionName) {
   const filePath = path.resolve(__dirname, '../data', `${collectionName}.json`);
   
   // Pastikan file ada dan berisi array
-  let data = { data: [] };
-  if (fs.existsSync(filePath)) {
-    try {
-      const content = fs.readFileSync(filePath, 'utf8');
-      data = JSON.parse(content);
-      // Pastikan struktur yang diharapkan ada
-      if (!data.data) {
+  if (!stores.has(collectionName)) {
+    let data = { data: [] };
+    if (fs.existsSync(filePath)) {
+      try {
+        const content = fs.readFileSync(filePath, 'utf8');
+        data = JSON.parse(content);
+        if (!data || !Array.isArray(data.data)) data = { data: [] };
+      } catch (err) {
+        console.error(`Error reading ${filePath}:`, err);
         data = { data: [] };
       }
-    } catch (err) {
-      console.error(`Error reading ${filePath}:`, err);
-      data = { data: [] };
     }
+    stores.set(collectionName, data);
   }
+  const data = stores.get(collectionName);
   
   return {
     /**
@@ -32,6 +34,11 @@ function getDB(collectionName) {
      */
     getData: () => {
       return data.data;
+    },
+
+    findByEmail: (email) => {
+      const normalizedEmail = String(email).trim().toLowerCase();
+      return data.data.find(item => String(item.email || '').toLowerCase() === normalizedEmail) || null;
     },
     
     /**
@@ -66,9 +73,16 @@ function getDB(collectionName) {
      * @returns {Array} item yang dihapus
      */
     remove: (id) => {
-      const initialLength = data.data.length;
+      const removed = data.data.filter(item => item.id === id);
       data.data = data.data.filter(item => item.id !== id);
-      return data.data.slice(initialLength, initialLength + (initialLength - data.data.length));
+      return removed;
+    },
+
+    update: (id, changes) => {
+      const item = data.data.find(entry => entry.id === id);
+      if (!item) return null;
+      Object.assign(item, changes);
+      return item;
     }
   };
 }

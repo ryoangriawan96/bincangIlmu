@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const { getDB } = require('../utils/db');
-const { authenticateToken } = require('../middleware/auth');
+const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
 const db = getDB('fatwas');
 
 // GET /api/fatwas – list semua
 router.get('/', (req, res) => {
   try {
-    const data = db.get('data').value();
+    const data = db.getData();
     res.json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 // GET /api/fatwas/:id – detail satu
 router.get('/:id', (req, res) => {
   try {
-    const data = db.get('data').value();
+    const data = db.getData();
     const item = data.find(i => i.id === req.params.id);
     if (!item) return res.status(404).json({ error: 'Not found' });
     res.json(item);
@@ -28,15 +28,16 @@ router.get('/:id', (req, res) => {
 });
 
 // POST /api/fatwas – buat baru
-router.post('/', authenticateToken, (req, res) => {
+router.post('/', authenticateToken, requireAdmin, (req, res) => {
   try {
     const newItem = {
-      id: require('uuid').v4(),
       ...req.body,
+      id: require('uuid').v4(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    db.get('data').push(newItem).write();
+    db.push(newItem);
+    db.write();
     res.status(201).json(newItem);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -44,13 +45,10 @@ router.post('/', authenticateToken, (req, res) => {
 });
 
 // PUT /api/fatwas/:id – update
-router.put('/:id', authenticateToken, (req, res) => {
+router.put('/:id', authenticateToken, requireAdmin, (req, res) => {
   try {
-    const item = getDB('fatwas')
-      .get('data')
-      .find({ id: req.params.id })
-      .assign({ ...req.body, updatedAt: new Date().toISOString() })
-      .write();
+    const item = db.update(req.params.id, { ...req.body, id: req.params.id, updatedAt: new Date().toISOString() });
+    if (item) db.write();
 
     if (!item) return res.status(404).json({ error: 'Not found' });
     res.json(item);
@@ -60,12 +58,10 @@ router.put('/:id', authenticateToken, (req, res) => {
 });
 
 // DELETE /api/fatwas/:id – hapus
-router.delete('/:id', authenticateToken, (req, res) => {
+router.delete('/:id', authenticateToken, requireAdmin, (req, res) => {
   try {
-    const removed = getDB('fatwas')
-      .get('data')
-      .remove({ id: req.params.id })
-      .write();
+    const removed = db.remove(req.params.id);
+    if (removed.length) db.write();
 
     if (removed.length === 0) return res.status(404).json({ error: 'Not found' });
     res.json({ message: 'Deleted' });

@@ -1,103 +1,65 @@
 const express = require('express');
 const router = express.Router();
 const { getDB } = require('../utils/db');
-const { authenticateToken } = require('../middleware/auth');
+const { authenticateToken, requireAdmin } = require('../middleware/auth');
+const { v4: uuid } = require('uuid');
+const { hashPassword } = require('../utils/password');
 
 const db = getDB('users');
 
-// GET /api/users – list semua (hanya untuk admin)
-router.get('/', authenticateToken, (req, res) => {
-  try {
-    const data = db.get('data').value();
-    // Don't send passwords in response
-    const safeData = data.map(({ password, ...user }) => user);
-    res.json(safeData);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+router.use(authenticateToken, requireAdmin);
+
+router.get('/', (req, res) => {
+  const safeData = db.getData().map(({ password, ...user }) => user);
+  res.json(safeData);
 });
 
-// GET /api/users/:id – detail satu
-router.get('/:id', authenticateToken, (req, res) => {
-  try {
-    const data = db.get('data').value();
-    const item = data.find(i => i.id === req.params.id);
-    if (!item) return res.status(404).json({ error: 'Not found' });
-    // Don't send password
-    const { password, ...safeItem } = item;
-    res.json(safeItem);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+router.get('/:id', (req, res) => {
+  const item = db.find(req.params.id);
+  if (!item) return res.status(404).json({ error: 'Not found' });
+  const { password, ...safeItem } = item;
+  res.json(safeItem);
 });
 
-// POST /api/users – buat baru (hanya untuk admin)
-router.post('/', authenticateToken, (req, res) => {
-  try {
-    const { name, email, password, role = 'Siswa' } = req.body;
-    if (!name || !email || !password) {
-      return res.status(400).json({ error: 'Name, email, password required' });
-    }
-    const exists = db.get('data').find({ email }).value();
-    if (exists) {
-      return res.status(409).json({ error: 'Email already exists' });
-    }
-    const newUser = {
-      id: require('uuid').v4(),
-      name,
-      email,
-      password, // ⚠️ dalam produksi gunakan hash!
-      role,
-      createdAt: new Date().toISOString()
-    };
-    db.get('data').push(newUser).write();
-    // Don't send password in response
-    const { password: _, ...safeUser } = newUser;
-    res.status(201).json(safeUser);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+router.post('/', (req, res) => {
+  const { name, email, password } = req.body;
+  if (typeof name !== 'string' || typeof email !== 'string' || typeof password !== 'string' || !name.trim() || !email.trim() || password.length < 8) {
+    return res.status(400).json({ error: 'Name, valid email, and password (at least 8 characters) are required' });
   }
+  const normalizedEmail = email.trim().toLowerCase();
+  if (db.findByEmail(normalizedEmail)) return res.status(409).json({ error: 'Email already exists' });
+  const newUser = {
+    id: uuid(), name: name.trim(), email: normalizedEmail,
+    password: hashPassword(password), role: 'Siswa', createdAt: new Date().toISOString()
+  };
+  db.push(newUser);
+  db.write();
+  const { password: omitted, ...safeUser } = newUser;
+  res.status(201).json(safeUser);
 });
 
-// PUT /api/users/:id – update
-router.put('/:id', authenticateToken, (req, res) => {
-  try {
-    const { name, email, role, password } = req.body;
-    const updateData = { 
-      name, 
-      email, 
-      role,
-      ...(password && { password }) // Only update password if provided
-    };
-    
-    const item = getDB('users')
-      .get('data')
-      .find({ id: req.params.id })
-      .assign({ ...updateData, updatedAt: new Date().toISOString() })
-      .write();
-
-    if (!item) return res.status(404).json({ error: 'Not found' });
-    // Don't send password in response
-    const { password: _, ...safeItem } = item;
-    res.json(safeItem);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+router.put('/:id', (req, res) => {
+  const { name, email, password } = req.body;
+  const item = db.find(req.params.id);
+  if (!item) return res.status(404).json({ error: 'Not found' });
+  if (email && db.getData().some(user => user.id !== item.id && user.email === String(email).trim().toLowerCase())) {
+    return res.status(409).json({ error: 'Email already exists' });
   }
+  const changes = { updatedAt: new Date().toISOString() };
+  if (typeof name === 'string' && name.trim()) changes.name = name.trim();
+  if (typeof email === 'string' && email.trim()) changes.email = email.trim().toLowerCase();
+  if (typeof password === 'string' && password.length >= 8) changes.password = hashPassword(password);
+  db.update(req.params.id, changes);
+  db.write();
+  const { password: omitted, ...safeItem } = item;
+  res.json(safeItem);
 });
 
-// DELETE /api/users/:id – hapus
-router.delete('/:id', authenticateToken, (req, res) => {
-  try {
-    const removed = getDB('users')
-      .get('data')
-      .remove({ id: req.params.id })
-      .write();
-
-    if (removed.length === 0) return res.status(404).json({ error: 'Not found' });
-    res.json({ message: 'Deleted' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+router.delete('/:id', (req, res) => {
+  const removed = db.remove(req.params.id);
+  if (!removed.length) return res.status(404).json({ error: 'Not found' });
+  db.write();
+  res.json({ message: 'Deleted' });
 });
 
 module.exports = router;

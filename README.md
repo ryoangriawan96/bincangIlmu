@@ -90,7 +90,7 @@ bincangilmu/
    npm install
    ```
 
-2. Salin `.env.example` ke `.env` dan isi nilai yang sesuai:
+2. Salin `.env.example` ke `.env` dan isi `JWT_SECRET` serta `ADMIN_BOOTSTRAP_TOKEN` dengan nilai acak yang kuat dan berbeda (masing-masing minimal 32 karakter; misalnya `openssl rand -hex 32`):
    ```bash
    cp .env.example .env
    ```
@@ -101,7 +101,9 @@ bincangilmu/
    ```
    Backend akan berjalan di `http://localhost:5000`
 
-4. Untuk deploy ke Render:
+4. Buat akun admin pertama dengan mengirim `POST /api/auth/bootstrap-admin` berisi `name`, `email`, dan `password` (minimal 12 karakter), serta header `x-admin-bootstrap-token` yang nilainya sama dengan `ADMIN_BOOTSTRAP_TOKEN`. Endpoint ini hanya aktif jika belum ada akun Admin. Hapus token bootstrap dari konfigurasi setelah akun admin dibuat.
+
+5. Untuk deploy ke Render:
    - Buat akun di [render.com](https://render.com)
    - Klik "New" → "Web Service"
    - Hubungkan repositori GitHub Anda

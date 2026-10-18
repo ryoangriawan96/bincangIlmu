@@ -15,7 +15,7 @@ const app = express();
 
 // Middleware global
 app.use(cors({ origin: process.env.FRONTEND_ORIGIN || '*' }));
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
 
 // API routes
 app.use('/api/auth', authRoutes);
@@ -30,6 +30,8 @@ app.use('/api/users', usersRoutes);
 // Serve static frontend files
 const path = require('path');
 const frontendPath = path.resolve(__dirname, '../');
+// The repository root also contains private backend code and JSON databases.
+app.use('/src', (req, res) => res.sendStatus(404));
 app.use(express.static(frontendPath));
 
 // Fallback ke index.html untuk SPA-like routing (opsional)

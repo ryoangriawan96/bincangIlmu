@@ -1,28 +1,3 @@
 {
-  "data": [
-    {
-      "id": "1",
-      "name": "Administrator",
-      "email": "admin@bincangilmu.com",
-      "password": "admin",
-      "role": "Admin",
-      "createdAt": "2024-01-01T00:00:00.000Z"
-    },
-    {
-      "id": "2",
-      "name": "Ustadz Ahmad",
-      "email": "ahmad@mail.com",
-      "password": "password",
-      "role": "Pengajar",
-      "createdAt": "2024-01-01T00:00:00.000Z"
-    },
-    {
-      "id": "3",
-      "name": "Budi Santoso",
-      "email": "budi@mail.com",
-      "password": "password",
-      "role": "Siswa",
-      "createdAt": "2024-01-01T00:00:00.000Z"
-    }
-  ]
+  "data": []
 }
