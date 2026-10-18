@@ -493,3 +493,9 @@
 .admin-brand-logo {
     width: 128px;
 }
+
+@media (max-width: 600px) {
+    .admin-brand-logo {
+        width: 118px;
+    }
+}

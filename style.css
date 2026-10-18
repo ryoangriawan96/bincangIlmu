@@ -779,9 +779,13 @@ img {
 
 .brand-logo-image {
     display: block;
-    width: 148px;
+    flex: 0 0 auto;
+    width: clamp(118px, 12vw, 148px);
     max-width: 100%;
     height: auto;
+    aspect-ratio: 819.77 / 277.25;
+    object-fit: contain;
+    object-position: left center;
 }
 
 [data-theme="dark"] .brand-logo-image {
@@ -807,7 +811,7 @@ img {
 }
 
 .logo-footer .brand-logo-image {
-    width: 154px;
+    width: clamp(118px, 12vw, 148px);
 }
 
 
