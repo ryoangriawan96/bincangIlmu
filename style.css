@@ -13261,3 +13261,24 @@ img {
         grid-template-columns: minmax(0, 1fr);
     }
 }
+
+@media (max-width: 640px) {
+    .blog-page-toolbar.container {
+        width: calc(100% - 2rem);
+        margin: 1.25rem auto 1.5rem;
+        padding: 1.1rem !important;
+    }
+
+    .featured-slide {
+        min-height: 0;
+    }
+
+    .featured-slide .featured-blog-img-wrapper {
+        height: 176px;
+        flex-basis: 176px;
+    }
+
+    .featured-carousel-container {
+        margin-bottom: 1.5rem;
+    }
+}
