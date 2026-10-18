@@ -8,7 +8,7 @@
         document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=272">
+    <link rel="stylesheet" href="style.css?v=273">
     <link rel="stylesheet" href="admin.css?v=3">
     <link rel="stylesheet" href="responsive.css?v=21">
 </head>
@@ -349,7 +349,20 @@
             <section id="tab-settings" class="admin-section" style="display:none;">
                 <div class="admin-header">
                     <h1>Pengaturan Sistem</h1>
-                    <p>Konfigurasi lanjutan dan pemeliharaan data.</p>
+                    <p>Kelola status situs dan pemeliharaan data.</p>
+                </div>
+
+                <div class="admin-maintenance-card">
+                    <div class="admin-maintenance-heading"><span class="admin-maintenance-icon"><i class="fas fa-screwdriver-wrench"></i></span><div><h3>Status Situs</h3><p>Gunakan mode ini saat situs sedang diperbaiki atau belum siap diluncurkan.</p></div></div>
+                    <form id="siteSettingsForm" onsubmit="saveSiteSettings(event)">
+                        <label class="admin-maintenance-toggle"><input type="checkbox" id="maintenanceEnabled"><span>Aktifkan halaman pemeliharaan untuk pengunjung</span></label>
+                        <div class="form-group"><label for="maintenanceMode">Mode tampilan</label><select id="maintenanceMode" class="form-control"><option value="maintenance">Sedang dalam pemeliharaan</option><option value="comingSoon">Segera hadir</option></select></div>
+                        <div class="form-group"><label for="maintenanceTitle">Judul halaman</label><input id="maintenanceTitle" maxlength="120" required></div>
+                        <div class="form-group"><label for="maintenanceMessage">Pesan untuk pengunjung</label><textarea id="maintenanceMessage" rows="3" maxlength="500" required></textarea></div>
+                        <p class="admin-maintenance-note"><i class="fas fa-circle-info"></i> Dashboard admin tetap dapat diakses saat mode ini aktif.</p>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Pengaturan Situs</button>
+                        <span id="siteSettingsSaveStatus" role="status" aria-live="polite"></span>
+                    </form>
                 </div>
                 
                 
@@ -679,8 +692,8 @@
 
     <!-- Scripts -->
     <script src="api-config.js"></script>
-    <script src="script.js?v=241"></script>
-    <script src="admin.js?v=234"></script>
+    <script src="script.js?v=242"></script>
+    <script src="admin.js?v=235"></script>
 
     <!-- Smart Search Overlay -->
     <div id="searchOverlay" class="search-overlay">

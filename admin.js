@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadDonationCardForm();
         document.getElementById('donationCardImage')?.addEventListener('input', updateDonationCardImagePreview);
         renderUsers();
+        loadAdminSiteSettings();
     }).catch(() => { window.location.replace('index.html'); });
 });
 
@@ -688,6 +689,35 @@ async function deletePartner(id) {
     try { await deleteContent('partners', partnersData, id); }
     catch (error) { return alert(error.message); }
     loadAdminPartners(); renderPartners();
+}
+
+async function loadAdminSiteSettings() {
+    const form = document.getElementById('siteSettingsForm');
+    if (!form) return;
+    try {
+        const settings = await adminApi('/site-settings', 'GET');
+        document.getElementById('maintenanceEnabled').checked = settings.enabled === true;
+        document.getElementById('maintenanceMode').value = settings.mode || 'maintenance';
+        document.getElementById('maintenanceTitle').value = settings.title || '';
+        document.getElementById('maintenanceMessage').value = settings.message || '';
+    } catch (error) {
+        document.getElementById('siteSettingsSaveStatus').textContent = `Gagal memuat pengaturan: ${error.message}`;
+    }
+}
+
+async function saveSiteSettings(event) {
+    event.preventDefault();
+    const status = document.getElementById('siteSettingsSaveStatus');
+    status.textContent = 'Menyimpan pengaturan…';
+    try {
+        await adminApi('/site-settings', 'PUT', {
+            enabled: document.getElementById('maintenanceEnabled').checked,
+            mode: document.getElementById('maintenanceMode').value,
+            title: document.getElementById('maintenanceTitle').value.trim(),
+            message: document.getElementById('maintenanceMessage').value.trim()
+        });
+        status.textContent = 'Pengaturan tersimpan. Perubahan berlaku pada kunjungan dan pemuatan halaman berikutnya.';
+    } catch (error) { status.textContent = `Gagal menyimpan: ${error.message}`; }
 }
 
 

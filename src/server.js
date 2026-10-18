@@ -17,6 +17,7 @@ const blogsRoutes = require('./routes/blogs');
 const fatwasRoutes = require('./routes/fatwas');
 const adsRoutes = require('./routes/ads');
 const partnersRoutes = require('./routes/partners');
+const siteSettingsRoutes = require('./routes/site-settings');
 const usersRoutes = require('./routes/users');
 
 const app = express();
@@ -45,6 +46,7 @@ app.use('/api/blogs', blogsRoutes);
 app.use('/api/fatwas', fatwasRoutes);
 app.use('/api/ads', adsRoutes);
 app.use('/api/partners', partnersRoutes);
+app.use('/api/site-settings', siteSettingsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api', (req, res) => res.status(404).json({ error: 'API endpoint not found' }));
 

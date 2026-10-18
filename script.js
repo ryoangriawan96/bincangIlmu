@@ -25,6 +25,36 @@ async function apiRequest(path, options = {}) {
     if (!response.ok) throw new Error(body.error || 'Permintaan gagal. Coba lagi.');
     return body;
 }
+async function loadSiteAvailability() {
+    if (document.body.classList.contains('admin-body')) return;
+    try {
+        const settings = await apiRequest('/site-settings', { cache: 'no-store' });
+        if (!settings.enabled) return;
+        document.body.classList.add('site-maintenance-active');
+        const isComingSoon = settings.mode === 'comingSoon';
+        const screen = document.createElement('main');
+        screen.id = 'maintenanceScreen';
+        screen.className = `maintenance-screen${isComingSoon ? ' coming-soon' : ''}`;
+        const emblem = document.createElement('div');
+        emblem.className = 'maintenance-emblem';
+        emblem.innerHTML = `<i class="fas ${isComingSoon ? 'fa-hourglass-half' : 'fa-screwdriver-wrench'}" aria-hidden="true"></i>`;
+        const brand = document.createElement('p');
+        brand.className = 'maintenance-brand';
+        brand.textContent = 'Bincang Ilmu';
+        const title = document.createElement('h1');
+        title.textContent = settings.title || (isComingSoon ? 'Segera hadir' : 'Kami sedang melakukan pemeliharaan');
+        const message = document.createElement('p');
+        message.className = 'maintenance-message';
+        message.textContent = settings.message || '';
+        const reload = document.createElement('button');
+        reload.className = 'btn btn-primary maintenance-reload';
+        reload.type = 'button';
+        reload.innerHTML = '<i class="fas fa-rotate-right" aria-hidden="true"></i> Coba lagi';
+        reload.addEventListener('click', () => location.reload());
+        screen.append(brand, emblem, title, message, reload);
+        document.body.appendChild(screen);
+    } catch (_) { /* If settings are unavailable, keep serving the normal site. */ }
+}
 async function loadPublicContent() {
     const collections = [
         ['courses', coursesData], ['kitab', kitabData], ['blogs', blogsData],
@@ -711,6 +741,7 @@ function updateThemeIcon(theme) {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadPublicContent();
+    loadSiteAvailability();
     const aiSearchInput = document.getElementById('aiSearchInput');
     aiSearchInput?.addEventListener('keydown', event => {
         if (event.key === 'Enter') {

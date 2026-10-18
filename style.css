@@ -12435,6 +12435,48 @@ img {
     border-color: transparent;
 }
 
+.admin-maintenance-card {
+    margin: 1.5rem 0 2rem;
+    padding: clamp(1.2rem, 3vw, 2rem);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    background: var(--bg-card);
+}
+.admin-maintenance-heading { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.admin-maintenance-heading h3 { margin: 0 0 .25rem; color: var(--text-dark); }
+.admin-maintenance-heading p { margin: 0; color: var(--text-light); line-height: 1.5; }
+.admin-maintenance-icon { width: 48px; height: 48px; display: grid; place-items: center; flex: 0 0 48px; border-radius: 14px; background: color-mix(in srgb, var(--primary-color) 13%, var(--bg-card)); color: var(--primary-color); font-size: 1.15rem; }
+.admin-maintenance-toggle { display: flex; align-items: center; gap: .7rem; margin: 0 0 1.25rem; padding: .9rem 1rem; border: 1px solid var(--border-color); border-radius: .8rem; color: var(--text-dark); cursor: pointer; }
+.admin-maintenance-toggle input { width: 1.1rem; height: 1.1rem; accent-color: var(--primary-color); }
+.admin-maintenance-card .form-group { margin-bottom: 1rem; }
+.admin-maintenance-card .form-group > label { display: block; margin-bottom: .45rem; color: var(--text-dark); font-weight: 600; }
+.admin-maintenance-card input:not([type="checkbox"]), .admin-maintenance-card select, .admin-maintenance-card textarea { width: 100%; box-sizing: border-box; padding: .75rem .9rem; border: 1px solid var(--border-color); border-radius: .7rem; background: var(--bg-main); color: var(--text-dark); font: inherit; }
+.admin-maintenance-card :is(input, select, textarea):focus { outline: 2px solid color-mix(in srgb, var(--primary-color) 50%, transparent); outline-offset: 1px; }
+.admin-maintenance-note { display: flex; gap: .5rem; align-items: center; margin: .25rem 0 1rem; color: var(--text-light); font-size: .9rem; }
+#siteSettingsSaveStatus { display: block; margin-top: .75rem; color: var(--text-light); font-size: .9rem; }
+
+body.site-maintenance-active { min-height: 100vh; overflow: hidden; background: var(--bg-main); }
+body.site-maintenance-active > :not(#maintenanceScreen) { display: none !important; }
+.maintenance-screen {
+    position: fixed;
+    z-index: 2147483000;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: max(2rem, env(safe-area-inset-top)) 1.25rem max(2rem, env(safe-area-inset-bottom));
+    overflow-y: auto;
+    text-align: center;
+    color: var(--text-dark);
+    background: radial-gradient(ellipse at 50% 15%, color-mix(in srgb, var(--primary-color) 14%, var(--bg-main)), var(--bg-main) 68%);
+}
+.maintenance-brand { margin: 0 0 2rem; color: var(--primary-color); font-weight: 750; letter-spacing: .04em; }
+.maintenance-emblem { width: 92px; height: 92px; display: grid; place-items: center; margin-bottom: 1.5rem; border-radius: 28px; background: color-mix(in srgb, var(--primary-color) 14%, var(--bg-card)); color: var(--primary-color); font-size: 2rem; box-shadow: 0 16px 40px rgba(107, 45, 62, .12); }
+.maintenance-screen h1 { max-width: 760px; margin: 0; color: var(--text-dark); font-size: clamp(1.8rem, 5vw, 3rem); line-height: 1.15; }
+.maintenance-message { max-width: 620px; margin: 1rem 0 1.75rem; color: var(--text-light); font-size: clamp(1rem, 2vw, 1.2rem); line-height: 1.7; }
+.maintenance-reload { min-height: 48px; padding: .75rem 1.35rem; border-radius: 999px; }
+
 /* Hero topic search: prevent browser autofill from painting a bright field over the theme. */
 .ai-search-box input:-webkit-autofill,
 .ai-search-box input:-webkit-autofill:hover,
