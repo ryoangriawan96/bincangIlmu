@@ -10923,8 +10923,9 @@ button, .btn, .nav-link, input, select, textarea {
 
 .donation-card {
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    max-width: 980px;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    width: min(100%, 1320px);
+    max-width: 1320px;
     min-width: 0;
     margin: 0 auto;
     overflow: hidden;
@@ -10935,7 +10936,7 @@ button, .btn, .nav-link, input, select, textarea {
 }
 
 .donation-card-image {
-    min-height: 300px;
+    min-height: 440px;
     background: var(--bg-light);
 }
 
@@ -10943,7 +10944,7 @@ button, .btn, .nav-link, input, select, textarea {
     display: block;
     width: 100%;
     height: 100%;
-    min-height: 300px;
+    min-height: 440px;
     object-fit: cover;
 }
 
@@ -10961,11 +10962,11 @@ button, .btn, .nav-link, input, select, textarea {
     align-items: flex-start;
     justify-content: center;
     min-width: 0;
-    padding: clamp(1.5rem, 4vw, 3rem);
+    padding: clamp(2.25rem, 5vw, 5rem);
 }
 
-.donation-card-content h3 { margin: 0 0 0.75rem; }
-.donation-card-content p { color: var(--text-light); line-height: 1.75; }
+.donation-card-content h3 { margin: 0 0 1rem; font-size: clamp(1.6rem, 2.4vw, 2.25rem); }
+.donation-card-content p { color: var(--text-light); line-height: 1.8; font-size: clamp(1.05rem, 1.45vw, 1.3rem); }
 .donation-card-content small { margin-top: 0.7rem; color: var(--text-light); }
 .donation-card-content button:disabled { cursor: not-allowed; opacity: 0.7; }
 
