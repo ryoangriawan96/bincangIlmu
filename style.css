@@ -12839,6 +12839,11 @@ img {
 }
 
 /* Blog and kitab pages use the same calm discovery pattern as Fatwa. */
+.blog-page-section {
+    padding: clamp(1.75rem, 4vw, 3rem) 0 5rem;
+    background: var(--bg-light);
+}
+
 .blog-page-toolbar {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
@@ -12849,7 +12854,7 @@ img {
     gap: 1.25rem 2rem;
     position: relative;
     z-index: 2;
-    margin: -1.25rem auto 2.5rem;
+    margin: 0 auto 2rem;
     padding: clamp(1.25rem, 3vw, 1.75rem);
     background: var(--bg-card);
     border: 1px solid var(--border-color);
@@ -13298,7 +13303,7 @@ img {
 @media (max-width: 640px) {
     .blog-page-toolbar.container {
         width: calc(100% - 2rem);
-        margin: 1.25rem auto 1.5rem;
+        margin: 0 auto 1.5rem;
         padding: 1.1rem !important;
     }
 

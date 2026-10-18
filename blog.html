@@ -9,38 +9,13 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=262">
+    <link rel="stylesheet" href="style.css?v=263">
     <script>
         (function () {
             const savedTheme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
         })();
     </script>
-    <style>
-        .page-header {
-            padding: clamp(6.5rem, 9vw, 7.5rem) 0 3.5rem;
-            background-color: var(--bg-light);
-            text-align: center;
-        }
-
-        .page-header .section-title {
-            font-size: clamp(2.15rem, 4vw, 2.75rem);
-            color: var(--text-dark);
-            line-height: 1.15;
-            margin: 0 auto 0.75rem;
-        }
-
-        .page-header .section-subtitle {
-            max-width: 44rem;
-            margin: 0 auto;
-            font-size: clamp(1rem, 1.7vw, 1.2rem);
-            line-height: 1.6;
-        }
-
-        .page-header .section-title .text-primary {
-            color: var(--primary-color) !important;
-        }
-    </style>
     <link rel="stylesheet" href="responsive.css?v=13">
 </head>
 
@@ -133,6 +108,7 @@
         </div>
     </div>
 
+    <section class="blog-page-section">
     <!-- Smart Filters & Search -->
     <div class="blog-smart-bar blog-page-toolbar container">
         <div class="blog-toolbar-heading">
@@ -159,7 +135,6 @@
     </div>
 
     <!-- Blog Grid -->
-    <section class="section" style="padding-top: 0;">
         <div class="container">
             <div class="blog-layout">
                 <!-- Main Content (Left) -->
