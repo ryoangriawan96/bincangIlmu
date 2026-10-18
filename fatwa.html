@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=256">
+    <link rel="stylesheet" href="style.css?v=257">
     <script>
         (function () {
             const savedTheme = localStorage.getItem('theme') || 'light';
@@ -108,17 +108,23 @@
         </div>
     </div>
 
-    <!-- Vibrant Cards Fatwa Layout -->
-    <section class="section" style="padding-top: 3rem; background: var(--bg-light); min-height: 100vh;">
-        <div class="container" style="max-width: 1000px;">
-            
-            <div class="fatwa-search-header" style="background: transparent; border: none; padding: 0 0 2rem 0; box-shadow: none;">
-                <div class="fatwa-search-box" style="margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-radius: 30px;">
-                    <input type="text" id="fatwaSearchInput" placeholder="Cari masalah (misal: sholat, riba)..." style="border: none;">
-                    <i class="fas fa-search fatwa-search-icon"></i>
+    <!-- Fatwa discovery and answers -->
+    <section class="section fatwa-page-section">
+        <div class="container fatwa-page-container">
+            <div class="fatwa-toolbar">
+                <div class="fatwa-toolbar-heading">
+                    <span class="fatwa-toolbar-icon"><i class="fas fa-book-open-reader" aria-hidden="true"></i></span>
+                    <div>
+                        <span class="fatwa-toolbar-kicker">Pusat Referensi</span>
+                        <h2>Temukan Jawaban</h2>
+                        <p>Telusuri pembahasan berdasarkan masalah atau pilih kategori.</p>
+                    </div>
                 </div>
-                
-                <div class="fatwa-categories" id="fatwaCategories" style="justify-content: center; flex-wrap: wrap;">
+                <div class="fatwa-search-box">
+                    <input type="search" id="fatwaSearchInput" placeholder="Cari masalah, misalnya sholat atau riba..." aria-label="Cari fatwa">
+                    <i class="fas fa-search fatwa-search-icon" aria-hidden="true"></i>
+                </div>
+                <div class="fatwa-categories" id="fatwaCategories" aria-label="Filter kategori fatwa">
                     <button class="fatwa-chip active" data-category="Semua">Semua</button>
                     <button class="fatwa-chip" data-category="Ibadah">Ibadah</button>
                     <button class="fatwa-chip" data-category="Muamalah">Muamalah</button>
@@ -518,7 +524,7 @@
 
     <!-- Main Script -->
     <script src="api-config.js"></script>
-    <script src="script.js?v=234"></script>
+    <script src="script.js?v=235"></script>
 </body>
 
 </html><script>

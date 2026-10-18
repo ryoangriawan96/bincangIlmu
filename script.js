@@ -1973,8 +1973,8 @@ function renderPopularFatwas() {
             <div class="popular-number">${index + 1}</div>
             <div class="popular-content">
                 <h4><a href="fatwa-detail.html?id=${id}">${fatwa.title}</a></h4>
-                <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 4px;">
-                    <span style="background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 12px; font-weight: 600;">${fatwa.category}</span>
+                <div class="popular-item-meta" style="font-size: 0.8rem; color: var(--text-light); margin-top: 4px;">
+                    <span class="popular-category">${fatwa.category}</span>
                     <span style="margin-left: 8px;"><i class="fas fa-eye"></i> ${views}x dibaca</span>
                 </div>
             </div>

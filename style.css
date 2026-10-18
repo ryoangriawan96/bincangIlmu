@@ -12534,3 +12534,306 @@ img {
     border-color: var(--primary-color);
     color: var(--primary-color);
 }
+
+/* Fatwa page refresh: clearer search hierarchy, compact filters and answer cards. */
+.fatwa-page-section {
+    min-height: 60vh;
+    padding: clamp(2rem, 5vw, 4rem) 0;
+    background: var(--bg-light);
+}
+
+.fatwa-page-container {
+    max-width: 1180px;
+}
+
+.fatwa-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.8fr);
+    gap: 1.5rem 2rem;
+    align-items: center;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    margin-bottom: 2rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.fatwa-toolbar-heading {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 0;
+}
+
+.fatwa-toolbar-icon {
+    display: grid;
+    flex: 0 0 3.25rem;
+    width: 3.25rem;
+    height: 3.25rem;
+    place-items: center;
+    border-radius: 1rem;
+    background: var(--primary-light);
+    color: var(--primary-color);
+    font-size: 1.25rem;
+}
+
+.fatwa-toolbar-kicker {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--primary-color);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.fatwa-toolbar-heading h2 {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: clamp(1.2rem, 2vw, 1.55rem);
+    line-height: 1.25;
+}
+
+.fatwa-toolbar-heading p {
+    margin: 0.35rem 0 0;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.fatwa-toolbar .fatwa-search-box {
+    max-width: none;
+    margin: 0;
+}
+
+.fatwa-toolbar .fatwa-search-box input {
+    min-height: 3.25rem;
+    padding: 0.9rem 1rem 0.9rem 3rem;
+    background: var(--bg-white);
+    border: 1px solid var(--border-color) !important;
+    border-radius: 1rem;
+    box-shadow: none;
+    font-size: 0.95rem;
+}
+
+.fatwa-toolbar .fatwa-search-icon {
+    left: 1.1rem;
+}
+
+.fatwa-toolbar .fatwa-categories {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0.1rem 0 0.25rem;
+    overflow-x: auto;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.fatwa-toolbar .fatwa-chip:not(.active) {
+    flex: 0 0 auto;
+    padding: 0.65rem 1rem;
+    background: var(--bg-light);
+    border-color: var(--border-color);
+    border-radius: 999px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: none;
+}
+
+.fatwa-toolbar .fatwa-chip:not(.active):hover,
+.fatwa-toolbar .fatwa-chip:focus-visible {
+    background: var(--primary-light);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.fatwa-main-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 300px);
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.fatwa-premium-list {
+    gap: 0.9rem;
+    padding-bottom: 1rem;
+}
+
+.fatwa-premium-row {
+    gap: 1.25rem;
+    padding: 1.35rem 1.5rem;
+    background: var(--bg-card);
+    border-color: var(--border-color);
+    border-radius: 1.2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.pr-content {
+    min-width: 0;
+    gap: 0.5rem;
+}
+
+.pr-meta {
+    flex-wrap: wrap;
+    gap: 0.45rem 0.65rem;
+}
+
+.pr-category {
+    color: var(--primary-color);
+}
+
+.pr-title {
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+}
+
+.pr-excerpt {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+.pr-right {
+    gap: 0.85rem;
+}
+
+.pr-arrow {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--bg-light);
+    color: var(--primary-color);
+}
+
+.fatwa-sidebar {
+    top: 96px;
+}
+
+.fatwa-sidebar .sidebar-widget {
+    padding: 1.35rem;
+    background: var(--bg-card);
+    border-color: var(--border-color);
+    border-radius: 1.2rem;
+}
+
+.fatwa-sidebar .widget-title {
+    margin-bottom: 0.65rem;
+    padding-bottom: 0.9rem;
+    font-size: 1rem;
+}
+
+.fatwa-sidebar .popular-item {
+    gap: 0.75rem;
+    padding: 0.9rem 0;
+    border-bottom-color: var(--border-color);
+}
+
+.fatwa-sidebar .popular-content h4 {
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+.fatwa-sidebar .popular-number {
+    min-width: 1.5rem;
+}
+
+.popular-item-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.popular-category {
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    background: var(--primary-light);
+    color: var(--primary-color);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+@media (max-width: 900px) {
+    .fatwa-toolbar {
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+    }
+
+    .fatwa-toolbar .fatwa-categories {
+        grid-column: auto;
+    }
+
+    .fatwa-main-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .fatwa-sidebar {
+        order: 2;
+        margin: 0 0 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .fatwa-page-section {
+        padding: 1.25rem 0 2rem;
+    }
+
+    .fatwa-toolbar {
+        margin-bottom: 1.25rem;
+        padding: 1rem;
+        border-radius: 1.1rem;
+    }
+
+    .fatwa-toolbar-heading {
+        gap: 0.75rem;
+    }
+
+    .fatwa-toolbar-icon {
+        flex-basis: 2.75rem;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 0.85rem;
+    }
+
+    .fatwa-toolbar-heading p {
+        font-size: 0.82rem;
+    }
+
+    .fatwa-toolbar .fatwa-search-box input {
+        min-height: 3rem;
+        font-size: 0.9rem;
+    }
+
+    .fatwa-toolbar .fatwa-categories {
+        margin-right: -0.25rem;
+        padding-right: 0.25rem;
+        scrollbar-width: none;
+    }
+
+    .fatwa-toolbar .fatwa-categories::-webkit-scrollbar {
+        display: none;
+    }
+
+    .fatwa-toolbar .fatwa-chip {
+        padding: 0.58rem 0.9rem;
+        font-size: 0.84rem;
+    }
+
+    .fatwa-premium-row {
+        align-items: stretch;
+        gap: 0.9rem;
+        padding: 1.1rem;
+        border-radius: 1rem;
+    }
+
+    .pr-excerpt {
+        font-size: 0.84rem;
+    }
+
+    .pr-right {
+        gap: 0.75rem;
+    }
+}
