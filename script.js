@@ -3563,12 +3563,30 @@ function renderAds() {
         track.parentElement.appendChild(dotsContainer);
     }
     
+    // Match the carousel height to the first slide on small screens.
+    updateAdCarouselHeight();
+
     // Start auto-play
     initAdCarousel();
 }
 
+window.addEventListener('resize', updateAdCarouselHeight, { passive: true });
+
 let adSlideTimer = null;
 let adCurrentIndex = 0;
+
+function updateAdCarouselHeight() {
+    const track = document.querySelector('.ad-carousel-track');
+    if (!track) return;
+
+    if (!window.matchMedia('(max-width: 768px)').matches) {
+        track.style.height = '';
+        return;
+    }
+
+    const content = track.querySelector('.ad-slide.active')?.firstElementChild;
+    if (content) track.style.height = `${Math.ceil(content.getBoundingClientRect().height)}px`;
+}
 
 function goToAdSlide(index) {
     const track = document.querySelector('.ad-carousel-track');
@@ -3585,6 +3603,7 @@ function goToAdSlide(index) {
     adCurrentIndex = index % slides.length;
     slides[adCurrentIndex]?.classList.add('active');
     dots[adCurrentIndex]?.classList.add('active');
+    updateAdCarouselHeight();
 }
 
 function initAdCarousel() {
