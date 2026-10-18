@@ -12277,12 +12277,12 @@ img {
 .featured-carousel-dots .dot {
     position: relative;
     display: grid;
-    flex: 0 0 44px;
+    flex: 0 0 14px;
     place-items: center;
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px;
-    min-height: 44px !important;
+    width: 14px !important;
+    height: 14px !important;
+    min-width: 14px;
+    min-height: 14px !important;
     padding: 0 !important;
     border: 0 !important;
     border-radius: 50% !important;
@@ -12303,9 +12303,9 @@ img {
 
 .ad-carousel-dots .dot.active,
 .featured-carousel-dots .dot.active {
-    flex-basis: 44px;
-    width: 44px !important;
-    height: 44px !important;
+    flex-basis: 14px;
+    width: 14px !important;
+    height: 14px !important;
     background: transparent !important;
 }
 
