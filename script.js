@@ -43,6 +43,7 @@ async function loadPublicContent() {
     if (document.getElementById('kitabGrid')) filterKitabList();
     if (document.getElementById('allBlogsGrid')) applyBlogFilters();
     if (document.getElementById('allFatwasGrid')) { renderFatwaList(fatwasData); renderPopularFatwas(); }
+    if (document.getElementById('donationCard')) renderDonationCard();
     if (location.pathname.endsWith('course-detail.html')) loadCourseDetail();
     if (location.pathname.endsWith('blog-detail.html')) loadBlogDetail();
     if (document.getElementById('fatwaContent')) loadFatwaDetail();
@@ -3451,6 +3452,15 @@ function scrollToBottom(el) {
    Dynamic Ads System with Carousel & Dots
    ========================================= */
 const defaultAds = {
+    "donation-card": {
+        title: "Dukung Pengembangan Bincang Ilmu",
+        subtitle: "",
+        desc: "Kontribusi Anda membantu pengembangan fitur, pemeliharaan layanan, dan penyediaan konten bermanfaat.",
+        buttonText: "Donasi via WhatsApp",
+        buttonLink: "",
+        imageUrl: "",
+        type: "donation"
+    },
     "ad_1": {
         title: "Siap Memulai Perjalanan Menuntut Ilmu?",
         subtitle: "",
@@ -3481,6 +3491,25 @@ const defaultAds = {
 
 let adsData = defaultAds;
 
+function renderDonationCard() {
+    const root = document.getElementById('donationCard');
+    if (!root) return;
+    const item = adsData['donation-card'] || defaultAds['donation-card'];
+    const title = escapeHtml(item.title || defaultAds['donation-card'].title);
+    const desc = escapeHtml(item.desc || defaultAds['donation-card'].desc);
+    const imageUrl = String(item.imageUrl || '').trim();
+    const buttonText = escapeHtml(item.buttonText || 'Donasi');
+    const rawLink = String(item.buttonLink || '').trim();
+    const safeLink = /^(https:\/\/|http:\/\/|\/|[a-zA-Z0-9_-]+\.html(?:[#?].*)?$)/i.test(rawLink) ? rawLink : '';
+    const imageMarkup = imageUrl
+        ? `<img src="${escapeHtml(imageUrl)}" alt="${title}" loading="lazy" onerror="this.parentElement.innerHTML='<i class=\"fas fa-hand-holding-heart\" aria-hidden=\"true\"></i>';this.parentElement.classList.add('donation-card-image-placeholder')">`
+        : '<i class="fas fa-hand-holding-heart" aria-hidden="true"></i>';
+    const buttonMarkup = safeLink
+        ? `<a class="btn btn-primary" href="${escapeHtml(safeLink)}" target="${/^https?:/i.test(safeLink) ? '_blank' : '_self'}" ${/^https?:/i.test(safeLink) ? 'rel="noopener noreferrer"' : ''}><i class="fas fa-heart" aria-hidden="true"></i> ${buttonText}</a>`
+        : `<button type="button" class="btn btn-primary" disabled><i class="fas fa-heart" aria-hidden="true"></i> ${buttonText}</button><small>Tautan donasi akan tersedia segera.</small>`;
+    root.innerHTML = `<div class="donation-card-image${imageUrl ? '' : ' donation-card-image-placeholder'}">${imageMarkup}</div><div class="donation-card-content"><h3>${title}</h3><p>${desc}</p>${buttonMarkup}</div>`;
+}
+
 function renderAds() {
     const track = document.querySelector('.ad-carousel-track');
     if (!track) return;
@@ -3490,7 +3519,7 @@ function renderAds() {
     if (oldDots) oldDots.remove();
     
     track.innerHTML = '';
-    const adEntries = Object.entries(adsData).filter(([id]) => id !== 'top-banner');
+    const adEntries = Object.entries(adsData).filter(([id]) => id !== 'top-banner' && id !== 'donation-card');
     
     adEntries.forEach(([key, ad], index) => {
         const slide = document.createElement('div');

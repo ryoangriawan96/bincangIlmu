@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
         loadAdminBlogs();
         loadAdminFatwas();
         loadAdminAds();
+        loadDonationCardForm();
+        document.getElementById('donationCardImage')?.addEventListener('input', updateDonationCardImagePreview);
         renderUsers();
     }).catch(() => { window.location.replace('index.html'); });
 });
@@ -35,6 +37,8 @@ async function loadAdminCollections() {
             for (const [id, value] of Object.entries(map)) {
                 current.push(await adminApi(`/${endpoint}`, 'POST', { ...value, id }));
             }
+        } else if (endpoint === 'ads' && !current.some(item => item.id === 'donation-card')) {
+            current.push(await adminApi('/ads', 'POST', { ...map['donation-card'], id: 'donation-card' }));
         }
         Object.keys(map).forEach(id => delete map[id]);
         Object.assign(map, Object.fromEntries(current.map(item => [item.id, item])));
@@ -479,6 +483,15 @@ async function resetAllData() {
 
 /* ================== ADS CRUD ================== */
 const adminDefaultAds = {
+    "donation-card": {
+        title: "Dukung Pengembangan Bincang Ilmu",
+        subtitle: "",
+        desc: "Kontribusi Anda membantu pengembangan fitur, pemeliharaan layanan, dan penyediaan konten bermanfaat.",
+        buttonText: "Donasi via WhatsApp",
+        buttonLink: "",
+        imageUrl: "",
+        type: "donation"
+    },
     "ad_1": {
         title: "Siap Memulai Perjalanan Menuntut Ilmu?",
         subtitle: "",
@@ -505,11 +518,58 @@ const adminDefaultAds = {
 
 adsData = adminDefaultAds;
 
+function loadDonationCardForm() {
+    const item = adsData['donation-card'] || adminDefaultAds['donation-card'];
+    const fields = {
+        donationCardTitle: item.title,
+        donationCardDesc: item.desc,
+        donationCardImage: item.imageUrl,
+        donationCardButtonText: item.buttonText,
+        donationCardButtonLink: item.buttonLink
+    };
+    Object.entries(fields).forEach(([id, value]) => {
+        const input = document.getElementById(id);
+        if (input) input.value = value || '';
+    });
+    updateDonationCardImagePreview();
+}
+
+function updateDonationCardImagePreview() {
+    const input = document.getElementById('donationCardImage');
+    const preview = document.getElementById('donationCardImagePreview');
+    if (!input || !preview) return;
+    const url = input.value.trim();
+    preview.src = url;
+    preview.style.display = url ? 'block' : 'none';
+    preview.onerror = () => { preview.style.display = 'none'; };
+}
+
+async function saveDonationCard(event) {
+    event.preventDefault();
+    const item = {
+        title: document.getElementById('donationCardTitle').value.trim(),
+        desc: document.getElementById('donationCardDesc').value.trim(),
+        imageUrl: document.getElementById('donationCardImage').value.trim(),
+        buttonText: document.getElementById('donationCardButtonText').value.trim(),
+        buttonLink: document.getElementById('donationCardButtonLink').value.trim(),
+        type: 'donation'
+    };
+    updateDonationCardImagePreview();
+    const status = document.getElementById('donationCardSaveStatus');
+    if (status) status.textContent = 'Menyimpan…';
+    try {
+        await saveContent('ads', adsData, 'donation-card', item);
+        if (status) status.textContent = 'Kartu donasi berhasil disimpan.';
+    } catch (error) {
+        if (status) status.textContent = `Gagal menyimpan: ${error.message}`;
+    }
+}
+
 function loadAdminAds() {
     const tbody = document.getElementById('adTableBody');
     if (!tbody) return;
     tbody.innerHTML = '';
-    for (const [key, ad] of Object.entries(adsData).filter(([id]) => id !== 'top-banner')) {
+    for (const [key, ad] of Object.entries(adsData).filter(([id]) => id !== 'top-banner' && id !== 'donation-card')) {
         tbody.innerHTML += `
             <tr>
                 <td><strong>${key}</strong></td>

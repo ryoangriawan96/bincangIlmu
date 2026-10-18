@@ -9,7 +9,7 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=265">
+    <link rel="stylesheet" href="style.css?v=266">
     <script>
         (function () {
             const savedTheme = localStorage.getItem('theme') || 'light';
@@ -194,15 +194,13 @@
                 <p>Ikut membantu menghadirkan akses ilmu Islam yang mudah dijangkau oleh lebih banyak orang.</p>
             </div>
 
-            <div class="native-profile-card reveal-up text-center" style="max-width: 760px; margin: 0 auto; padding: clamp(2rem, 5vw, 3.5rem);">
-                <div class="native-zz-icon" style="margin: 0 auto 1.5rem auto; box-shadow: none; border: 1px solid var(--border-color);"><i class="fas fa-hand-holding-heart"></i></div>
-                <div class="profile-info" style="padding: 0;">
-                    <h3>Dukungan Anda membantu platform terus bertumbuh</h3>
-                    <p style="color: var(--text-light); line-height: 1.8;">Kontribusi digunakan untuk pengembangan fitur, pemeliharaan layanan, dan penyediaan konten bermanfaat. Informasi cara berdonasi akan kami sampaikan melalui kanal resmi Bincang Ilmu.</p>
-                    <button type="button" class="btn btn-primary" disabled aria-describedby="donation-link-status" style="margin-top: 1rem; cursor: not-allowed; opacity: 0.7;">
-                        <i class="fas fa-heart" aria-hidden="true"></i> Donasi via WhatsApp
-                    </button>
-                    <p id="donation-link-status" style="margin: 0.75rem 0 0; color: var(--text-light); font-size: 0.9rem;">Tautan WhatsApp menyusul.</p>
+            <div id="donationCard" class="donation-card reveal-up" aria-live="polite">
+                <div class="donation-card-image donation-card-image-placeholder"><i class="fas fa-hand-holding-heart" aria-hidden="true"></i></div>
+                <div class="donation-card-content">
+                    <h3>Dukung Pengembangan Bincang Ilmu</h3>
+                    <p>Kontribusi Anda membantu pengembangan fitur, pemeliharaan layanan, dan penyediaan konten bermanfaat.</p>
+                    <button type="button" class="btn btn-primary" disabled>Donasi segera</button>
+                    <small>Tautan donasi akan tersedia segera.</small>
                 </div>
             </div>
         </div>
@@ -520,7 +518,7 @@
 
     <!-- Main Script -->
     <script src="api-config.js"></script>
-    <script src="script.js?v=235"></script>
+    <script src="script.js?v=236"></script>
 </body>
 
 </html>

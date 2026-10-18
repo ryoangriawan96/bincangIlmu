@@ -8,9 +8,9 @@
         document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=265">
+    <link rel="stylesheet" href="style.css?v=266">
     <link rel="stylesheet" href="admin.css?v=3">
-    <link rel="stylesheet" href="responsive.css?v=20">
+    <link rel="stylesheet" href="responsive.css?v=21">
 </head>
 <body class="admin-body">
 
@@ -243,6 +243,39 @@
                         </thead>
                         <tbody id="adTableBody"></tbody>
                     </table>
+                </div>
+
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; margin: 1.5rem 0;">
+                    <h3 style="color: var(--primary-dark); margin-bottom: 0.5rem;"><i class="fas fa-hand-holding-heart"></i> Kartu Donasi Tentang Kami</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1.5rem;">Atur gambar, teks, dan tautan yang tampil pada kartu dukungan di halaman Tentang Kami.</p>
+                    <form id="donationCardForm" onsubmit="saveDonationCard(event)">
+                        <div class="form-group">
+                            <label>Judul</label>
+                            <input type="text" id="donationCardTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Deskripsi</label>
+                            <textarea id="donationCardDesc" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>URL Gambar</label>
+                            <input type="url" id="donationCardImage" placeholder="https://contoh.com/banner-donasi.jpg">
+                            <small style="color: var(--text-light); display:block; margin-top:5px;">Gunakan URL gambar publik. Kosongkan untuk memakai ilustrasi bawaan.</small>
+                            <img id="donationCardImagePreview" alt="Pratinjau gambar kartu donasi" style="display:none; width:min(100%, 420px); max-height:220px; object-fit:cover; border-radius:12px; margin-top:12px;">
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                            <div class="form-group">
+                                <label>Teks Tombol</label>
+                                <input type="text" id="donationCardButtonText" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Tautan Tombol (opsional)</label>
+                                <input type="text" id="donationCardButtonLink" placeholder="https://wa.me/62...">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Kartu Donasi</button>
+                        <span id="donationCardSaveStatus" role="status" style="margin-left: 0.75rem; color: var(--text-light);"></span>
+                    </form>
                 </div>
 
                 <!-- Top Ad Banner Settings -->
@@ -639,8 +672,8 @@
 
     <!-- Scripts -->
     <script src="api-config.js"></script>
-    <script src="script.js?v=235"></script>
-    <script src="admin.js?v=232"></script>
+    <script src="script.js?v=236"></script>
+    <script src="admin.js?v=233"></script>
 
     <!-- Smart Search Overlay -->
     <div id="searchOverlay" class="search-overlay">
