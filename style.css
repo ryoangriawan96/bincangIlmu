@@ -12847,12 +12847,24 @@ img {
         "filters filters";
     align-items: center;
     gap: 1.25rem 2rem;
-    margin: 0 auto 2rem;
+    position: relative;
+    z-index: 2;
+    margin: -1.25rem auto 2.5rem;
     padding: clamp(1.25rem, 3vw, 1.75rem);
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 1.4rem;
     box-shadow: var(--shadow-sm);
+}
+
+.blog-page-toolbar .filter-pill {
+    min-height: 2.75rem;
+}
+
+.blog-page-toolbar .filter-pill:focus-visible,
+.blog-page-toolbar .blog-search-wrapper input:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--primary-color) 38%, transparent);
+    outline-offset: 3px;
 }
 
 .blog-toolbar-heading {

@@ -18,15 +18,27 @@
     </script>
     <style>
         .page-header {
-            padding: 120px 0 60px;
+            padding: clamp(6.5rem, 9vw, 7.5rem) 0 3.5rem;
             background-color: var(--bg-light);
             text-align: center;
         }
 
-        .page-title {
-            font-size: 2.5rem;
+        .page-header .section-title {
+            font-size: clamp(2.15rem, 4vw, 2.75rem);
             color: var(--text-dark);
-            margin-bottom: 1rem;
+            line-height: 1.15;
+            margin: 0 auto 0.75rem;
+        }
+
+        .page-header .section-subtitle {
+            max-width: 44rem;
+            margin: 0 auto;
+            font-size: clamp(1rem, 1.7vw, 1.2rem);
+            line-height: 1.6;
+        }
+
+        .page-header .section-title .text-primary {
+            color: var(--primary-color) !important;
         }
     </style>
     <link rel="stylesheet" href="responsive.css?v=9">
