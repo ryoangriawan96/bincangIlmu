@@ -529,15 +529,16 @@ table {
     }
 }
 
-/* On iPad portrait, keep course cards full-width and stack their content
-   vertically. This avoids narrow text columns in Safari's tablet viewport. */
+/* Two balanced course cards per row on iPad portrait. Keep the image above
+   the details so each card retains a comfortable reading width. */
 @media (min-width: 641px) and (max-width: 1024px) {
     #allCoursesGrid.course-grid {
         display: grid;
         width: 100%;
         min-width: 0;
-        grid-template-columns: minmax(0, 1fr);
-        gap: 1rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: stretch;
+        gap: clamp(1rem, 2.2vw, 1.5rem);
     }
 
     #allCoursesGrid.course-grid .course-card {
@@ -553,7 +554,7 @@ table {
         display: block;
         width: 100%;
         min-width: 0;
-        height: clamp(220px, 34vw, 320px);
+        height: clamp(170px, 24vw, 250px);
         min-height: 0;
     }
 
@@ -571,11 +572,12 @@ table {
         flex-direction: column;
         width: 100%;
         min-width: 0;
-        padding: 1.2rem clamp(1.1rem, 3vw, 1.75rem);
+        flex: 1;
+        padding: clamp(1rem, 2vw, 1.35rem);
     }
 
     #allCoursesGrid .course-title {
-        font-size: 1.1rem;
+        font-size: clamp(1rem, 1.8vw, 1.15rem);
         line-height: 1.35;
         display: -webkit-box;
         -webkit-box-orient: vertical;
@@ -593,6 +595,12 @@ table {
         flex-wrap: wrap;
         gap: 0.65rem 1rem;
         font-size: 0.8rem;
+    }
+
+    #allCoursesGrid .course-rating-row,
+    #allCoursesGrid .course-instructor {
+        min-width: 0;
+        flex-wrap: wrap;
     }
 
     [data-theme="dark"] #allCoursesGrid .course-bookmark {
