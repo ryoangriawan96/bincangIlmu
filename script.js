@@ -3642,13 +3642,14 @@ document.addEventListener('DOMContentLoaded', () => {
     style.innerHTML = `
     .ad-decoration-icon {
         position: absolute;
-        top: 1rem;
-        right: 1.5rem;
-        color: rgba(255, 255, 255, 0.16);
-        font-size: clamp(2.5rem, 5vw, 4rem);
+        top: 50%;
+        right: 3rem;
+        transform: translateY(-50%);
+        color: rgba(255, 255, 255, 0.2);
+        font-size: clamp(9rem, 18vw, 12rem);
         line-height: 1;
         pointer-events: none;
-        z-index: 1;
+        z-index: 0;
     }
     .ad-slide .ad-banner-custom::after {
         content: none;
@@ -3677,11 +3678,22 @@ document.addEventListener('DOMContentLoaded', () => {
         color: var(--primary-color, #6B2D3E);
         transform: translateY(-2px);
     }
+    @media (min-width: 769px) {
+        .ad-slide .ad-content-wrapper {
+            width: calc(100% - clamp(10rem, 22vw, 16rem));
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .ad-slide .ad-text {
+            min-width: 0;
+        }
+    }
     @media (max-width: 768px) {
-        .ad-slide .ad-decoration-icon {
-            top: 0.75rem;
-            right: 0.75rem;
-            font-size: 2.5rem;
+        .ad-slide .ad-decoration-icon,
+        .ad-slide .cta-decoration {
+            display: none;
         }
         .ad-slide .btn-ad-action {
             width: 100%;
