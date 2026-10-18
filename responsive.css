@@ -68,6 +68,24 @@ section,
     min-width: 0;
 }
 
+.horizontal-info {
+    flex: 1 1 0%;
+    min-width: 0;
+}
+
+.horizontal-title,
+.horizontal-author,
+.horizontal-desc {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.horizontal-actions {
+    min-width: 0;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
 table {
     max-width: 100%;
 }
@@ -269,6 +287,13 @@ table {
         padding: 0.55rem 0.75rem;
         white-space: nowrap;
         background: var(--bg-light);
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1600px) {
+    /* The dashboard sidebar reduces the available card width on standard laptops. */
+    #kitabGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
