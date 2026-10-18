@@ -1189,3 +1189,54 @@ table {
         color: #fff !important;
     }
 }
+
+/* iPad portrait: keep the featured article compact and let its action follow
+   the author details instead of stretching to the bottom of the carousel. */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .featured-blog-card.featured-slide {
+        flex-direction: column;
+        height: auto;
+        min-height: 0;
+        align-items: stretch;
+    }
+
+    .featured-slide {
+        min-height: 0;
+    }
+
+    .featured-slide .featured-blog-img-wrapper {
+        flex: 0 0 auto;
+        width: 100%;
+        min-height: 0;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        border-radius: 0;
+    }
+
+    .featured-slide .featured-blog-content {
+        flex: 0 0 auto;
+        min-height: 0;
+        justify-content: flex-start;
+        padding: 1.5rem 1.5rem 3.25rem;
+    }
+
+    .featured-slide .featured-blog-content .blog-title.is-large {
+        font-size: clamp(1.4rem, 3vw, 1.8rem) !important;
+        line-height: 1.25 !important;
+    }
+
+    .featured-slide .featured-blog-content .blog-author {
+        margin-bottom: 0 !important;
+    }
+
+    .featured-slide .featured-blog-content .btn-blog-pill {
+        align-self: flex-start;
+        width: fit-content !important;
+        margin-top: 1.1rem !important;
+    }
+
+    .featured-carousel-dots {
+        right: 1.25rem;
+        bottom: 1rem;
+    }
+}
