@@ -10005,9 +10005,11 @@ body.menu-open {
     border-radius: 12px;
     isolation: isolate;
     -webkit-mask-image: -webkit-radial-gradient(white, black);
+    aspect-ratio: auto;
 }
 
 .blog-thumb img {
+    display: block;
     width: 100%;
     height: 200px;
     object-fit: cover;
