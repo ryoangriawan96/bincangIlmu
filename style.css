@@ -12014,3 +12014,25 @@ img {
     html { scroll-behavior: auto; }
     .nav-menu, .course-card, .blog-card, .kitab-card, .fatwa-card, .benefit-card { transition: none; }
 }
+
+/* Keep injected mobile controls from leaking into the desktop header if a
+   browser misses a breakpoint-change event while its viewport is resized. */
+@media (min-width: 901px) {
+    .nav-menu > .mobile-auth-area,
+    .nav-menu > .mobile-profile-area,
+    .nav-menu > .mobile-nav-links,
+    .nav-menu > .mobile-utility-area {
+        display: none !important;
+    }
+}
+
+@media (min-width: 901px) and (max-width: 1120px) {
+    .header-container { gap: 0.5rem; }
+    .logo { flex: 0 0 auto; font-size: 1.3rem; }
+    .nav-menu { flex: 1 1 auto; min-width: 0; }
+    .nav-list { justify-content: center; gap: clamp(0.35rem, 0.9vw, 0.65rem); }
+    .nav-link { font-size: 0.875rem; white-space: nowrap; }
+    .header-actions { flex: 0 0 auto; gap: 0.25rem; }
+    .header-actions .btn { padding-inline: 0.65rem; font-size: 0.82rem; white-space: nowrap; }
+    .theme-toggle, .search-toggle { width: 34px; height: 40px; margin-right: 0 !important; }
+}

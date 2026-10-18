@@ -2624,12 +2624,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Inject auth/profile into mobile nav menu
+    let lastMobileMode = null;
     function updateMobileNav() {
         const navMenu = document.querySelector('.nav-menu');
         if (!navMenu) return;
-        
+        const isMobile = mobileBreakpoint.matches;
+        if (lastMobileMode === isMobile) return;
+        lastMobileMode = isMobile;
         navMenu.querySelectorAll('.mobile-auth-area, .mobile-profile-area, .mobile-nav-links, .mobile-utility-area').forEach(area => area.remove());
-        if (!mobileBreakpoint.matches) return;
+        if (!isMobile) {
+            setMenuOpen(false);
+            return;
+        }
 
         const utilityArea = document.createElement('div');
         utilityArea.className = 'mobile-utility-area';
@@ -2692,6 +2698,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileBreakpoint = window.matchMedia('(max-width: 900px)');
     if (mobileBreakpoint.addEventListener) mobileBreakpoint.addEventListener('change', updateMobileNav);
     else mobileBreakpoint.addListener(updateMobileNav);
+    window.addEventListener('resize', () => window.requestAnimationFrame(updateMobileNav), { passive: true });
 });
 
 // =========================================
