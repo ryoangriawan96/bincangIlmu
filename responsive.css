@@ -817,6 +817,14 @@ table {
     }
 }
 
+/* Align the Blog toolbar's outer edge with the inset content grid below it. */
+@media (min-width: 641px) {
+    .blog-page-toolbar.container {
+        width: calc(100% - clamp(2rem, 7vw, 4rem));
+        max-width: calc(var(--container-width) - clamp(2rem, 7vw, 4rem));
+    }
+}
+
 /* Give the digital library a calmer mobile rhythm and keep both navigation
    groups visible as separate, clearly labeled chip rows. */
 @media (max-width: 640px) {
