@@ -1272,3 +1272,31 @@ table {
         background: var(--bg-light);
     }
 }
+
+/* Center and wrap library/course filter chips on tablet and mobile widths. */
+@media (max-width: 900px) {
+    .kitab-sidebar .sidebar-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        max-width: 100%;
+        overflow: visible;
+    }
+
+    .kitab-sidebar .sidebar-list li {
+        flex: 0 1 auto;
+    }
+
+    .kitab-sidebar .sidebar-link {
+        justify-content: center;
+    }
+
+    /* The dark-theme active chip uses a rose background, so its label and icon
+       need a dark foreground instead of the same rose accent. */
+    [data-theme="dark"] .kitab-sidebar .sidebar-link.active,
+    [data-theme="dark"] .kitab-sidebar .sidebar-link.active * {
+        color: var(--bg-dark) !important;
+        opacity: 1;
+    }
+}
