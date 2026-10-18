@@ -816,7 +816,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            showToast("Belum tersedia", "Login dengan Google belum dikonfigurasi.", "error");
+            performLogin();
         });
     }
 
