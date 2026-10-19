@@ -932,7 +932,7 @@ async function performLogin() {
         const user = result.user;
         // Set session for ALL roles (including Admin)
         // If role selected, ensure it matches
-        if (role && user.role !== role) {
+        if (role && String(user.role || '').trim().toLowerCase() !== String(role).trim().toLowerCase()) {
             showToast("Gagal!", `Akun dengan email ${email} bukan sebagai ${role}.`, "error");
             return;
         }
@@ -940,7 +940,7 @@ async function performLogin() {
         sessionStorage.setItem('isLoggedIn', 'true');
         sessionStorage.setItem('currentUser', JSON.stringify(user));
         
-        if (user.role === 'Admin') {
+        if (String(user.role || '').trim().toLowerCase() === 'admin') {
             window.location.href = 'admin.html';
             return;
         } else {
@@ -996,30 +996,45 @@ function checkAuthState() {
             const dropdownEmail = userProfile.querySelector('.user-info span');
             if (dropdownEmail) dropdownEmail.innerText = currentUser.email;
             
-            // Inject Admin Dashboard link for Admin/Pengajar
-            let adminLink = userProfile.querySelector('.admin-dashboard-link');
-            if (currentUser.role === 'Admin') {
-                if (!adminLink) {
-                    const dropdownMenu = userProfile.querySelector('.dropdown-menu');
-                    if (dropdownMenu) {
-                        const divider = document.createElement('li');
-                        divider.className = 'divider admin-dashboard-link-divider';
-                        dropdownMenu.insertBefore(divider, dropdownMenu.firstChild);
-                        
-                        const li = document.createElement('li');
-                        li.className = 'admin-dashboard-link';
-                        li.innerHTML = '<a href="admin.html" class="text-primary"><i class="fas fa-tachometer-alt"></i> Akses Dasbor</a>';
-                        dropdownMenu.insertBefore(li, divider);
-                    }
-                }
-            } else {
-                if (adminLink) adminLink.remove();
-                const divider = userProfile.querySelector('.admin-dashboard-link-divider');
-                if (divider) divider.remove();
+            // Show the account role and keep admin navigation exclusive to admins.
+            const role = String(currentUser.role || 'Pengguna').trim();
+            const isAdmin = role.toLowerCase() === 'admin';
+            userProfile.classList.toggle('is-admin', isAdmin);
+            const roleBadge = userProfile.querySelector('.profile-role-badge') || document.createElement('span');
+            roleBadge.className = 'profile-role-badge';
+            roleBadge.textContent = isAdmin ? 'ADMIN' : (role || 'PENGGUNA').toUpperCase();
+            roleBadge.style.cssText = 'display:inline-flex;align-items:center;width:max-content;margin-top:6px;padding:4px 9px;border:1px solid var(--border-color);border-radius:999px;background:var(--primary-surface);color:var(--primary-color);font-size:11px;font-weight:800;letter-spacing:.08em;';
+            if (dropdownEmail && roleBadge.parentElement !== dropdownEmail.parentElement) {
+                dropdownEmail.insertAdjacentElement('afterend', roleBadge);
             }
-        }
-        
-        // Unlock course content if available
+
+            const dropdownMenu = userProfile.querySelector('.dropdown-menu');
+            let adminLink = userProfile.querySelector('.admin-dashboard-link');
+            let adminDivider = userProfile.querySelector('.admin-dashboard-link-divider');
+            if (isAdmin && dropdownMenu && !adminLink) {
+                adminDivider = document.createElement('li');
+                adminDivider.className = 'divider admin-dashboard-link-divider';
+                dropdownMenu.insertBefore(adminDivider, dropdownMenu.firstChild);
+                adminLink = document.createElement('li');
+                adminLink.className = 'admin-dashboard-link';
+                adminLink.innerHTML = '<a href="admin.html" class="text-primary"><i class="fas fa-tachometer-alt"></i> Akses Dasbor Admin</a>';
+                dropdownMenu.insertBefore(adminLink, adminDivider);
+            } else if (!isAdmin) {
+                adminLink?.remove();
+                adminDivider?.remove();
+            }
+
+            if (dropdownMenu) {
+                dropdownMenu.querySelectorAll('a[onclick]').forEach(link => {
+                    const item = link.closest('li');
+                    if (!item) return;
+                    const memberOnly = link.getAttribute('onclick').includes("openProfileModal('courses')") ||
+                        link.getAttribute('onclick').includes("openProfileModal('certificates')");
+                    if (memberOnly) item.hidden = isAdmin;
+                });
+            }
+
+            // Unlock course content if available
         if (typeof unlockCourseContent === 'function') {
             unlockCourseContent();
         }
@@ -1031,7 +1046,14 @@ function checkAuthState() {
         if (registerBtn) registerBtn.style.display = 'inline-flex';
         
         // Hide user profile widget
-        if (userProfile) userProfile.style.display = 'none';
+        if (userProfile) {
+            userProfile.style.display = 'none';
+            userProfile.classList.remove('is-admin');
+            userProfile.querySelector('.profile-role-badge')?.remove();
+            userProfile.querySelector('.admin-dashboard-link')?.remove();
+            userProfile.querySelector('.admin-dashboard-link-divider')?.remove();
+            userProfile.querySelectorAll('.dropdown-menu li').forEach(item => { item.hidden = false; });
+        }
     }
 }
 
