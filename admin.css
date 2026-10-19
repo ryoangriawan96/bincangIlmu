@@ -1219,15 +1219,13 @@
 }
 [data-theme="dark"] .admin-table th { background: #2a1d21; }
 
-.admin-maintenance-card,
-.admin-section #donationCardForm,
-.admin-section #topAdForm {
-    border: 1px solid var(--admin-border) !important;
-    border-radius: 16px !important;
-    background: var(--admin-surface) !important;
+.admin-maintenance-card {
+    padding: clamp(1rem, 2vw, 1.5rem);
+    border: 1px solid var(--admin-border);
+    border-radius: 16px;
+    background: var(--admin-surface);
     box-shadow: var(--admin-shadow);
 }
-.admin-maintenance-card { padding: clamp(1rem, 2vw, 1.5rem); }
 .admin-maintenance-heading { gap: 1rem; }
 .admin-maintenance-icon { border-radius: 13px; }
 .admin-maintenance-note { border-radius: 10px; }
@@ -1336,4 +1334,40 @@
     #courseForm > div[style*="grid-template-columns"],
     #adForm > div[style*="grid-template-columns"],
     #tab-ads form > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+}
+
+
+/* Give the carousel management forms breathing room inside their single panel. */
+#tab-ads > .admin-table-container { margin-bottom: 2rem; }
+#tab-ads > div[style*="background"] {
+    margin: 2rem 0 !important;
+    padding: clamp(1.25rem, 2.5vw, 2rem) !important;
+}
+#tab-ads #donationCardForm,
+#tab-ads #topAdForm {
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+#tab-ads #donationCardForm .form-group,
+#tab-ads #topAdForm .form-group {
+    margin-bottom: 1.4rem;
+}
+#tab-ads #donationCardForm label,
+#tab-ads #topAdForm label {
+    display: block;
+    margin-bottom: 0.65rem;
+    line-height: 1.45;
+}
+#tab-ads #donationCardForm textarea,
+#tab-ads #topAdForm textarea { min-height: 120px; }
+#tab-ads #donationCardForm button[type="submit"],
+#tab-ads #topAdForm button[type="submit"] { margin-top: 0.25rem; }
+#tab-ads > div[style*="background"] + div[style*="background"] { margin-top: 2rem !important; }
+
+@media (max-width: 640px) {
+    #tab-ads > div[style*="background"] { padding: 1.1rem !important; margin: 1.2rem 0 !important; }
+    #tab-ads #donationCardForm .form-group,
+    #tab-ads #topAdForm .form-group { margin-bottom: 1.1rem; }
 }
