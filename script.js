@@ -3827,9 +3827,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- TOP AD BAR RENDER ---
 function renderTopAd() {
-    // Jangan tampilkan Top Ad di halaman Admin
-    if (document.querySelector('.admin-layout')) return;
-
     const topAdData = adsData['top-banner'];
     if (topAdData && topAdData.active && topAdData.text) {
         const adBar = document.createElement('div');
