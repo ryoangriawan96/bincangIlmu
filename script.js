@@ -2725,26 +2725,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentUser = sessionUser();
         
         if (isLoggedIn && currentUser) {
-            // Show profile + menu links
+            // Give administrators a dedicated mobile menu with management links only.
+            const isAdmin = String(currentUser.role || '').trim().toLowerCase() === 'admin';
             const profileArea = document.createElement('div');
-            profileArea.className = 'mobile-profile-area';
+            profileArea.className = 'mobile-profile-area' + (isAdmin ? ' is-admin' : '');
             profileArea.innerHTML = `
                 <div class="profile-avatar-initial">${escapeHtml(String(currentUser.name || '?').charAt(0).toUpperCase())}</div>
                 <div class="profile-info">
-                    <strong>${escapeHtml(currentUser.name)}</strong>
-                    <span>${escapeHtml(currentUser.email)}</span>
+                    <strong>${escapeHtml(currentUser.name || 'Pengguna')}</strong>
+                    <span>${escapeHtml(currentUser.email || '')}</span>
+                    ${isAdmin ? '<small class="mobile-profile-role">ADMINISTRATOR</small>' : ''}
                 </div>
             `;
             navMenu.appendChild(profileArea);
             
             const navLinks = document.createElement('div');
-            navLinks.className = 'mobile-nav-links';
-            let adminLink = '';
-            if (currentUser.role === 'Admin') {
-                adminLink = '<a href="admin.html"><i class="fas fa-tachometer-alt"></i> Akses Dasbor</a>';
-            }
-            navLinks.innerHTML = `
-                ${adminLink}
+            navLinks.className = 'mobile-nav-links' + (isAdmin ? ' is-admin-menu' : '');
+            navLinks.innerHTML = isAdmin ? `
+                <a href="admin.html"><i class="fas fa-gauge-high"></i> Dasbor Admin</a>
+                <a href="#" onclick="openProfileModal('settings'); return false;"><i class="fas fa-user-cog"></i> Pengaturan Profil</a>
+                <a href="#" onclick="handleLogout(); return false;" class="text-danger"><i class="fas fa-sign-out-alt"></i> Keluar dari Admin</a>
+            ` : `
                 <a href="#" onclick="openProfileModal('settings'); return false;"><i class="fas fa-user-cog"></i> Pengaturan Profil</a>
                 <a href="#" onclick="openProfileModal('courses'); return false;"><i class="fas fa-book-reader"></i> Kursus Saya</a>
                 <a href="#" onclick="openProfileModal('certificates'); return false;"><i class="fas fa-certificate"></i> Sertifikat</a>
