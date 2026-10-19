@@ -1038,6 +1038,7 @@ function checkAuthState() {
         if (typeof unlockCourseContent === 'function') {
             unlockCourseContent();
         }
+        }
     } else {
         body.classList.remove('logged-in');
         
