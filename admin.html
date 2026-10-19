@@ -64,53 +64,131 @@
             
             <!-- Dashboard Tab -->
             <section id="tab-dashboard" class="admin-section active">
-                <div class="admin-header">
-                    <h1>Selamat Datang, Admin</h1>
-                    <p>Ringkasan konten dan pengguna platform.</p>
+                <div class="admin-welcome-panel">
+                    <div class="admin-welcome-copy">
+                        <span class="admin-eyebrow"><i class="fas fa-sparkles"></i> RUANG KERJA ADMIN</span>
+                        <h1>Assalamu’alaikum, Admin</h1>
+                        <p>Kelola perjalanan belajar, konten, dan komunitas Bincang Ilmu dari satu tempat.</p>
+                        <div class="admin-welcome-actions">
+                            <button class="btn admin-welcome-primary" onclick="openCourseModal()">
+                                <i class="fas fa-plus"></i> Tambah Kursus
+                            </button>
+                            <button class="btn admin-welcome-secondary" onclick="switchTab('settings', document.querySelectorAll('.admin-nav-link')[8]); return false;">
+                                <i class="fas fa-sliders"></i> Pengaturan Situs
+                            </button>
+                        </div>
+                    </div>
+                    <div class="admin-welcome-art" aria-hidden="true">
+                        <div class="admin-welcome-orbit admin-welcome-orbit-one"></div>
+                        <div class="admin-welcome-orbit admin-welcome-orbit-two"></div>
+                        <div class="admin-welcome-book"><i class="fas fa-book-open"></i></div>
+                        <span class="admin-welcome-spark admin-welcome-spark-one"><i class="fas fa-star"></i></span>
+                        <span class="admin-welcome-spark admin-welcome-spark-two"><i class="fas fa-star"></i></span>
+                        <span class="admin-welcome-art-label">Bincang Ilmu</span>
+                    </div>
                 </div>
-                
-                <div class="admin-stats-grid">
-                    <div class="admin-stat-card">
+
+                <div class="admin-dashboard-section-heading">
+                    <div>
+                        <span class="admin-section-kicker">IKHTISAR PLATFORM</span>
+                        <h2>Ringkasan pengelolaan</h2>
+                    </div>
+                    <span class="admin-live-indicator"><span></span> Data terkini</span>
+                </div>
+
+                <div class="admin-stats-grid admin-dashboard-stats">
+                    <div class="admin-stat-card stat-course">
                         <div class="icon"><i class="fas fa-graduation-cap"></i></div>
                         <div class="info">
-                            <h3 id="statCourseCount">0</h3>
                             <p>Total Kursus</p>
+                            <h3 id="statCourseCount">0</h3>
                         </div>
+                        <span class="admin-stat-arrow"><i class="fas fa-arrow-up-right-from-square"></i></span>
                     </div>
-                    <div class="admin-stat-card">
+                    <div class="admin-stat-card stat-kitab">
                         <div class="icon"><i class="fas fa-book-open"></i></div>
                         <div class="info">
-                            <h3 id="statKitabCount">0</h3>
                             <p>Total Kitab</p>
+                            <h3 id="statKitabCount">0</h3>
                         </div>
+                        <span class="admin-stat-arrow"><i class="fas fa-arrow-up-right-from-square"></i></span>
                     </div>
-                    <div class="admin-stat-card">
+                    <div class="admin-stat-card stat-blog">
                         <div class="icon"><i class="fas fa-pen-nib"></i></div>
                         <div class="info">
-                            <h3 id="statBlogCount">0</h3>
                             <p>Total Artikel</p>
+                            <h3 id="statBlogCount">0</h3>
                         </div>
+                        <span class="admin-stat-arrow"><i class="fas fa-arrow-up-right-from-square"></i></span>
                     </div>
-                    <div class="admin-stat-card">
-                        <div class="icon"><i class="fas fa-balance-scale"></i></div>
+                    <div class="admin-stat-card stat-fatwa">
+                        <div class="icon"><i class="fas fa-scale-balanced"></i></div>
                         <div class="info">
-                            <h3 id="statFatwaCount">0</h3>
                             <p>Total Fatwa</p>
+                            <h3 id="statFatwaCount">0</h3>
                         </div>
+                        <span class="admin-stat-arrow"><i class="fas fa-arrow-up-right-from-square"></i></span>
                     </div>
-                    <div class="admin-stat-card">
-                        <div class="icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fas fa-users"></i></div>
+                    <div class="admin-stat-card stat-users">
+                        <div class="icon"><i class="fas fa-users"></i></div>
                         <div class="info">
-                            <h3 id="statUserCount">0</h3>
                             <p>Total Pengguna</p>
+                            <h3 id="statUserCount">0</h3>
+                        </div>
+                        <span class="admin-stat-arrow"><i class="fas fa-arrow-up-right-from-square"></i></span>
+                    </div>
+                    <div class="admin-stat-card stat-ads">
+                        <div class="icon"><i class="fas fa-bullhorn"></i></div>
+                        <div class="info">
+                            <p>Total Iklan</p>
+                            <h3 id="statAdCount">0</h3>
+                        </div>
+                        <span class="admin-stat-arrow"><i class="fas fa-arrow-up-right-from-square"></i></span>
+                    </div>
+                </div>
+
+                <div class="admin-dashboard-lower">
+                    <div class="admin-dashboard-card admin-quick-card">
+                        <div class="admin-dashboard-card-heading">
+                            <div>
+                                <span class="admin-section-kicker">AKSES CEPAT</span>
+                                <h2>Mulai mengelola</h2>
+                            </div>
+                            <span class="admin-dashboard-heading-icon"><i class="fas fa-bolt"></i></span>
+                        </div>
+                        <div class="admin-quick-actions">
+                            <button type="button" class="admin-quick-action" onclick="openCourseModal()">
+                                <span class="admin-quick-icon quick-course"><i class="fas fa-circle-play"></i></span>
+                                <span><strong>Tambah kursus</strong><small>Mulai kelas baru</small></span>
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <button type="button" class="admin-quick-action" onclick="switchTab('kitabs', document.querySelectorAll('.admin-nav-link')[2]); return false;">
+                                <span class="admin-quick-icon quick-kitab"><i class="fas fa-book"></i></span>
+                                <span><strong>Kelola kitab</strong><small>Atur koleksi bacaan</small></span>
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <button type="button" class="admin-quick-action" onclick="switchTab('blogs', document.querySelectorAll('.admin-nav-link')[3]); return false;">
+                                <span class="admin-quick-icon quick-blog"><i class="fas fa-feather-pointed"></i></span>
+                                <span><strong>Kelola artikel</strong><small>Perbarui wawasan</small></span>
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <button type="button" class="admin-quick-action" onclick="switchTab('settings', document.querySelectorAll('.admin-nav-link')[8]); return false;">
+                                <span class="admin-quick-icon quick-settings"><i class="fas fa-wand-magic-sparkles"></i></span>
+                                <span><strong>Status situs</strong><small>Atur pemeliharaan</small></span>
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="admin-stat-card">
-                        <div class="icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;"><i class="fas fa-bullhorn"></i></div>
-                        <div class="info">
-                            <h3 id="statAdCount">0</h3>
-                            <p>Total Iklan</p>
-                        </div>
+
+                    <div class="admin-dashboard-card admin-dashboard-note">
+                        <span class="admin-dashboard-note-icon"><i class="fas fa-lightbulb"></i></span>
+                        <span class="admin-section-kicker">TETAP TERARAH</span>
+                        <h2>Ruang ilmu yang terus bertumbuh</h2>
+                        <p>Pastikan materi, jadwal, dan informasi situs selalu rapi agar penuntut ilmu mudah menemukan yang mereka butuhkan.</p>
+                        <button type="button" class="admin-note-link" onclick="switchTab('courses', document.querySelectorAll('.admin-nav-link')[1]); return false;">
+                            Lihat kursus <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <div class="admin-note-decoration" aria-hidden="true"><i class="fas fa-mosque"></i></div>
                     </div>
                 </div>
             </section>
