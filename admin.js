@@ -722,42 +722,119 @@ async function saveSiteSettings(event) {
 
 
 // --- TOP AD LOGIC ---
-document.addEventListener('DOMContentLoaded', () => {
-    loadTopAdSettings();
-});
+document.addEventListener('DOMContentLoaded', loadTopAdSettings);
 
-function loadTopAdSettings() {
-    adminApi('/ads/top-banner', 'GET').then(data => { adsData['top-banner'] = data; loadForm(data); }).catch(() => loadForm());
-    function loadForm(topAdData = { active: false, text: '', btnText: '', link: '' }) {
-    const statusCheckbox = document.getElementById('topAdStatus');
-    if (statusCheckbox) {
-        statusCheckbox.checked = topAdData.active;
-        document.getElementById('topAdStatusText').innerText = topAdData.active ? 'Aktif' : 'Nonaktif';
-        statusCheckbox.addEventListener('change', function() {
-            document.getElementById('topAdStatusText').innerText = this.checked ? 'Aktif' : 'Nonaktif';
-        });
-        
-        document.getElementById('topAdText').value = topAdData.text || '';
-        document.getElementById('topAdBtnText').value = topAdData.btnText || '';
-        document.getElementById('topAdLink').value = topAdData.link || '';
+async function loadTopAdSettings() {
+    const form = document.getElementById('topAdForm');
+    if (!form) return;
+    const status = document.getElementById('topAdSaveStatus');
+    const existing = adsData['top-banner'] || { active: false, text: '', btnText: '', link: '' };
+
+    const applySettings = data => {
+        const active = document.getElementById('topAdStatus');
+        const text = document.getElementById('topAdText');
+        const btnText = document.getElementById('topAdBtnText');
+        const link = document.getElementById('topAdLink');
+        if (!active || !text || !btnText || !link) return;
+        active.checked = Boolean(data.active);
+        text.value = data.text || '';
+        text.required = active.checked;
+        btnText.value = data.btnText || '';
+        link.value = data.link || '';
+        updateTopAdStatusLabel();
+        renderTopAdPreview();
+    };
+
+    try {
+        const data = await adminApi('/ads/top-banner', 'GET');
+        if (data && typeof data === 'object') adsData['top-banner'] = data;
+        applySettings(data || existing);
+    } catch (error) {
+        applySettings(existing);
+        if (status) status.textContent = 'Pengaturan belum berhasil dimuat dari server. Anda tetap bisa mengisi dan menyimpan, lalu periksa pesan jika penyimpanan gagal.';
     }
+
+    if (!form.dataset.previewBound) {
+        form.dataset.previewBound = 'true';
+        form.querySelectorAll('input').forEach(input => input.addEventListener('input', renderTopAdPreview));
+        document.getElementById('topAdStatus')?.addEventListener('change', () => {
+            const text = document.getElementById('topAdText');
+            if (text) text.required = document.getElementById('topAdStatus').checked;
+            updateTopAdStatusLabel();
+            renderTopAdPreview();
+        });
+    }
+    renderTopAdPreview();
+}
+
+function updateTopAdStatusLabel() {
+    const toggle = document.getElementById('topAdStatus');
+    const label = document.getElementById('topAdStatusText');
+    if (toggle && label) label.textContent = toggle.checked ? 'Aktif' : 'Nonaktif';
+}
+
+function renderTopAdPreview() {
+    const preview = document.getElementById('topAdPreview');
+    if (!preview) return;
+    const enabled = Boolean(document.getElementById('topAdStatus')?.checked);
+    const text = document.getElementById('topAdText')?.value.trim() || '';
+    const buttonText = document.getElementById('topAdBtnText')?.value.trim() || '';
+    const message = document.getElementById('topAdPreviewText');
+    const button = document.getElementById('topAdPreviewButton');
+    const state = document.getElementById('topAdPreviewState');
+    if (message) message.textContent = text || 'Teks promo akan tampil di sini.';
+    if (button) {
+        button.textContent = buttonText || 'Tombol aksi';
+        button.hidden = !buttonText;
+    }
+    preview.classList.toggle('is-active', enabled && Boolean(text));
+    if (state) {
+        state.textContent = enabled ? (text ? 'Aktif • akan tampil di situs' : 'Aktif • isi teks promo') : 'Nonaktif • tidak tampil di situs';
     }
 }
 
 async function saveTopAd(event) {
     event.preventDefault();
-    const topAdData = {
-        active: document.getElementById('topAdStatus').checked,
-        text: document.getElementById('topAdText').value,
-        btnText: document.getElementById('topAdBtnText').value,
-        link: document.getElementById('topAdLink').value
-    };
-    try { await saveContent('ads', adsData, 'top-banner', { ...topAdData, type: 'banner', title: topAdData.text }); }
-    catch (error) { return alert(error.message); }
-    if(typeof showToast === 'function') {
-        showToast("Disimpan!", "Pengaturan Iklan Banner Atas berhasil disimpan.", "success");
-    } else {
-        alert("Pengaturan Iklan Banner Atas berhasil disimpan.");
+    const active = document.getElementById('topAdStatus').checked;
+    const text = document.getElementById('topAdText').value.trim();
+    const btnText = document.getElementById('topAdBtnText').value.trim();
+    const link = document.getElementById('topAdLink').value.trim();
+    const status = document.getElementById('topAdSaveStatus');
+    const submit = document.querySelector('#topAdForm [type="submit"]');
+
+    if (active && !text) {
+        if (status) status.textContent = 'Isi teks promo sebelum mengaktifkan banner.';
+        document.getElementById('topAdText').focus();
+        return;
+    }
+    if (btnText && !link) {
+        if (status) status.textContent = 'Isi URL tujuan untuk tombol aksi, atau kosongkan teks tombol.';
+        document.getElementById('topAdLink').focus();
+        return;
+    }
+    if (link) {
+        try {
+            const parsed = new URL(link, window.location.origin);
+            if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('URL harus menggunakan http atau https.');
+        } catch (_) {
+            if (status) status.textContent = 'Masukkan URL tujuan yang valid (http://, https://, atau path seperti courses.html).';
+            document.getElementById('topAdLink').focus();
+            return;
+        }
+    }
+
+    const topAdData = { active, text, btnText, link, type: 'banner', title: text };
+    if (status) status.textContent = 'Menyimpan pengaturan…';
+    if (submit) { submit.disabled = true; submit.setAttribute('aria-busy', 'true'); }
+    try {
+        const saved = await saveContent('ads', adsData, 'top-banner', topAdData);
+        if (saved) adsData['top-banner'] = saved;
+        if (status) status.textContent = 'Pengaturan tersimpan. Pratinjau di atas sudah diperbarui.';
+        renderTopAdPreview();
+    } catch (error) {
+        if (status) status.textContent = `Gagal menyimpan: ${error.message}`;
+    } finally {
+        if (submit) { submit.disabled = false; submit.removeAttribute('aria-busy'); }
     }
 }
 
