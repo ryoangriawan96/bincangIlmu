@@ -2697,6 +2697,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Inject auth/profile into mobile nav menu
+    const mobileBreakpoint = window.matchMedia('(max-width: 900px)');
     let lastMobileMode = null;
     function updateMobileNav() {
         const navMenu = document.querySelector('.nav-menu');
@@ -2763,7 +2764,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     updateMobileNav();
-    const mobileBreakpoint = window.matchMedia('(max-width: 900px)');
     if (mobileBreakpoint.addEventListener) mobileBreakpoint.addEventListener('change', updateMobileNav);
     else mobileBreakpoint.addListener(updateMobileNav);
     window.addEventListener('resize', () => window.requestAnimationFrame(updateMobileNav), { passive: true });
