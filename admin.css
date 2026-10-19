@@ -1004,7 +1004,7 @@
 }
 
 [data-theme="dark"] .admin-welcome-panel {
-    background: linear-gradient(118deg, #12352d 0%, #176044 58%, #21815a 100%);
+    background: linear-gradient(118deg, #321b22 0%, #4a252c 58%, #633039 100%);
 }
 
 [data-theme="dark"] .admin-dashboard-stats .admin-stat-card,
@@ -1015,12 +1015,12 @@
 }
 
 [data-theme="dark"] .admin-dashboard-note {
-    background: linear-gradient(145deg, #1b3329 0%, #214632 100%);
+    background: linear-gradient(145deg, #352027 0%, #47262d 100%);
 }
 
-[data-theme="dark"] .admin-dashboard-note h2 { color: #e3f3e8; }
-[data-theme="dark"] .admin-dashboard-note p { color: #b1c4b8; }
-[data-theme="dark"] .admin-dashboard-note .admin-section-kicker { color: #a4c3ac; }
+[data-theme="dark"] .admin-dashboard-note h2 { color: #f6e8e9; }
+[data-theme="dark"] .admin-dashboard-note p { color: #d4bdc0; }
+[data-theme="dark"] .admin-dashboard-note .admin-section-kicker { color: #d8aeb1; }
 [data-theme="dark"] .admin-dashboard-note-icon { background: #263d33; color: #e3c16d; }
 [data-theme="dark"] .admin-quick-action { background: var(--bg-card); color: var(--text-dark); }
 [data-theme="dark"] .admin-quick-action:hover { background: rgba(125, 211, 167, 0.06); }
