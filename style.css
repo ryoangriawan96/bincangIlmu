@@ -12611,3 +12611,37 @@ body.site-maintenance-active > :not(#maintenanceScreen) { display: none !importa
     line-height: 1;
     pointer-events: none;
 }
+
+
+/* Keep the global promo copy centered independently of its dismiss control. */
+.global-top-ad-bar .ad-bar-container {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.global-top-ad-bar .ad-content {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+    text-align: center;
+    padding-inline: 4rem;
+}
+
+.global-top-ad-bar .ad-text {
+    flex: 0 1 auto;
+    width: auto;
+    min-width: 0;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .global-top-ad-bar .ad-content {
+        gap: 0.5rem;
+        padding-inline: 3rem;
+    }
+
+    .global-top-ad-bar .ad-text {
+        overflow-wrap: anywhere;
+    }
+}
