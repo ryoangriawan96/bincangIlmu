@@ -12645,3 +12645,35 @@ body.site-maintenance-active > :not(#maintenanceScreen) { display: none !importa
         overflow-wrap: anywhere;
     }
 }
+
+
+/* Distinguish the administrator account from a regular member in the mobile menu. */
+@media (max-width: 900px) {
+    .mobile-profile-area.is-admin {
+        background: linear-gradient(135deg, color-mix(in srgb, var(--primary-color) 14%, var(--bg-card)), var(--bg-card));
+        border: 1px solid color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
+    }
+
+    .mobile-profile-area.is-admin .profile-avatar-initial {
+        background: var(--primary-color);
+        box-shadow: 0 6px 18px color-mix(in srgb, var(--primary-color) 22%, transparent);
+    }
+
+    .mobile-profile-role {
+        display: inline-flex;
+        margin-top: 0.35rem;
+        color: var(--primary-color);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+    }
+
+    .mobile-nav-links.is-admin-menu a:first-child {
+        color: var(--primary-color);
+        font-weight: 750;
+    }
+
+    .mobile-nav-links.is-admin-menu a:first-child i {
+        color: var(--primary-color);
+    }
+}
