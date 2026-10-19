@@ -9,7 +9,7 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=273">
-    <link rel="stylesheet" href="admin.css?v=9">
+    <link rel="stylesheet" href="admin.css?v=10">
     <link rel="stylesheet" href="responsive.css?v=21">
 </head>
 <body class="admin-body">
@@ -386,6 +386,18 @@
                             <label>URL / Link Tujuan (Opsional)</label>
                             <input type="text" id="topAdLink" placeholder="https://...">
                         </div>
+                        <div class="admin-ad-preview-panel">
+                            <div class="admin-ad-preview-heading">
+                                <strong>Pratinjau banner</strong>
+                                <span class="admin-ad-preview-state" id="topAdPreviewState">Nonaktif • tidak tampil di situs</span>
+                            </div>
+                            <div class="admin-ad-preview" id="topAdPreview" aria-live="polite">
+                                <span class="admin-ad-preview-text" id="topAdPreviewText">Teks promo akan tampil di sini.</span>
+                                <span class="admin-ad-preview-button" id="topAdPreviewButton" hidden></span>
+                            </div>
+                            <p class="admin-ad-preview-help">Pratinjau berubah saat Anda mengedit. Banner pengunjung diperbarui setelah pengaturan berhasil disimpan.</p>
+                        </div>
+                        <p class="admin-ad-save-status" id="topAdSaveStatus" role="status" aria-live="polite"></p>
                         <button type="submit" class="btn btn-primary" style="padding: 0.8rem 1.5rem;"><i class="fas fa-save"></i> Simpan Pengaturan Iklan</button>
                     </form>
                 </div>
@@ -771,7 +783,7 @@
     <!-- Scripts -->
     <script src="api-config.js"></script>
     <script src="script.js?v=242"></script>
-    <script src="admin.js?v=235"></script>
+    <script src="admin.js?v=236"></script>
 
     <!-- Smart Search Overlay -->
     <div id="searchOverlay" class="search-overlay">
