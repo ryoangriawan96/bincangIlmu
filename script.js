@@ -3828,6 +3828,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- TOP AD BAR RENDER ---
 function renderTopAd() {
+    // Banner iklan hanya untuk halaman publik, bukan panel admin.
+    if (document.querySelector('.admin-layout')) return;
+
     const topAdData = adsData['top-banner'];
     if (topAdData && topAdData.active && topAdData.text) {
         const adBar = document.createElement('div');
