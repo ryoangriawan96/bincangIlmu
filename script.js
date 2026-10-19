@@ -3852,7 +3852,6 @@ function renderTopAd() {
                 <div class="ad-content">
                     ${contentHtml}
                 </div>
-                <button class="ad-close-btn" id="topAdCloseBtn" aria-label="Tutup"><i class="fas fa-times"></i></button>
             </div>
         `;
         
@@ -3884,12 +3883,6 @@ function renderTopAd() {
         setTimeout(adjustLayout, 50);
         window.addEventListener('resize', adjustLayout);
         
-        // Handle close
-        document.getElementById('topAdCloseBtn').addEventListener('click', () => {
-            adBar.style.display = 'none';
-            if (header) header.style.top = '0';
-            document.body.style.paddingTop = '0';
-        });
     }
 }
 async function sendAIChatEnhanced() {
