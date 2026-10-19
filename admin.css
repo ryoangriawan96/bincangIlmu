@@ -1371,3 +1371,117 @@
     #tab-ads #donationCardForm .form-group,
     #tab-ads #topAdForm .form-group { margin-bottom: 1.1rem; }
 }
+
+
+/* Mobile data tables: stack rows as readable cards instead of clipping columns. */
+@media (max-width: 640px) {
+    .admin-table-container {
+        overflow: visible;
+        padding: 0.55rem;
+        border-radius: 14px;
+    }
+    .admin-table-container .admin-table {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        border: 0;
+        table-layout: auto;
+    }
+    .admin-table-container .admin-table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+    .admin-table-container .admin-table tbody {
+        display: grid;
+        gap: 0.75rem;
+        width: 100%;
+    }
+    .admin-table-container .admin-table tbody tr {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        width: 100%;
+        overflow: hidden;
+        border: 1px solid var(--admin-border);
+        border-radius: 12px;
+        background: var(--bg-light);
+    }
+    .admin-table-container .admin-table tbody td {
+        display: grid;
+        grid-template-columns: minmax(76px, 0.34fr) minmax(0, 1fr);
+        align-items: start;
+        gap: 0.65rem;
+        min-width: 0;
+        padding: 0.68rem 0.75rem;
+        border-bottom: 1px solid var(--admin-border);
+        font-size: 0.82rem;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+    }
+    .admin-table-container .admin-table tbody td:last-child { border-bottom: 0; }
+    .admin-table-container .admin-table tbody td::before {
+        color: var(--text-light);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+    .admin-table-container .admin-table tbody td[colspan] {
+        display: block;
+        text-align: center;
+    }
+    .admin-table-container .admin-table tbody td[colspan]::before { content: none; }
+    .admin-table-container .admin-table tbody td img {
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+    .admin-table-container .admin-table tbody td:last-child:not([colspan]) {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.45rem;
+    }
+    .admin-table-container .admin-table tbody td:last-child::before {
+        flex: 0 0 76px;
+        content: "Aksi";
+    }
+    .admin-table-container .admin-table tbody td:last-child button,
+    .admin-table-container .admin-table tbody td:last-child .btn {
+        margin: 0;
+    }
+
+    #tab-courses .admin-table td:nth-child(1)::before,
+    #tab-kitabs .admin-table td:nth-child(1)::before,
+    #tab-blogs .admin-table td:nth-child(1)::before,
+    #tab-fatwas .admin-table td:nth-child(1)::before,
+    #tab-ads .admin-table td:nth-child(1)::before { content: "ID"; }
+    #tab-courses .admin-table td:nth-child(2)::before { content: "Kursus"; }
+    #tab-courses .admin-table td:nth-child(3)::before { content: "Instruktur"; }
+    #tab-kitabs .admin-table td:nth-child(2)::before { content: "Kitab"; }
+    #tab-kitabs .admin-table td:nth-child(3)::before { content: "Kategori"; }
+    #tab-blogs .admin-table td:nth-child(2)::before { content: "Artikel"; }
+    #tab-blogs .admin-table td:nth-child(3)::before { content: "Penulis"; }
+    #tab-fatwas .admin-table td:nth-child(2)::before { content: "Pertanyaan"; }
+    #tab-fatwas .admin-table td:nth-child(3)::before { content: "Mufti"; }
+    #tab-ads .admin-table td:nth-child(2)::before { content: "Urutan"; }
+    #tab-ads .admin-table td:nth-child(3)::before { content: "Tipe"; }
+    #tab-ads .admin-table td:nth-child(4)::before { content: "Judul"; }
+    #tab-partners .admin-table td:nth-child(1)::before { content: "Logo"; }
+    #tab-partners .admin-table td:nth-child(2)::before { content: "Nama mitra"; }
+    #tab-partners .admin-table td:nth-child(3)::before { content: "Urutan"; }
+    #tab-users .admin-table td:nth-child(1)::before { content: "Nama"; }
+    #tab-users .admin-table td:nth-child(2)::before { content: "Email"; }
+    #tab-users .admin-table td:nth-child(3)::before { content: "Password"; }
+    #tab-users .admin-table td:nth-child(4)::before { content: "Peran"; }
+    #tab-users .admin-table td:nth-child(5)::before { content: "Terdaftar"; }
+    #tab-users .admin-table td:nth-child(6)::before { content: "Status"; }
+
+    [data-theme="dark"] .admin-table-container .admin-table tbody tr { background: #211519; }
+}
