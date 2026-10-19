@@ -12580,3 +12580,34 @@ body.site-maintenance-active > :not(#maintenanceScreen) { display: none !importa
     #authModal .modal-box { width: 100%; max-height: calc(100dvh - 1rem); padding: 1.25rem; border-radius: 1.25rem; }
     .auth-modal-heading { padding-bottom: 1rem; }
 }
+
+
+/* Keep dismiss controls circular despite the shared 44px minimum button height. */
+.ad-close-btn,
+.toast-close {
+    box-sizing: border-box;
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 36px;
+    width: 36px;
+    min-width: 36px;
+    max-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    padding: 0;
+    line-height: 1;
+    border-radius: 50%;
+}
+
+.ad-close-btn {
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+}
+
+.ad-close-btn i,
+.toast-close i {
+    line-height: 1;
+    pointer-events: none;
+}
