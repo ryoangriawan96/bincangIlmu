@@ -1004,7 +1004,7 @@
 }
 
 [data-theme="dark"] .admin-welcome-panel {
-    background: linear-gradient(118deg, #102f2d 0%, #144b43 58%, #1a6855 100%);
+    background: linear-gradient(118deg, #12352d 0%, #176044 58%, #21815a 100%);
 }
 
 [data-theme="dark"] .admin-dashboard-stats .admin-stat-card,
@@ -1015,7 +1015,7 @@
 }
 
 [data-theme="dark"] .admin-dashboard-note {
-    background: linear-gradient(145deg, #1b3029 0%, #1b352e 100%);
+    background: linear-gradient(145deg, #1b3329 0%, #214632 100%);
 }
 
 [data-theme="dark"] .admin-dashboard-note h2 { color: #e3f3e8; }
